@@ -1,0 +1,101 @@
+[{
+	"Partner": "Partner 1",
+	"Name": "Name 1",
+	"LastName": "LastName 1",
+	"Street": "Street 1",
+	"City": "City 1",
+	"__metadata": {
+		"uri": "Accounts('Partner%201')",
+		"type": "ISM.Account"
+	}
+}, {
+	"Partner": "Partner 2",
+	"Name": "Name 2",
+	"LastName": "LastName 2",
+	"Street": "Street 2",
+	"City": "City 2",
+	"__metadata": {
+		"uri": "Accounts('Partner%202')",
+		"type": "ISM.Account"
+	}
+}, {
+	"Partner": "Partner 3",
+	"Name": "Name 3",
+	"LastName": "LastName 3",
+	"Street": "Street 3",
+	"City": "City 3",
+	"__metadata": {
+		"uri": "Accounts('Partner%203')",
+		"type": "ISM.Account"
+	}
+}, {
+	"Partner": "Partner 4",
+	"Name": "Name 4",
+	"LastName": "LastName 4",
+	"Street": "Street 4",
+	"City": "City 4",
+	"__metadata": {
+		"uri": "Accounts('Partner%204')",
+		"type": "ISM.Account"
+	}
+}, {
+	"Partner": "Partner 5",
+	"Name": "Name 5",
+	"LastName": "LastName 5",
+	"Street": "Street 5",
+	"City": "City 5",
+	"__metadata": {
+		"uri": "Accounts('Partner%205')",
+		"type": "ISM.Account"
+	}
+}, {
+	"Partner": "Partner 6",
+	"Name": "Name 6",
+	"LastName": "LastName 6",
+	"Street": "Street 6",
+	"City": "City 6",
+	"__metadata": {
+		"uri": "Accounts('Partner%206')",
+		"type": "ISM.Account"
+	}
+}, {
+	"Partner": "Partner 7",
+	"Name": "Name 7",
+	"LastName": "LastName 7",
+	"Street": "Street 7",
+	"City": "City 7",
+	"__metadata": {
+		"uri": "Accounts('Partner%207')",
+		"type": "ISM.Account"
+	}
+}, {
+	"Partner": "Partner 8",
+	"Name": "Name 8",
+	"LastName": "LastName 8",
+	"Street": "Street 8",
+	"City": "City 8",
+	"__metadata": {
+		"uri": "Accounts('Partner%208')",
+		"type": "ISM.Account"
+	}
+}, {
+	"Partner": "Partner 9",
+	"Name": "Name 9",
+	"LastName": "LastName 9",
+	"Street": "Street 9",
+	"City": "City 9",
+	"__metadata": {
+		"uri": "Accounts('Partner%209')",
+		"type": "ISM.Account"
+	}
+}, {
+	"Partner": "Partner 10",
+	"Name": "Name 10",
+	"LastName": "LastName 10",
+	"Street": "Street 10",
+	"City": "City 10",
+	"__metadata": {
+		"uri": "Accounts('Partner%2010')",
+		"type": "ISM.Account"
+	}
+}]

@@ -1,0 +1,161 @@
+{
+	"_version": "1.1.0",
+	"sap.app": {
+		"_version": "1.1.0",
+		"id": "bp",
+		"type": "application",
+		"i18n": "i18n/i18n.properties",
+		"applicationVersion": {
+			"version": "1.0.0"
+		},
+		"title": "{{appTitle}}",
+		"description": "{{appDescription}}",
+		"sourceTemplate": {
+			"id": "com.sap.webide.annotationmodeller.CreateAnnotationTemplate",
+			"version": "1.0.0"
+		},
+		"dataSources": {
+			"Akviziter": {
+				"uri": "/Styria/sap/opu/odata/SAP/ZAKV_SRV;mo/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": "localService/metadata.xml",
+					"annotations": [
+						"annotation0"
+					]
+				}
+			},
+			"annotation0": {
+				"uri": "localService/annotation0.xml",
+				"type": "ODataAnnotation",
+				"settings": {
+					"localUri": "localService/annotation0.xml"
+				}
+			}
+		}
+	},
+	"sap.ui": {
+		"_version": "1.1.0",
+		"technology": "UI5",
+		"icons": {
+			"icon": "",
+			"favIcon": "",
+			"phone": "",
+			"phone@2": "",
+			"tablet": "",
+			"tablet@2": ""
+		},
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		},
+		"supportedThemes": [
+			"sap_hcb",
+			"sap_belize",
+			"sap_bluecrystal"
+		]
+	},
+	"sap.ui5": {
+		"_version": "1.1.0",
+		"rootView": {
+			"viewName": "bp.view.Main",
+			"type": "XML"
+		},
+		"dependencies": {
+			"minUI5Version": "1.30.0",
+			"libs": {
+				"sap.ui.core": {},
+				"sap.m": {},
+				"sap.ui.layout": {}
+			}
+		},
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "bp.i18n.i18n"
+				}
+			},
+			"": {
+				"type": "sap.ui.model.odata.v2.ODataModel",
+				"settings": {
+					"defaultOperationMode": "Server",
+					"defaultBindingMode": "OneTime",
+					"defaultCountMode": "Request"
+				},
+				"dataSource": "Akviziter",
+				"preload": true
+			}
+		},
+		"resources": {
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			]
+		},
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"viewType": "XML",
+				"viewPath": "bp.view",
+				"controlId": "app",
+				"controlAggregation": "pages",
+				"transition": "fade"
+			},
+			"routes": [
+				{
+					"pattern": "accounts",
+					"name": "Accounts",
+					"target": "accounts"
+				},
+				{
+					"pattern": "orders",
+					"name": "Orders",
+					"target": "orders"
+				},
+				{
+					"pattern": "PartnerSet/{objectId}",
+					"name": "object",
+					"target": "object"
+				},				
+				{
+					"pattern": "accountDetails",
+					"name": "AccountDetails",
+					"target": "accountDetails"
+				},
+				{
+					"pattern": "",
+					"name": "Splash",
+					"target": "splash"
+				}
+			],
+			"targets": {
+				"accounts": {
+					"viewName": "Accounts",
+					"viewLevel": 1
+				},
+				"orders": {
+					"viewName": "Orders"
+				},
+				"accountDetails": {
+					"viewName": "AccountDetails"
+				},
+				"object": {
+					"viewName": "AccountDetails",
+					"viewId": "object",
+					"viewLevel": 2
+				},				
+				"splash": {
+					"viewName": "Dummy"
+				}
+			}
+		}
+	}
+}

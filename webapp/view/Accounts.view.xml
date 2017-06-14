@@ -1,0 +1,75 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:u="sap.ui.unified" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:smartTable="sap.ui.comp.smarttable" xmlns:html="http://www.w3.org/1999/xhtml" controllerName="bp.controller.Accounts">
+	<App>
+		<pages>
+			<Page title="{i18n>titleAccounts}" showNavButton="true" navButtonPress="onNavBack">
+				<headerContent>
+					<Button id="__button3" tooltip="New" icon="sap-icon://add" press="onAdd"/>
+					<Button icon="sap-icon://upload" tooltip="Upload" press="onUpload"/>
+				</headerContent>
+				<subHeader>
+					<Toolbar>
+						<u:FileUploader id="fileUploader" name="myFileUpload" uploadUrl="upload/" width="400px" tooltip="Upload your file to the local server" uploadComplete="handleUploadComplete"/>
+						<Button text="Upload File" press="handleUploadPress" icon="sap-icon://upload"/>
+					</Toolbar>
+				</subHeader>
+				<content>
+					<Table noDataText="No data" id="__table0" items="{/PartnerSet}">
+						<headerToolbar>
+							<OverflowToolbar>
+								<Title text="Products" level="H2"/>
+								<ToolbarSpacer/>
+								<!--  Add the Personalization button -->
+								<Button icon="sap-icon://action-settings" press="onPersoButtonPressed">
+									<layoutData>
+										<OverflowToolbarLayoutData priority="NeverOverflow"/>
+									</layoutData>
+								</Button>
+							</OverflowToolbar>
+						</headerToolbar>
+						<columns>
+							<Column id="__column0">
+								<header>
+									<Label text="{/#Partner/Setid/@sap:label}" id="__label0"/>
+								</header>
+							</Column>
+							<Column id="__column1">
+								<header>
+									<Label text="Name" id="__label1"/>
+								</header>
+							</Column>
+							<Column id="__column2">
+								<header>
+									<Label text="Address" id="__label2"/>
+								</header>
+							</Column>
+							<Column id="__column3">
+								<header>
+									<Label text="Telephone" id="__label3"/>
+								</header>
+							</Column>
+    						<Column id="__column4">
+    							<header>
+    								<Label text="Birth" id="__label4"/>
+    							</header>
+    						</Column>
+						</columns>
+						<items>
+							<ColumnListItem type="Navigation" press="onBPDetails">
+								<cells>
+									<Text text="{Setid}" id="__text28"/>
+									<ObjectIdentifier title="{SoldTo/Name1} {SoldTo/Name2}" text="{ShipTo/Name1} {SipTo/Name2}" class="sapMTableContentMargin"/>
+									<Text text="{SoldTo/Stras} {SoldTo/Hsnm1},{SoldTo/Pstlz} {SoldTo/Ort01}\n{ShipTo/Stras} {ShipTo/Hsnm1}, {ShipTo/Pstlz} {ShipTo/Ort01}" id="__text29"/>
+									<Text text="{SoldTo/Telnr},{SoldTo/Mobnr}\n{ShipTo/Telnr},{ShipTo/Mobnr}" id="__text30"/>
+									<sap.ui.layout:VerticalLayout width="100%" xmlns:sap.ui.layout="sap.ui.layout" id="__layout0">
+									<Text text="{ path: 'SoldTo/Birth',                         type: 'sap.ui.model.type.Date',                                                     formatOptions: {                                                         pattern: 'dd.MM.YYYY'                                                     }                                                 }" id="__text31"/>
+									<Text text="{ path: 'ShipTo/Birth',                         type: 'sap.ui.model.type.Date',                                                     formatOptions: {                                                         pattern: 'dd.MM.YYYY'                                                     }                                                 }" id="__text33"/>
+									</sap.ui.layout:VerticalLayout>
+								</cells>
+							</ColumnListItem>
+						</items>
+					</Table>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>
