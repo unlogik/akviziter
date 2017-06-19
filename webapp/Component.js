@@ -25,6 +25,9 @@ sap.ui.define([
 			// set the device model
 			this.setModel(models.createDeviceModel(), "device");
 			
+			// used only for this lessons to show the request individually...
+			//this.getModel().setUseBatch(false);
+			
 /*			var oModel;
 			jQuery.sap.require("sap.ui.core.util.MockServer");
 			var oMockServer = new sap.ui.core.util.MockServer({

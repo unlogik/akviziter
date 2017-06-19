@@ -2,7 +2,7 @@
 	controllerName="bp.controller.AccountDetails">
 	<App>
 		<pages>
-			<Page title="{i18n>titleAccountDetails}" showNavButton="true">
+			<Page title="{i18n>titleAccountDetails}" showNavButton="true" navButtonPress="onNavBack">
 				<content>
 					<f:SimpleForm editable="true" layout="ResponsiveGridLayout" id="__form0"
 					    title="Accounts">
