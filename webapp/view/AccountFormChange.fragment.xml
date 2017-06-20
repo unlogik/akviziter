@@ -1,0 +1,87 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<!--<VBox class="sapUiSmallMargin">-->
+	<f:SimpleForm editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12"
+		adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1"
+		singleContainerFullSize="false" id="__form1">
+		<f:content>
+			<Toolbar>
+				<Button icon="sap-icon://customer"/>
+				<Title text="Sold-to: {SoldTo/Partner}" level="H5" titleStyle="H5"/>
+			</Toolbar>
+			<Label text="{/#Partner/SoldTo/Title/@sap:label}"/>
+			<Select id="__SoldTo_Title">
+				<core:ListItem key="01" text="Mr." additionalText="01"/>
+				<core:ListItem key="02" text="Mrs." additionalText="02"/>
+			</Select>
+			<Label text="{/#Partner/SoldTo/Name1/@sap:label}"/>
+			<Input id="__SoldTo_Name1" value="{SoldTo/Name1}"/>
+			<Input id="__SoldTo_Name2" value="{SoldTo/Name2}"/>
+			<Label text="{/#Partner/SoldTo/Stras/@sap:label}"/>
+			<Input id="__SoldTo_Stras" value="{SoldTo/Stras}"/>
+			<Input id="__SoldTo_Hsnm1" value="{SoldTo/Hsnm1}"/>
+			<Input id="__SoldTo_Hsnm2" value="{SoldTo/Hsnm2}"/>
+			<Label text="{/#Partner/SoldTo/Ort01/@sap:label}"/>
+			<Input id="__SoldTo_Ort01" value="{SoldTo/Ort01}"/>
+			<Input id="__SoldTo_Pstlz" value="{SoldTo/Pstlz}"/>
+			<Input id="__SoldTo_Land1" value="{SoldTo/Land1}"/>
+			<Label text="{/#Partner/SoldTo/Telnr/@sap:label}"/>
+			<Input id="__SoldTo_Telnr" value="{SoldTo/Telnr}"/>
+			<Label text="{/#Partner/SoldTo/Mobnr/@sap:label}"/>
+			<Input id="__SoldTo_Mobnr" value="{SoldTo/Mobnr}"/>
+			<Label text="{/#Partner/SoldTo/Email/@sap:label}"/>
+			<Input id="__SoldTo_Email" value="{SoldTo/Email}"/>
+			<Label text="{/#Partner/SoldTo/Birth/@sap:label}"/>
+    		<DatePicker
+    			id="__SoldTo_Birth"
+    			valueFormat="dd.MM.yyyy"
+    			class="sapUiSmallMarginBottom"
+    			dateValue="{SoldTo/Birth}"/>			
+			<!--<Input id="__SoldTo_Birth" value="{SoldTo/Birth}"/>-->
+			<Label text="{/#Partner/SoldTo/Dlnot/@sap:label}"/>
+			<Input id="__SoldTo_Dlnot" value="{SoldTo/Dlnot}"/>
+			<Label text="{/#Partner/SoldTo/Intad/@sap:label}"/>
+			<Input id="__SoldTo_Intad" value="{SoldTo/Intad}"/>
+			<Label text="{/#Partner/SoldTo/Stcd2/@sap:label}"/>
+			<Input id="__SoldTo_Stcd2" value="{SoldTo/Stcd2}"/>
+			<Toolbar>
+				<Button icon="sap-icon://shipping-status"/>
+				<Title text="Ship-to: {ShipTo/Partner}" level="H5" titleStyle="H5"/>
+			</Toolbar>
+			<Label text="{/#Partner/ShipTo/Title/@sap:label}"/>
+			<Select id="__ShipTo_Title">
+				<core:ListItem key="01" text="Mr." additionalText="01"/>
+				<core:ListItem key="02" text="Mrs." additionalText="02"/>
+			</Select>
+			<Label text="{/#Partner/ShipTo/Name1/@sap:label}"/>
+			<Input id="__Shipto_Name1" value="{Shipto/Name1}"/>
+			<Input id="__Shipto_Name2" value="{Shipto/Name2}"/>
+			<Label text="{/#Partner/ShipTo/Stras/@sap:label}"/>
+			<Input id="__ShipTo_Stras" value="{ShipTo/Stras}"/>
+			<Input id="__ShipTo_Hsnm1" value="{ShipTo/Hsnm1}"/>
+			<Input id="__ShipTo_Hsnm2" value="{ShipTo/Hsnm2}"/>
+			<Label text="{/#Partner/ShipTo/Ort01/@sap:label}"/>
+			<Input id="__ShipTo_Ort01" value="{ShipTo/Ort01}"/>
+			<Input id="__ShipTo_Pstlz" value="{ShipTo/Pstlz}"/>
+			<Input id="__ShipTo_Land1" value="{ShipTo/Land1}"/>
+			<Label text="{/#Partner/ShipTo/Telnr/@sap:label}"/>
+			<Input id="__ShipTo_Telnr" value="{ShipTo/Telnr}"/>
+			<Label text="{/#Partner/ShipTo/Mobnr/@sap:label}"/>
+			<Input id="__ShipTo_Mobnr" value="{ShipTo/Mobnr}"/>
+			<Label text="{/#Partner/ShipTo/Email/@sap:label}"/>
+			<Input id="__ShipTo_Email" value="{ShipTo/Email}"/>
+			<Label text="{/#Partner/ShipTo/Birth/@sap:label}"/>
+    		<DatePicker
+    			id="__ShipTo_Birth"
+    			valueFormat="dd.MM.yyyy"
+    			class="sapUiSmallMarginBottom"
+    			dateValue="{ShipTo/Birth}"/>
+			<Label text="{/#Partner/ShipTo/Dlnot/@sap:label}"/>
+			<Input id="__ShipTo_Dlnot" value="{ShipTo/Dlnot}"/>
+			<Label text="{/#Partner/ShipTo/Intad/@sap:label}"/>
+			<Input id="__ShipTo_Intad" value="{ShipTo/Intad}"/>
+			<Label text="{/#Partner/ShipTo/Stcd2/@sap:label}"/>
+			<Input id="__ShipTo_Stcd2" value="{ShipTo/Stcd2}"/>
+		</f:content>
+	</f:SimpleForm>
+	<!--</VBox>-->
+</core:FragmentDefinition>

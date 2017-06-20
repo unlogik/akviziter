@@ -1,31 +1,13 @@
-<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:html="http://www.w3.org/1999/xhtml"
-	controllerName="bp.controller.AccountDetails">
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.ui.layout.form"
+	xmlns:html="http://www.w3.org/1999/xhtml" controllerName="bp.controller.AccountDetails">
 	<App>
 		<pages>
-			<Page title="{i18n>titleAccountDetails}" showNavButton="true" navButtonPress="onNavBack">
-				<content>
-					<f:SimpleForm editable="true" layout="ResponsiveGridLayout" id="__form0"
-					    title="Accounts">
-						<f:content>
-							<core:Title text="Sold-to" id="__title0"/>
-							<Label text="{/#Partner/SoldTo/Name1/@sap:label}" id="__label2"/>
-							<Text id="name1" text="{SoldTo/Name1}"/>
-							<Text id="name2" text="{SoldTo/Name2}"/>
-							<Label text="{/#Partner/SoldTo/Stras/@sap:label}" id="__label3"/>
-							<Input width="100%" id="__input3"/>
-							<Label text="{/#BP/Stras/@sap:label}" id="__label4"/>
-							<Input width="100%" id="__input8"/>
-							<Input width="100%" id="__input4"/>
-							<Input width="100%" id="__input5"/>
-							<Input width="100%" id="__input6"/>
-							<Label text="{/#Partner/SoldTo/Stras/@sap:label}" id="__label5"/>
-							<Label text="{/#Partner/SoldTo/Stras/@sap:label}" id="__label6"/>
-							<Label text="{/#Partner/SoldTo/Stras/@sap:label}" id="__label7"/>
-							<Label text="{/#Partner/SoldTo/Stras/@sap:label}" id="__label8"/>
-							<core:Title text="Ship-to" id="__title1"/>
-						</f:content>
-					</f:SimpleForm>
-				</content>
+			<Page title="{i18n>titleAccountDetails}: {Setid}" showNavButton="true" navButtonPress="onNavBack" id="page">
+				<headerContent>
+					<Button icon="sap-icon://edit" id="__edit" press="onEdit"/>
+					<Button icon="sap-icon://save" id="__save" press="onSave" visible="false"/>
+					<Button icon="sap-icon://decline" id="__cancel" press="onCancel" visible="false"/>
+				</headerContent>
 			</Page>
 		</pages>
 	</App>
