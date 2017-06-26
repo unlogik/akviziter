@@ -9,13 +9,33 @@
       "ui5VerSource": null,
       "isDefaultVersion": 0,
       "urlParameters": [],
+      "hashParameter": "/PartnerSet/1",
+      "backendSystem": [],
+      "urlParametersNotNeeded": true,
+      "_metadata": {
+        "id": 3199039,
+        "runnerId": "webapprunner",
+        "displayName": "Account Details",
+        "lastRunTimeStamp": 1498479164182
+      }
+    },
+    {
+      "filePath": "/webapp/index.html",
+      "previewMode": 1,
+      "dataMode": 1,
+      "workspace": "withoutWorkspace",
+      "ui5ActiveVersion": null,
+      "ui5VerSource": null,
+      "isDefaultVersion": 0,
+      "urlParameters": [],
       "hashParameter": "",
       "backendSystem": [],
       "_metadata": {
         "id": 931124,
         "runnerId": "webapprunner",
         "displayName": "Run index.html",
-        "lastRunTimeStamp": 1497883091233
+        "lastRunTimeStamp": 1498051530531,
+        "hasIssues": true
       }
     },
     {
@@ -32,24 +52,6 @@
         "runnerId": "qunitrunner",
         "displayName": "Run mockServer.html",
         "lastRunTimeStamp": 1497360230120
-      }
-    },
-    {
-      "filePath": "/webapp/index.html",
-      "previewMode": 1,
-      "dataMode": 1,
-      "workspace": "withoutWorkspace",
-      "ui5ActiveVersion": null,
-      "ui5VerSource": null,
-      "isDefaultVersion": 0,
-      "urlParameters": [],
-      "hashParameter": "",
-      "backendSystem": [],
-      "_metadata": {
-        "runnerId": "webapprunner",
-        "id": 3199039,
-        "displayName": "Run index.html",
-        "lastRunTimeStamp": 1497359726889
       }
     }
   ]

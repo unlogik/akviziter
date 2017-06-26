@@ -2,8 +2,9 @@ sap.ui.define([
 	"bp/controller/BaseController",
 	"sap/ui/model/json/JSONModel",
 	"sap/ui/core/routing/History",
-	"sap/m/MessageToast"
-], function(BaseController, JSONModel, History, MessageToast) {
+	"sap/m/MessageToast",
+	"sap/ui/model/Filter"
+], function(BaseController, JSONModel, History, MessageToast, Filter) {
 	"use strict";
 
 	return BaseController.extend("bp.controller.AccountDetails", {
@@ -13,7 +14,9 @@ sap.ui.define([
 		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
 		 * @memberOf bp.view.view.AccountDetails
 		 */
+
 		onInit: function() {
+			this.sCityCode = null;
 			// Model used to manipulate control states. The chosen values make sure,
 			// detail page is busy indication immediately so there is no break in
 			// between the busy indication for loading the view's meta data
@@ -32,9 +35,12 @@ sap.ui.define([
 				// Restore original busy indicator delay for the object view
 				oViewModel.setProperty("/delay", iOriginalBusyDelay);
 			});
-			
+
 			// Set the initial form to be the display one
 			this._showFormFragment("Display");
+			var oModel = this.getOwnerComponent().getModel();
+			var oSelect = this.getView().byId("__ShipTo_Title");
+			/*.setModel(oModel);*/
 		},
 
 		/**
@@ -59,9 +65,10 @@ sap.ui.define([
 		 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.
 		 * @memberOf bp.view.view.AccountDetails
 		 */
-		//	onExit: function() {
-		//
-		//	}
+		// 			onExit: function() {
+		// 		this._toggleButtonsAndView(false);
+		// 			},
+
 		onNavBack: function() {
 			var oHistory = History.getInstance();
 			var sPreviousHash = oHistory.getPreviousHash();
@@ -72,6 +79,7 @@ sap.ui.define([
 				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 				oRouter.navTo("overview", {}, true);
 			}
+			this._toggleButtonsAndView(false);
 		},
 		/**
 		 * Event handler for press event on object identifier.
@@ -98,6 +106,39 @@ sap.ui.define([
 				sMessage = this.getResourceBundle().getText("productRatingSuccess", [iValue]);
 
 			MessageToast.show(sMessage);
+		},
+
+		onCitySuggest: function(oEvent) {
+			var sTerm = oEvent.getParameter("suggestValue");
+			var aFilters = [];
+			if (sTerm) {
+				aFilters.push(new Filter("CityName", sap.ui.model.FilterOperator.StartsWith, sTerm));
+			}
+			oEvent.getSource().getBinding("suggestionRows").filter(aFilters);
+		},
+
+		onCitySelect: function(oEvent) {
+			var row = oEvent.getParameters().selectedRow;
+			var text = row.getCells()[1];
+			this.sCityCode = text.getText();
+		},
+
+		onStreetSuggest: function(oEvent) {
+			var sTerm = oEvent.getParameter("suggestValue");
+			var aFilters = [];
+			if (sTerm) {
+				aFilters.push(new Filter("Street", sap.ui.model.FilterOperator.StartsWith, sTerm));
+				if (this.sCityCode) {
+					aFilters.push(new Filter("CityCode", sap.ui.model.FilterOperator.EQ, this.sCityCode));
+				}
+			}
+			oEvent.getSource().getBinding("suggestionRows").filter(aFilters);
+		},
+
+		onSoldToName1Change: function(oEvent) {
+			if (oEvent.getParameters().value === ""){
+			    oEvent.getSource().setValueState(sap.ui.core.ValueState.Error);
+			}
 		},
 
 		_getPopover: function() {
@@ -127,6 +168,7 @@ sap.ui.define([
 				});
 				this._bindView("/" + sObjectPath);
 			}.bind(this));
+			this._toggleButtonsAndView(false);
 		},
 
 		/**
@@ -170,79 +212,70 @@ sap.ui.define([
 				return;
 			}
 
-			var oResourceBundle = this.getResourceBundle(),
-				oObject = oView.getBindingContext().getObject(),
-				sObjectId = oObject.ProductID,
-				sObjectName = oObject.ProductID;
-
 			// Everything went fine.
 			oViewModel.setProperty("/busy", false);
-			oViewModel.setProperty("/shareSendEmailSubject",
-				oResourceBundle.getText("shareSendEmailObjectSubject", [sObjectId]));
-			oViewModel.setProperty("/shareSendEmailMessage",
-				oResourceBundle.getText("shareSendEmailObjectMessage", [sObjectName, sObjectId, location.href]));
 		},
 
 		onEdit: function() {
-			//Clone the data
 			this._toggleButtonsAndView(true);
 		},
 
 		onCancel: function() {
 			//Restore the data
-			/*var oModel = this.getView().getModel();
-			var oData = oModel.getData();
-
-			oData.SupplierCollection[0] = this._oSupplier;
-			oModel.setData(oData);*/
+			var oModel = this.getView().getModel();
+			oModel.resetChanges();
+			
 			this._toggleButtonsAndView(false);
 		},
 
 		onSave: function() {
-            var sServiceUrl = "/PartnerSet('0001')";
-            var oModel = this.getModel();
-            var oParameters = {
-                "email" : "a",
-                "lastname" : "b",
-                "firstname" : "c"
-           };
-            oModel.create(sServiceUrl, oParameters);		    
-            
+			var oView = this.getView();
+			var oData = oView.getBindingContext().getObject();
+			var sPath = oView.getBindingContext().sPath;
+			var oModel = this.getModel();
+			var data = {
+				path: sPath,
+				data: oData
+			};
+
+			oModel.update(data.path, data.data);
+
 			this._toggleButtonsAndView(false);
 		},
 
 		_toggleButtonsAndView: function(bEdit) {
 			var oView = this.getView();
-
 			// Show the appropriate action buttons
 			oView.byId("__edit").setVisible(!bEdit);
 			oView.byId("__save").setVisible(bEdit);
 			oView.byId("__cancel").setVisible(bEdit);
-
 			// Set the right form type
 			this._showFormFragment(bEdit ? "Change" : "Display");
 		},
-	    
-	    _formFragments: {},
-	
+
+		_formFragments: {},
+
 		_getFormFragment: function(sFragmentName) {
 			var oFormFragment = this._formFragments[sFragmentName];
-
-			if (oFormFragment) {
-				return oFormFragment;
+			if (!oFormFragment) {
+				oFormFragment = this._formFragments[sFragmentName] = sap.ui.xmlfragment(this.getView().getId(), "bp.view.AccountForm" +
+					sFragmentName, this);
 			}
-
-			oFormFragment = sap.ui.xmlfragment(this.getView().getId(), "bp.view.AccountForm" + sFragmentName);
-
-			return this._formFragments[sFragmentName] = oFormFragment;
+			return oFormFragment;
 		},
 
 		_showFormFragment: function(sFragmentName) {
-			var oPage = this.getView().byId("page");
+				var oPage = this.getView().byId("page");
+				oPage.removeAllContent();
+				oPage.insertContent(this._getFormFragment(sFragmentName));
+			}
+			/*,
 
-			oPage.removeAllContent();
-			oPage.insertContent(this._getFormFragment(sFragmentName));
-		}
+					onCustomer: function(){
+					    var fragmentId = this.getView().createId("").replace(new RegExp("--$"),"");
+			            var oText = sap.ui.core.Fragment.byId(fragmentId, "__ShipTo_Title");
+					    oText.bindItems("/PartnerTitleSet");
+					}*/
 
 	});
 

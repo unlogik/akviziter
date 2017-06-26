@@ -57,7 +57,7 @@
 							<ColumnListItem type="Navigation" press="onBPDetails">
 								<cells>
 									<Text text="{Setid}" id="__text28"/>
-									<ObjectIdentifier title="{SoldTo/Name1} {SoldTo/Name2}" text="{ShipTo/Name1} {SipTo/Name2}" class="sapMTableContentMargin"/>
+									<ObjectIdentifier title="{SoldTo/Name1} {SoldTo/Name2}" text="{ShipTo/Name1} {ShipTo/Name2}" class="sapMTableContentMargin"/>
 									<Text text="{SoldTo/Stras} {SoldTo/Hsnm1},{SoldTo/Pstlz} {SoldTo/Ort01}\n{ShipTo/Stras} {ShipTo/Hsnm1}, {ShipTo/Pstlz} {ShipTo/Ort01}" id="__text29"/>
 									<Text text="{SoldTo/Telnr},{SoldTo/Mobnr}\n{ShipTo/Telnr},{ShipTo/Mobnr}" id="__text30"/>
 									<sap.ui.layout:VerticalLayout width="100%" xmlns:sap.ui.layout="sap.ui.layout" id="__layout0">

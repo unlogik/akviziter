@@ -51,16 +51,28 @@ sap.ui.define([
 				oRouter.navTo("overview", {}, true);
 			}
 		},
-		onBPDetails: function(oEvent){
-		   	// The source is the list item that got pressed
+		onBPDetails: function(oEvent) {
+			// The source is the list item that got pressed
 			var oItem = oEvent.getSource();
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-		    oRouter.navTo("object", {
+			oRouter.navTo("object", {
 				objectId: oItem.getBindingContext().getProperty("Setid")
 			});
 		},
 		onAdd: function() {
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+			var oModel = this.getView().getModel();
+			oModel.create("/PartnerSet", { Setid: '0', Akvid : 'AQ1', Pubid:'PB1' }, {
+                async : false,
+                success : function(oData, response) {
+			        oRouter.navTo("object", { objectId: oData.Setid } );
+                    //sSuccessMessage += oView.getModel("i18n").getProperty("NewEntry") + ": " + oData.Kjahr + " " + oData.Hjahr + "\r\n";
+                },
+                error : function(oError) {
+                    var oResponseBody = JSON.parse(oError.response.body);
+                   // console.log(oResponseBody);
+                }
+            });
 			oRouter.navTo("AccountDetails");
 		}
 

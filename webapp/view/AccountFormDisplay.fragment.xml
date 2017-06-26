@@ -5,14 +5,11 @@
 		singleContainerFullSize="false" id="__form0">
 		<f:content>
 		    <Toolbar>
-				<Button icon="sap-icon://customer"/>
+				<Button icon="sap-icon://customer" enabled="true" press="onCustomer"/>
 				<Title text="Sold-to: {SoldTo/Partner}" level="H5" titleStyle="H5"/>
 			</Toolbar>
 			<Label text="{/#Partner/SoldTo/Title/@sap:label}"/>
-			<Select>
-				<core:ListItem key="01" text="Mr." additionalText="01"/>
-				<core:ListItem key="02" text="Mrs." additionalText="02"/>
-			</Select>
+			<Text text="{ path:'/PartnerTitleSet(01)/TitleMedi' }"/>
 			<Label text="{/#Partner/SoldTo/Name1/@sap:label}"/>
 			<Text text="{SoldTo/Name1}"/>
 			<Text text="{SoldTo/Name2}"/>
@@ -40,17 +37,14 @@
 			<Text text="{SoldTo/Stcd2}"/>
 		    
 		    <Toolbar>
-				<Button icon="sap-icon://shipping-status"/>
+				<Button icon="sap-icon://shipping-status" enabled="false"/>
 				<Title text="Ship-to: {ShipTo/Partner}" level="H5" titleStyle="H5"/>
 			</Toolbar>			
 			<Label text="{/#Partner/ShipTo/Title/@sap:label}"/>
-			<Select>
-				<core:ListItem key="01" text="Mr." additionalText="01"/>
-				<core:ListItem key="02" text="Mrs." additionalText="02"/>
-			</Select>
+			<Text text="{/PartnerTitleSet('01')/TitleMedi}"/>
 			<Label text="{/#Partner/ShipTo/Name1/@sap:label}"/>
-			<Text text="{Shipto/Name1}"/>
-			<Text text="{Shipto/Name2}"/>
+			<Text text="{ShipTo/Name1}"/>
+			<Text text="{ShipTo/Name2}"/>
 			<Label text="{/#Partner/ShipTo/Stras/@sap:label}"/>
 			<Text text="{ShipTo/Stras}"/>
 			<Text text="{ShipTo/Hsnm1}"/>

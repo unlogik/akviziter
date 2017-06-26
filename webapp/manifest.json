@@ -16,7 +16,7 @@
 		},
 		"dataSources": {
 			"Akviziter": {
-				"uri": "/Styria/sap/opu/odata/SAP/ZAKV_SRV;mo/",
+				"uri": "/Styria/sap/opu/odata/SAP/ZAKV_SRV;o=CDV/",
 				"type": "OData",
 				"settings": {
 					"odataVersion": "2.0",
@@ -86,7 +86,7 @@
 				"type": "sap.ui.model.odata.v2.ODataModel",
 				"settings": {
 					"defaultOperationMode": "Server",
-					"defaultBindingMode": "OneTime",
+					"defaultBindingMode": "TwoWay",
 					"defaultCountMode": "Request"
 				},
 				"dataSource": "Akviziter",
