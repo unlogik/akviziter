@@ -9,11 +9,12 @@ sap.ui.define([
 	"sap/m/MessagePopoverItem",
 	"sap/m/Dialog",
     "sap/m/Button",
-	"sap/m/Text",    
+	"sap/m/Text",
+    "sap/ui/core/Fragment",
 	"bp/lib/JsXlsx",
 	"bp/lib/jszip.min",
 	"bp/lib/xlsx.min"
-], function(BaseController, History, Export, ExportTypeCSV, MessageBox, MessageToast, MessagePopover, MessagePopoverItem, Dialog, Button, Text, XLSX_, JSZip) {
+], function(BaseController, History, Export, ExportTypeCSV, MessageBox, MessageToast, MessagePopover, MessagePopoverItem, Dialog, Button, Text, Fragment, XLSX_, JSZip) {
 	"use strict";
 	
 	var oMessageTemplate = new MessagePopoverItem({
@@ -310,6 +311,23 @@ sap.ui.define([
 		        }
             },
 	       
+	        onInfo: function(oEvent){
+    			if (! this._oPopover) {
+    				this._oPopover = sap.ui.xmlfragment("bp.view.InfoAccounts", this);
+    				this.getView().addDependent(this._oPopover);
+    			}
+    			this._oPopover.openBy(oEvent.getSource());
+    		},
+    		
+    		onDownloadTemplate: function (oEvent) {
+    			sap.m.URLHelper.redirect("src/PartnerTemplate.xlsx", true);
+    		},
+    		
+    		onInfoClose: function (oEvent) {
+    			this._oPopover.close();
+    		},	            
+	      
+	        
             onMessages: function(oEvent) {
                 if (oMessagePopover.isOpen()){
                     oMessagePopover.close();

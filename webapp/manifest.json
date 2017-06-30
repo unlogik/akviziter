@@ -54,6 +54,7 @@
 	"sap.ui5": {
 		"_version": "1.1.0",
 		"rootView": {
+		    "id": "app",
 			"viewName": "bp.view.Main",
 			"type": "XML"
 		},
