@@ -4,22 +4,23 @@
 			<Page title="{i18n>titleAccounts}" showNavButton="true" navButtonPress="onNavBack">
 				<headerContent>
 					<Button id="__button3" tooltip="New" icon="sap-icon://add" press="onAdd"/>
-					<Button icon="sap-icon://upload" tooltip="Upload" press="onUpload"/>
+					<u:FileUploader id="fileUploader" name="myFileUpload" uploadUrl="upload/" buttonOnly="true" icon="sap-icon://upload" iconOnly="true" change="onUpload"/>
+					<Button icon="sap-icon://delete" press="onDelete"/>
+					<Button icon="sap-icon://message-information" press="onInfo"/>
 				</headerContent>
-				<subHeader>
-					<Toolbar>
-						<u:FileUploader id="fileUploader" name="myFileUpload" uploadUrl="upload/" width="400px" tooltip="Upload your file to the local server" uploadComplete="handleUploadComplete"/>
-						<Button text="Upload File" press="handleUploadPress" icon="sap-icon://upload"/>
-					</Toolbar>
-				</subHeader>
+				<!--<subHeader>-->
+				<!--	<Toolbar>-->
+				<!--		<Button text="Upload File" press="handleUploadPress" icon="sap-icon://upload"/>-->
+				<!--	</Toolbar>-->
+				<!--</subHeader>-->
 				<content>
-					<Table noDataText="No data" id="__table0" items="{/PartnerSet}">
+					<Table noDataText="No data" id="__tablePartners" items="{/PartnerSet}" mode="MultiSelect">
 						<headerToolbar>
 							<OverflowToolbar>
-								<Title text="Products" level="H2"/>
+								<!--<Title text="Products" level="H2"/>-->
 								<ToolbarSpacer/>
 								<!--  Add the Personalization button -->
-								<Button icon="sap-icon://action-settings" press="onPersoButtonPressed">
+								<Button icon="sap-icon://action-settings" press="onPersonalize">
 									<layoutData>
 										<OverflowToolbarLayoutData priority="NeverOverflow"/>
 									</layoutData>
@@ -69,6 +70,12 @@
 						</items>
 					</Table>
 				</content>
+        		<footer>
+        			<Toolbar>
+        				<Button icon="sap-icon://message-popup" text="{message>count}" type="Emphasized" press="onMessages"/>
+        				<ToolbarSpacer/>
+        			</Toolbar>
+        		</footer>				
 			</Page>
 		</pages>
 	</App>

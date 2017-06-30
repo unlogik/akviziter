@@ -3,9 +3,26 @@ sap.ui.define([
 	"sap/ui/model/json/JSONModel",
 	"sap/ui/core/routing/History",
 	"sap/m/MessageToast",
-	"sap/ui/model/Filter"
-], function(BaseController, JSONModel, History, MessageToast, Filter) {
+	"sap/ui/model/Filter",
+	"sap/m/MessagePopover",
+	"sap/m/MessagePopoverItem"
+], function(BaseController, JSONModel, History, MessageToast, Filter, MessagePopover, MessagePopoverItem) {
 	"use strict";
+
+	var oMessageTemplate = new MessagePopoverItem({
+		type: '{message>type}',
+		title: '{message>message}',
+		description: '{message>message}',
+		subtitle: '{subtitle}',
+		counter: '{counter}'
+	});
+
+	var oMessagePopover = new MessagePopover({
+		items: {
+			path: "message>/",
+			template: oMessageTemplate
+		}
+	});
 
 	return BaseController.extend("bp.controller.AccountDetails", {
 
@@ -136,8 +153,49 @@ sap.ui.define([
 		},
 
 		onSoldToName1Change: function(oEvent) {
-			if (oEvent.getParameters().value === ""){
-			    oEvent.getSource().setValueState(sap.ui.core.ValueState.Error);
+			if (oEvent.getParameters().value === "") {
+				oEvent.getSource().setValueState(sap.ui.core.ValueState.Error);
+			} else {
+				oEvent.getSource().setValueState(sap.ui.core.ValueState.None);
+			}
+		},
+
+		onSoldToCityChange: function(oEvent) {
+			if (oEvent.getParameters().value === "") {
+				oEvent.getSource().setValueState(sap.ui.core.ValueState.Error);
+			} else {
+				oEvent.getSource().setValueState(sap.ui.core.ValueState.None);
+			}
+		},
+
+		onSoldToPostcodeChange: function(oEvent) {
+			if (oEvent.getParameters().value === "") {
+				oEvent.getSource().setValueState(sap.ui.core.ValueState.Error);
+			} else {
+				oEvent.getSource().setValueState(sap.ui.core.ValueState.None);
+			}
+		},
+
+		onSoldToStreetChange: function(oEvent) {
+			if (oEvent.getParameters().value === "") {
+				oEvent.getSource().setValueState(sap.ui.core.ValueState.Error);
+			} else {
+				oEvent.getSource().setValueState(sap.ui.core.ValueState.None);
+			}
+		},
+		onSoldToOIBChange: function(oEvent) {
+			if (oEvent.getParameters().value === "") {
+				oEvent.getSource().setValueState(sap.ui.core.ValueState.Error);
+			} else {
+				oEvent.getSource().setValueState(sap.ui.core.ValueState.None);
+			}
+		},
+
+		onMessages: function(oEvent) {
+			if (oMessagePopover.isOpen()) {
+				oMessagePopover.close();
+			} else {
+				oMessagePopover.openBy(oEvent.getSource());
 			}
 		},
 
@@ -168,7 +226,8 @@ sap.ui.define([
 				});
 				this._bindView("/" + sObjectPath);
 			}.bind(this));
-			this._toggleButtonsAndView(false);
+			var bEditable = sObjectId === 'NEW' ? true : false;
+			this._toggleButtonsAndView(bEditable);
 		},
 
 		/**
@@ -221,11 +280,16 @@ sap.ui.define([
 		},
 
 		onCancel: function() {
+			var oView = this.getView();
+			var setid = oView.getBindingContext().getObject().Setid;
 			//Restore the data
-			var oModel = this.getView().getModel();
-			oModel.resetChanges();
-			
-			this._toggleButtonsAndView(false);
+			oView.getModel().resetChanges();
+			//do the navigation
+			if (setid === 'NEW') {
+				this.onNavBack();
+			} else {
+				this._toggleButtonsAndView(false);
+			}
 		},
 
 		onSave: function() {
@@ -233,13 +297,11 @@ sap.ui.define([
 			var oData = oView.getBindingContext().getObject();
 			var sPath = oView.getBindingContext().sPath;
 			var oModel = this.getModel();
-			var data = {
-				path: sPath,
-				data: oData
-			};
-
-			oModel.update(data.path, data.data);
-
+			if (oData.Setid === 'NEW') {
+				oModel.create("/PartnerSet", oData);
+			} else{
+				oModel.update(sPath, oData);
+			}
 			this._toggleButtonsAndView(false);
 		},
 

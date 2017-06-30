@@ -4,11 +4,17 @@
 		<pages>
 			<Page title="{i18n>titleAccountDetails}: {Setid}" showNavButton="true" navButtonPress="onNavBack" id="page">
 				<headerContent>
-					<Button icon="sap-icon://customer" id="__customer" press="onCustomer"/>
+					<Button icon="sap-icon://customer" id="__customer" press="onCustomer" visible="false"/>
 					<Button icon="sap-icon://edit" id="__edit" press="onEdit"/>
 					<Button icon="sap-icon://save" id="__save" press="onSave" visible="false"/>
 					<Button icon="sap-icon://decline" id="__cancel" press="onCancel" visible="false"/>
 				</headerContent>
+        		<footer>
+        			<Toolbar>
+        				<Button icon="sap-icon://message-popup" text="{message>count}" press="onMessages"	visible="{= ${message>message} !== '' ? false : true }"/>
+        				<ToolbarSpacer/>
+        			</Toolbar>
+        		</footer>				
 			</Page>
 		</pages>
 	</App>

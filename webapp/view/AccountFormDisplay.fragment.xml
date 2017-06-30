@@ -5,7 +5,7 @@
 		singleContainerFullSize="false" id="__form0">
 		<f:content>
 		    <Toolbar>
-				<Button icon="sap-icon://customer" enabled="true" press="onCustomer"/>
+				<Button icon="sap-icon://customer" enabled="false" press="onCustomer"/>
 				<Title text="Sold-to: {SoldTo/Partner}" level="H5" titleStyle="H5"/>
 			</Toolbar>
 			<Label text="{/#Partner/SoldTo/Title/@sap:label}"/>
@@ -13,14 +13,14 @@
 			<Label text="{/#Partner/SoldTo/Name1/@sap:label}"/>
 			<Text text="{SoldTo/Name1}"/>
 			<Text text="{SoldTo/Name2}"/>
-			<Label text="{/#Partner/SoldTo/Stras/@sap:label}"/>
-			<Text text="{SoldTo/Stras}"/>
-			<Text text="{SoldTo/Hsnm1}"/>
-			<Text text="{SoldTo/Hsnm2}"/>
 			<Label text="{/#Partner/SoldTo/Ort01/@sap:label}"/>
 			<Text text="{SoldTo/Ort01}"/>
 			<Text text="{SoldTo/Pstlz}"/>
 			<Text text="{SoldTo/Land1}"/>
+			<Label text="{/#Partner/SoldTo/Stras/@sap:label}"/>
+			<Text text="{SoldTo/Stras}"/>
+			<Text text="{SoldTo/Hsnm1}"/>
+			<Text text="{SoldTo/Hsnm2}"/>
 			<Label text="{/#Partner/SoldTo/Telnr/@sap:label}"/>
 			<Text text="{SoldTo/Telnr}"/>
 			<Label text="{/#Partner/SoldTo/Mobnr/@sap:label}"/>
@@ -45,14 +45,14 @@
 			<Label text="{/#Partner/ShipTo/Name1/@sap:label}"/>
 			<Text text="{ShipTo/Name1}"/>
 			<Text text="{ShipTo/Name2}"/>
-			<Label text="{/#Partner/ShipTo/Stras/@sap:label}"/>
-			<Text text="{ShipTo/Stras}"/>
-			<Text text="{ShipTo/Hsnm1}"/>
-			<Text text="{ShipTo/Hsnm2}"/>
 			<Label text="{/#Partner/ShipTo/Ort01/@sap:label}"/>
 			<Text text="{ShipTo/Ort01}"/>
 			<Text text="{ShipTo/Pstlz}"/>
 			<Text text="{ShipTo/Land1}"/>
+			<Label text="{/#Partner/ShipTo/Stras/@sap:label}"/>
+			<Text text="{ShipTo/Stras}"/>
+			<Text text="{ShipTo/Hsnm1}"/>
+			<Text text="{ShipTo/Hsnm2}"/>
 			<Label text="{/#Partner/ShipTo/Telnr/@sap:label}"/>
 			<Text text="{ShipTo/Telnr}"/>
 			<Label text="{/#Partner/ShipTo/Mobnr/@sap:label}"/>

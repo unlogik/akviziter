@@ -21,9 +21,7 @@
 				"settings": {
 					"odataVersion": "2.0",
 					"localUri": "localService/metadata.xml",
-					"annotations": [
-						"annotation0"
-					]
+					"annotations": ["annotation0"]
 				}
 			},
 			"annotation0": {
@@ -51,11 +49,7 @@
 			"tablet": true,
 			"phone": true
 		},
-		"supportedThemes": [
-			"sap_hcb",
-			"sap_belize",
-			"sap_bluecrystal"
-		]
+		"supportedThemes": ["sap_hcb", "sap_belize", "sap_bluecrystal"]
 	},
 	"sap.ui5": {
 		"_version": "1.1.0",
@@ -94,11 +88,9 @@
 			}
 		},
 		"resources": {
-			"css": [
-				{
-					"uri": "css/style.css"
-				}
-			]
+			"css": [{
+				"uri": "css/style.css"
+			}]
 		},
 		"routing": {
 			"config": {
@@ -109,33 +101,27 @@
 				"controlAggregation": "pages",
 				"transition": "fade"
 			},
-			"routes": [
-				{
-					"pattern": "accounts",
-					"name": "Accounts",
-					"target": "accounts"
-				},
-				{
-					"pattern": "orders",
-					"name": "Orders",
-					"target": "orders"
-				},
-				{
-					"pattern": "PartnerSet/{objectId}",
-					"name": "object",
-					"target": "object"
-				},				
-				{
-					"pattern": "accountDetails",
-					"name": "AccountDetails",
-					"target": "accountDetails"
-				},
-				{
-					"pattern": "",
-					"name": "Splash",
-					"target": "splash"
-				}
-			],
+			"routes": [{
+				"pattern": "accounts",
+				"name": "Accounts",
+				"target": "accounts"
+			}, {
+				"pattern": "orders",
+				"name": "Orders",
+				"target": "orders"
+			}, {
+				"pattern": "PartnerSet/{objectId}",
+				"name": "object",
+				"target": "object"
+			}, {
+				"pattern": "accountDetails",
+				"name": "AccountDetails",
+				"target": "accountDetails"
+			}, {
+				"pattern": "",
+				"name": "Splash",
+				"target": "splash"
+			}],
 			"targets": {
 				"accounts": {
 					"viewName": "Accounts",
@@ -151,7 +137,7 @@
 					"viewName": "AccountDetails",
 					"viewId": "object",
 					"viewLevel": 2
-				},				
+				},
 				"splash": {
 					"viewName": "Dummy"
 				}
