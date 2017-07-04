@@ -55,9 +55,6 @@
     "loadCustomRequests": false
   },
   "dataBinding": {
-    "/webapp/view/Main.view.xml": {
-      "entitySet": "Accounts"
-    },
     "/webapp/view/Accounts.view.xml": {
       "entitySet": ""
     }

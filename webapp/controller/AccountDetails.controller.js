@@ -5,8 +5,9 @@ sap.ui.define([
 	"sap/m/MessageToast",
 	"sap/ui/model/Filter",
 	"sap/m/MessagePopover",
-	"sap/m/MessagePopoverItem"
-], function(BaseController, JSONModel, History, MessageToast, Filter, MessagePopover, MessagePopoverItem) {
+	"sap/m/MessagePopoverItem",
+	"bp/model/formatter"
+], function(BaseController, JSONModel, History, MessageToast, Filter, MessagePopover, MessagePopoverItem, formatter) {
 	"use strict";
 
 	var oMessageTemplate = new MessagePopoverItem({
@@ -25,7 +26,7 @@ sap.ui.define([
 	});
 
 	return BaseController.extend("bp.controller.AccountDetails", {
-
+        formatter : formatter,
 		/**
 		 * Called when a controller is instantiated and its View controls (if available) are already created.
 		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
@@ -56,8 +57,23 @@ sap.ui.define([
 			// Set the initial form to be the display one
 			this._showFormFragment("Display");
 			var oModel = this.getOwnerComponent().getModel();
+			oModel.read("/PartnerTitleSet");
 			var oSelect = this.getView().byId("__ShipTo_Title");
 			/*.setModel(oModel);*/
+
+	//	    var oModel = this.getComponentModel();
+	        //var oProcessor = new sap.ui.core.message.MessageProcessor();
+		    sap.ui.getCore().getMessageManager().registerMessageProcessor( oModel );
+		    //sap.ui.getCore().getMessageManager().registerMessageProcessor( oData );
+           // oProcessor.attachMessageChange( this._messageChange, this );
+		    var oMessage = sap.ui.getCore().getMessageManager().getMessageModel();
+		    this.getView().setModel(oMessage, "message");
+		    oMessagePopover.setModel(oMessage, "message");			
+		    sap.ui.getCore().getMessageManager().registerObject(this.getView(), true);
+		    
+            var oMessageProcessor = new sap.ui.core.message.ControlMessageProcessor();
+            var oMessageManager  = sap.ui.getCore().getMessageManager();
+            oMessageManager.registerMessageProcessor(oMessageProcessor);		    
 		},
 
 		/**
@@ -302,8 +318,18 @@ sap.ui.define([
 			} else{
 				oModel.update(sPath, oData);
 			}
-			this._toggleButtonsAndView(false);
+			//this._toggleButtonsAndView(false);
+// 			var oInput = this.byId("__SoldTo_Stras");
+// 			var path = oInput.getBindingPath();
+// 			var el = oInput.getBindingContext().getPath();
 		},
+		
+        dateChange: function(oEvent) {
+            var TZOffsetMs = new Date(0).getTimezoneOffset()*120*1000;
+            var oDatePicker = oEvent.getSource();
+            var oDate = oDatePicker.getDateValue();
+            oDatePicker.setDateValue( new Date( oDate.getTime() - TZOffsetMs ));
+        },
 
 		_toggleButtonsAndView: function(bEdit) {
 			var oView = this.getView();
@@ -330,7 +356,11 @@ sap.ui.define([
 				var oPage = this.getView().byId("page");
 				oPage.removeAllContent();
 				oPage.insertContent(this._getFormFragment(sFragmentName));
-			}
+		},
+		
+		_messageChange: function(oData, fnFunction, oListener) {
+		   var lDAta = oData; 
+		}
 			/*,
 
 					onCustomer: function(){

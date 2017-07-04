@@ -7,6 +7,7 @@
 					<u:FileUploader id="fileUploader" name="myFileUpload" uploadUrl="upload/" buttonOnly="true" icon="sap-icon://upload" iconOnly="true" change="onUpload"/>
 					<Button icon="sap-icon://delete" press="onDelete"/>
 					<Button icon="sap-icon://message-information" press="onInfo"/>
+					<Button icon="sap-icon://settings" press="onOpenSettings"/>
 				</headerContent>
 				<!--<subHeader>-->
 				<!--	<Toolbar>-->
@@ -28,7 +29,7 @@
 						<!--	</OverflowToolbar>-->
 						<!--/headerToolbar>-->
 						<columns>
-							<Column id="__column0">
+							<Column id="__column0" width="50px">
 								<header>
 									<Label text="{/#Partner/Setid/@sap:label}" id="__label0"/>
 								</header>
@@ -53,6 +54,11 @@
     								<Label text="Birth" id="__label4"/>
     							</header>
     						</Column>
+    						<Column width="30px">
+    							<header>
+    								<Label text="{i18n>columnStatus}"/>
+    							</header>
+    						</Column>    						
 						</columns>
 						<items>
 							<ColumnListItem type="Navigation" press="onBPDetails">
@@ -65,6 +71,8 @@
 									<Text text="{ path: 'SoldTo/Birth',                         type: 'sap.ui.model.type.Date',                                                     formatOptions: {                                                         pattern: 'dd.MM.YYYY'                                                     }                                                 }" id="__text31"/>
 									<Text text="{ path: 'ShipTo/Birth',                         type: 'sap.ui.model.type.Date',                                                     formatOptions: {                                                         pattern: 'dd.MM.YYYY'                                                     }                                                 }" id="__text33"/>
 									</sap.ui.layout:VerticalLayout>
+									<!--<core:Icon src="{= ${Status} === '2' ? 'sap-icon://action' : 'sap-icon://account' }"/>-->
+									<core:Icon src="{ path: 'Status', formatter: '.formatter.messageIcon' }" color="{ path: 'Status', formatter: '.formatter.messageColor' }"/>
 								</cells>
 							</ColumnListItem>
 						</items>
@@ -74,6 +82,7 @@
         			<Toolbar>
         				<Button icon="sap-icon://message-popup" text="{message>count}" type="Emphasized" press="onMessages"/>
         				<ToolbarSpacer/>
+        				<Button icon="sap-icon://action" type="Accept" press="onSubmit"/>
         			</Toolbar>
         		</footer>				
 			</Page>

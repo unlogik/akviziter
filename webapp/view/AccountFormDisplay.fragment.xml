@@ -4,12 +4,14 @@
 		adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1"
 		singleContainerFullSize="false" id="__form0">
 		<f:content>
-		    <Toolbar>
-				<Button icon="sap-icon://customer" enabled="false" press="onCustomer"/>
-				<Title text="Sold-to: {SoldTo/Partner}" level="H5" titleStyle="H5"/>
+			<Toolbar>
+				<core:Icon src="sap-icon://customer"/>
+				<Title text="Sold-to: {SoldTo/Partnerid}" level="H5" titleStyle="H5"/>
+				<ToolbarSpacer/>
+    			<core:Icon src="{ path: 'SoldTo/Status', formatter: '.formatter.statusIcon' }" color="{ path: 'SoldTo/Status', formatter: '.formatter.statusColor' }"/>
 			</Toolbar>
 			<Label text="{/#Partner/SoldTo/Title/@sap:label}"/>
-			<Text text="{ path:'/PartnerTitleSet(01)/TitleMedi' }"/>
+			<Text text="{ path:'SoldTo/Title', formatter: '.formatter.titleText' }"/>
 			<Label text="{/#Partner/SoldTo/Name1/@sap:label}"/>
 			<Text text="{SoldTo/Name1}"/>
 			<Text text="{SoldTo/Name2}"/>
@@ -35,13 +37,14 @@
 			<Text text="{SoldTo/Intad}"/>
 			<Label text="{/#Partner/SoldTo/Stcd2/@sap:label}"/>
 			<Text text="{SoldTo/Stcd2}"/>
-		    
-		    <Toolbar>
-				<Button icon="sap-icon://shipping-status" enabled="false"/>
-				<Title text="Ship-to: {ShipTo/Partner}" level="H5" titleStyle="H5"/>
-			</Toolbar>			
+			<Toolbar>
+				<core:Icon src="sap-icon://shipping-status"/>
+				<Title text="Ship-to: {ShipTo/Partnerid}" level="H5" titleStyle="H5"/>
+				<ToolbarSpacer/>
+			    <core:Icon src="{ path: 'ShipTo/Status', formatter: '.formatter.statusIcon' }" color="{ path: 'ShipTo/Status', formatter: '.formatter.statusColor' }"/>
+			</Toolbar>
 			<Label text="{/#Partner/ShipTo/Title/@sap:label}"/>
-			<Text text="{/PartnerTitleSet('01')/TitleMedi}"/>
+			<Text text="{ path:'ShipTo/Title', formatter: '.formatter.titleText' }"/>
 			<Label text="{/#Partner/ShipTo/Name1/@sap:label}"/>
 			<Text text="{ShipTo/Name1}"/>
 			<Text text="{ShipTo/Name2}"/>
@@ -69,5 +72,5 @@
 			<Text text="{ShipTo/Stcd2}"/>
 		</f:content>
 	</f:SimpleForm>
-<!--</VBox>-->
+	<!--</VBox>-->
 </core:FragmentDefinition>

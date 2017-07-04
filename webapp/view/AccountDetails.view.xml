@@ -11,7 +11,7 @@
 				</headerContent>
         		<footer>
         			<Toolbar>
-        				<Button icon="sap-icon://message-popup" text="{message>count}" press="onMessages"	visible="{= ${message>message} !== '' ? false : true }"/>
+        				<Button icon="sap-icon://message-popup" text="{message>count}" press="onMessages"	visible="{= ${message>message} !== '' ? true : false }"/>
         				<ToolbarSpacer/>
         			</Toolbar>
         		</footer>				

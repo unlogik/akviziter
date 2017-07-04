@@ -58,6 +58,7 @@
 			"viewName": "bp.view.Main",
 			"type": "XML"
 		},
+		"handleValidation": true,
 		"dependencies": {
 			"minUI5Version": "1.30.0",
 			"libs": {

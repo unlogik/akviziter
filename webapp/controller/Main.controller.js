@@ -106,12 +106,12 @@ sap.ui.define([
 			//var s = JSON.stringify(this._oViewSettings);
 			//this._oStorage.put(this._sStorageKey, s);
 
-			// handle settings change
-			this._component.getEventBus().publish("app", "applyAppConfiguration", {
-				themeActive: sTheme,
-				compactOn: bCompact
-			});
+            //handle themeChange
+			sap.ui.getCore().applyTheme(sTheme);
+			//handle compact mode
+			jQuery("body").toggleClass("sapUiSizeCompact", bCompact).toggleClass("sapUiSizeCozy", !bCompact);
 
+				
 			if (bRTLChanged) {
 				this._handleRTL(bRTL);
 			}

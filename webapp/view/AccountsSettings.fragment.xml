@@ -1,0 +1,25 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<ViewSettingsDialog
+		id="viewSettingsDialog"
+		confirm="onConfirmSettings">
+		<sortItems>
+			<ViewSettingsItem text="{/#Partner/SoldTo/Title/@sap:label}" key="c1"/>
+			<ViewSettingsItem text="{/#Partner/SoldTo/Name1/@sap:label}" key="c2"/>
+			<ViewSettingsItem text="{/#Partner/SoldTo/Name2/@sap:label}" key="c3"/>
+		</sortItems>
+		<filterItems>
+			<ViewSettingsFilterItem
+				text="{i18n>columnStatus}"
+				key="status"
+				id="statusFilter">
+				<items>
+					<ViewSettingsItem text="{i18n>msgError}" key="{E}" />
+					<ViewSettingsItem text="{i18n>msgWarning}" key="{W}" />
+					<ViewSettingsItem text="{i18n>msgSuccess}" key="{S}" />
+				</items>
+			</ViewSettingsFilterItem>
+		</filterItems>
+	</ViewSettingsDialog>
+</core:FragmentDefinition>
