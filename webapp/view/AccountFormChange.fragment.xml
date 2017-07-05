@@ -143,7 +143,7 @@
 			<Label text="{/#Partner/ShipTo/Name1/@sap:label}"/>
 			<Input id="__Shipto_Name1" value="{ShipTo/Name1}"/>
 			<Input id="__Shipto_Name2" value="{ShipTo/Name2}"/>
-			<Label text="{/#Partner/SoldTo/Ort01/@sap:label}" required="true"/>
+			<Label text="{/#Partner/SoldTo/Ort01/@sap:label}"/>
 			<Input id="__ShipTo_Ort01" value="{ShipTo/Ort01}"
 			    placeholder="City..."
 				showSuggestion="true"

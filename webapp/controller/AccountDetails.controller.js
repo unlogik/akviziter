@@ -71,9 +71,9 @@ sap.ui.define([
 		    oMessagePopover.setModel(oMessage, "message");			
 		    sap.ui.getCore().getMessageManager().registerObject(this.getView(), true);
 		    
-            var oMessageProcessor = new sap.ui.core.message.ControlMessageProcessor();
-            var oMessageManager  = sap.ui.getCore().getMessageManager();
-            oMessageManager.registerMessageProcessor(oMessageProcessor);		    
+            // var oMessageProcessor = new sap.ui.core.message.ControlMessageProcessor();
+            // var oMessageManager  = sap.ui.getCore().getMessageManager();
+            // oMessageManager.registerMessageProcessor(oMessageProcessor);		    
 		},
 
 		/**
