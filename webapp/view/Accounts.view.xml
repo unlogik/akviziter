@@ -6,6 +6,7 @@
 					<Button id="__button3" tooltip="New" icon="sap-icon://add" press="onAdd"/>
 					<u:FileUploader id="fileUploader" name="myFileUpload" uploadUrl="upload/" buttonOnly="true" icon="sap-icon://upload" iconOnly="true" change="onUpload"/>
 					<Button icon="sap-icon://delete" press="onDelete"/>
+					<Button icon="sap-icon://add-document" press="onAddOrder"/>
 					<Button icon="sap-icon://message-information" press="onInfo"/>
 					<Button icon="sap-icon://settings" press="onOpenSettings"/>
 				</headerContent>
