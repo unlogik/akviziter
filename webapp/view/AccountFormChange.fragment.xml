@@ -1,25 +1,50 @@
-<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core"
+	xmlns:s="sap.ui.comp.smarttable" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
 	<VBox fitContainer="true" width="100%">
 		<layoutData>
 			<FlexItemData growFactor="7"/>
 		</layoutData>
 		<items>
 			<!--<l:VerticalLayout>-->
-			<f:SimpleForm editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="3" labelSpanS="12"
-				adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1"
-				singleContainerFullSize="false" id="__form3">
-				<f:content>
-					<Label text="Note"/>
-					<TextArea value="Lorem ipsum"/>
-				</f:content>
-			</f:SimpleForm>
+			<!--<f:Form editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="3" labelSpanS="12"-->
+			<!--	adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1"-->
+			<!--	singleContainerFullSize="false" id="__form3">-->
+			<f:Form editable="true">
+				<f:layout>
+					<f:ResponsiveGridLayout labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0"
+						emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1" singleContainerFullSize="false"/>
+				</f:layout>
+				<f:formContainers>
+					<f:FormContainer>
+						<f:formElements>
+							<f:FormElement label="Note">
+								<!--   <layoutData>-->
+								<!--                    <FlexItemData alignSelf="Center"/>-->
+								<!--                   </layoutData>-->
+								<f:fields>
+									<TextArea value="Lorem ipsum" layoutData="{growFactor:'1', alignSelf: sap.m.FlexAlignSelf.Center}"/>
+								</f:fields>
+							</f:FormElement>
+						</f:formElements>
+					</f:FormContainer>
+					<f:FormContainer>
+						<f:formElements>
+							<f:FormElement label="Agent">
+								<f:fields>
+									<Input id="__Agent" value="{Agent}"/>
+								</f:fields>
+							</f:FormElement>
+						</f:formElements>
+					</f:FormContainer>
+				</f:formContainers>
+			</f:Form>
 			<!--</l:VerticalLayout>    -->
 			<HBox fitContainer="true" alignItems="Stretch">
 				<layoutData>
 					<FlexItemData growFactor="3"/>
 				</layoutData>
 				<items>
-					<f:SimpleForm editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="3" labelSpanS="12"
+					<f:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="3" labelSpanS="12"
 						adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1"
 						singleContainerFullSize="false" id="__form4">
 						<f:content>
@@ -179,6 +204,14 @@
 					</f:SimpleForm>
 				</items>
 			</HBox>
+			<s:SmartTable id="LineItemsSmartTable" entitySet="OrderSet" tableType="ResponsiveTable" useVariantManagement="true" persistencyKey="Order" useTablePersonalisation="true"
+				header="Orders" showRowCount="true" enableAutoBinding="true" app:useSmartField="true" class="sapUiResponsiveContentPadding" editable="true"
+				editTogglable="true">
+				<!-- layout data used to make the table growing but the filter bar fixed -->
+				<s:layoutData>
+					<FlexItemData growFactor="1" baseSize="0%"/>
+				</s:layoutData>
+			</s:SmartTable>
 		</items>
 	</VBox>
 </core:FragmentDefinition>

@@ -20,12 +20,12 @@
     {
       "templateId": "com.sap.webide.annotationmodeller.CreateAnnotationTemplate",
       "templateVersion": "1.0.0",
-      "dateTimeStamp": "Tue, 13 Jun 2017 13:34:26 GMT"
+      "dateTimeStamp": "Fri, 07 Jul 2017 12:17:05 GMT"
     },
     {
       "templateId": "servicecatalog.connectivityComponent",
       "templateVersion": "0.0.0",
-      "dateTimeStamp": "Tue, 13 Jun 2017 12:09:47 GMT"
+      "dateTimeStamp": "Fri, 07 Jul 2017 12:12:33 GMT"
     }
   ],
   "translation": {
@@ -48,7 +48,7 @@
     "blockPushLevel": "Error"
   },
   "mockpreview": {
-    "mockUri": "/Styria/sap/opu/odata/SAP/ZAKV_SRV;mo",
+    "mockUri": "/Styria/sap/opu/odata/SAP/ZAKV_SRV",
     "metadataFilePath": "localService/metadata.xml",
     "mockRequestsFilePath": "",
     "loadJSONFiles": true,
