@@ -2,7 +2,7 @@
 	xmlns:s="sap.ui.comp.smarttable" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
 	<u:ObjectPageLayout id="ObjectPageLayout" enableLazyLoading="false">
 		<u:sections>
-			<u:ObjectPageSection title="Kupac" titleUppercase="false">
+			<u:ObjectPageSection title="Kupac" titleUppercase="false" showTitle="true">
 				<u:subSections>
 					<u:ObjectPageSubSection>
 						<u:blocks>
@@ -48,6 +48,27 @@
 										<Text text="{SoldTo/Intad}"/>
 										<Label text="{/#Partner/SoldTo/Stcd2/@sap:label}"/>
 										<Text text="{SoldTo/Stcd2}"/>
+									</f:content>
+								</f:SimpleForm>
+							</VBox>
+						</u:blocks>
+					</u:ObjectPageSubSection>
+				</u:subSections>
+			</u:ObjectPageSection>
+			<u:ObjectPageSection title="Primatelj" titleUppercase="false">
+				<u:subSections>
+					<u:ObjectPageSubSection>
+						<u:blocks>
+						</u:blocks>
+						<u:moreBlocks>
+							<VBox class="sapUiSmallMargin">
+								<layoutData>
+									<FlexItemData growFactor="7"/>
+								</layoutData>						    
+    							<f:SimpleForm editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="4"
+    								adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1"
+    								singleContainerFullSize="false" id="__form1">
+    								<f:content>
 										<Toolbar>
 											<core:Icon src="sap-icon://shipping-status"/>
 											<Title text="Ship-to: {ShipTo/Partnerid}" level="H5" titleStyle="H5"/>
@@ -81,24 +102,11 @@
 										<Label text="{/#Partner/ShipTo/Intad/@sap:label}"/>
 										<Text text="{ShipTo/Intad}"/>
 										<Label text="{/#Partner/ShipTo/Stcd2/@sap:label}"/>
-										<Text text="{ShipTo/Stcd2}"/>
-									</f:content>
-								</f:SimpleForm>
-							</VBox>
-						</u:blocks>
-					</u:ObjectPageSubSection>
-				</u:subSections>
-			</u:ObjectPageSection>
-			<u:ObjectPageSection title="Primatelj" titleUppercase="false">
-				<u:subSections>
-					<u:ObjectPageSubSection>
-						<u:blocks>
-							<f:SimpleForm editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12"
-								adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1"
-								singleContainerFullSize="false" id="__form1">
-								<f:content></f:content>
-							</f:SimpleForm>
-						</u:blocks>
+										<Text text="{ShipTo/Stcd2}"/>								    
+    								</f:content>
+    							</f:SimpleForm>
+							</VBox>							
+						</u:moreBlocks>
 					</u:ObjectPageSubSection>
 				</u:subSections>
 			</u:ObjectPageSection>
