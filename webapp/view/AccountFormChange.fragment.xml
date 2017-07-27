@@ -181,7 +181,7 @@
 								<suggestionItems>
 									<core:ListItem text="{Land1}" additionalText="{Landx}"/>
 								</suggestionItems>
-							</Input>
+							</Input> #####
 							<Label text="{/#Partner/ShipTo/Stras/@sap:label}"/>
 							<Input id="__ShipTo_Stras" value="{ShipTo/Stras}"/>
 							<Input id="__ShipTo_Hsnm1" value="{ShipTo/Hsnm1}"/>
