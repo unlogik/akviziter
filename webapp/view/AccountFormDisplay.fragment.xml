@@ -1,131 +1,129 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:u="sap.uxap"
 	xmlns:s="sap.ui.comp.smarttable" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
-	<u:ObjectPageLayout id="ObjectPageLayout" enableLazyLoading="false">
-		<u:sections>
-			<u:ObjectPageSection title="Kupac" titleUppercase="false" showTitle="true">
-				<u:subSections>
-					<u:ObjectPageSubSection>
-						<u:blocks>
-							<VBox class="sapUiSmallMargin">
-								<layoutData>
-									<FlexItemData growFactor="7"/>
-								</layoutData>
-								<f:SimpleForm editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="4"
-									adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1"
-									singleContainerFullSize="false" id="__form0">
-									<f:content>
-										<Toolbar>
-											<core:Icon src="sap-icon://customer"/>
-											<Title text="Sold-to: {SoldTo/Partnerid}" level="H5" titleStyle="H5"/>
-											<ToolbarSpacer/>
-											<core:Icon src="{ path: 'SoldTo/Status', formatter: '.formatter.statusIcon' }"
-												color="{ path: 'SoldTo/Status', formatter: '.formatter.statusColor' }"/>
-										</Toolbar>
-										<Label text="{/#Partner/SoldTo/Title/@sap:label}"/>
-										<Text text="{ path:'SoldTo/Title', formatter: '.formatter.titleText' }"/>
-										<Label text="{/#Partner/SoldTo/Name1/@sap:label}"/>
-										<Text text="{SoldTo/Name1}"/>
-										<Text text="{SoldTo/Name2}"/>
-										<Label text="{/#Partner/SoldTo/Ort01/@sap:label}"/>
-										<Text text="{SoldTo/Ort01}"/>
-										<Text text="{SoldTo/Pstlz}"/>
-										<Text text="{SoldTo/Land1}"/>
-										<Label text="{/#Partner/SoldTo/Stras/@sap:label}"/>
-										<Text text="{SoldTo/Stras}"/>
-										<Text text="{SoldTo/Hsnm1}"/>
-										<Text text="{SoldTo/Hsnm2}"/>
-										<Label text="{/#Partner/SoldTo/Telnr/@sap:label}"/>
-										<Text text="{SoldTo/Telnr}"/>
-										<Label text="{/#Partner/SoldTo/Mobnr/@sap:label}"/>
-										<Text text="{SoldTo/Mobnr}"/>
-										<Label text="{/#Partner/SoldTo/Email/@sap:label}"/>
-										<Text text="{SoldTo/Email}"/>
-										<Label text="{/#Partner/SoldTo/Birth/@sap:label}"/>
-										<Text text="{ path: 'SoldTo/Birth', type:'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.YYYY'} }"/>
-										<Label text="{/#Partner/SoldTo/Dlnot/@sap:label}"/>
-										<Text text="{SoldTo/Dlnot}"/>
-										<Label text="{/#Partner/SoldTo/Intad/@sap:label}"/>
-										<Text text="{SoldTo/Intad}"/>
-										<Label text="{/#Partner/SoldTo/Stcd2/@sap:label}"/>
-										<Text text="{SoldTo/Stcd2}"/>
-									</f:content>
-								</f:SimpleForm>
-							</VBox>
-						</u:blocks>
-					</u:ObjectPageSubSection>
-				</u:subSections>
-			</u:ObjectPageSection>
-			<u:ObjectPageSection title="Primatelj" titleUppercase="false">
-				<u:subSections>
-					<u:ObjectPageSubSection>
-						<u:blocks>
-						</u:blocks>
-						<u:moreBlocks>
-							<VBox class="sapUiSmallMargin">
-								<layoutData>
-									<FlexItemData growFactor="7"/>
-								</layoutData>						    
-    							<f:SimpleForm editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="4"
-    								adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1"
-    								singleContainerFullSize="false" id="__form1">
-    								<f:content>
-										<Toolbar>
-											<core:Icon src="sap-icon://shipping-status"/>
-											<Title text="Ship-to: {ShipTo/Partnerid}" level="H5" titleStyle="H5"/>
-											<ToolbarSpacer/>
-											<core:Icon src="{ path: 'ShipTo/Status', formatter: '.formatter.statusIcon' }"
-												color="{ path: 'ShipTo/Status', formatter: '.formatter.statusColor' }"/>
-										</Toolbar>
-										<Label text="{/#Partner/ShipTo/Title/@sap:label}"/>
-										<Text text="{ path:'ShipTo/Title', formatter: '.formatter.titleText' }"/>
-										<Label text="{/#Partner/ShipTo/Name1/@sap:label}"/>
-										<Text text="{ShipTo/Name1}"/>
-										<Text text="{ShipTo/Name2}"/>
-										<Label text="{/#Partner/ShipTo/Ort01/@sap:label}"/>
-										<Text text="{ShipTo/Ort01}"/>
-										<Text text="{ShipTo/Pstlz}"/>
-										<Text text="{ShipTo/Land1}"/>
-										<Label text="{/#Partner/ShipTo/Stras/@sap:label}"/>
-										<Text text="{ShipTo/Stras}"/>
-										<Text text="{ShipTo/Hsnm1}"/>
-										<Text text="{ShipTo/Hsnm2}"/>
-										<Label text="{/#Partner/ShipTo/Telnr/@sap:label}"/>
-										<Text text="{ShipTo/Telnr}"/>
-										<Label text="{/#Partner/ShipTo/Mobnr/@sap:label}"/>
-										<Text text="{ShipTo/Mobnr}"/>
-										<Label text="{/#Partner/ShipTo/Email/@sap:label}"/>
-										<Text text="{ShipTo/Email}"/>
-										<Label text="{/#Partner/ShipTo/Birth/@sap:label}"/>
-										<Text text="{ path: 'ShipTo/Birth', type:'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.YYYY'} }"/>
-										<Label text="{/#Partner/ShipTo/Dlnot/@sap:label}"/>
-										<Text text="{ShipTo/Dlnot}"/>
-										<Label text="{/#Partner/ShipTo/Intad/@sap:label}"/>
-										<Text text="{ShipTo/Intad}"/>
-										<Label text="{/#Partner/ShipTo/Stcd2/@sap:label}"/>
-										<Text text="{ShipTo/Stcd2}"/>								    
-    								</f:content>
-    							</f:SimpleForm>
-							</VBox>							
-						</u:moreBlocks>
-					</u:ObjectPageSubSection>
-				</u:subSections>
-			</u:ObjectPageSection>
-			<u:ObjectPageSection title="Orders" titleUppercase="false">
-				<u:subSections>
-					<u:ObjectPageSubSection>
-						<u:blocks>
-							<s:SmartTable entitySet="OrderSet" tableType="ResponsiveTable" useVariantManagement="false" useTablePersonalisation="true"
-								header="Orders" showRowCount="false" enableAutoBinding="true" app:useSmartField="true"
-								class="sapUiResponsiveContentPadding" persistencyKey="SmartTableAnalytical_Explored" >
-								<!-- layout data used to make the table growing but the filter bar fixed -->
-								<s:layoutData>
-									<FlexItemData growFactor="1" baseSize="0%"/>
-								</s:layoutData>
-							</s:SmartTable>
-						</u:blocks>
-					</u:ObjectPageSubSection>
-				</u:subSections>
-			</u:ObjectPageSection>
-		</u:sections>
-	</u:ObjectPageLayout>
+	<l:VerticalLayout>
+		<l:BlockLayout>
+			<l:BlockLayoutRow>
+				<l:BlockLayoutCell class="sapUiNoContentPadding">
+					<f:SimpleForm editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="4"
+						adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1"
+						singleContainerFullSize="false" id="__form0">
+						<f:content>
+							<Toolbar>
+								<core:Icon src="sap-icon://customer"/>
+								<Title text="Sold-to: {SoldTo/Partnerid}" level="H5" titleStyle="H5"/>
+								<ToolbarSpacer/>
+								<core:Icon src="{ path: 'SoldTo/Status', formatter: '.formatter.statusIcon' }"
+									color="{ path: 'SoldTo/Status', formatter: '.formatter.statusColor' }"/>
+							</Toolbar>
+							<Label text="{/#Partner/SoldTo/Title/@sap:label}"/>
+							<Text text="{ path:'SoldTo/Title', formatter: '.formatter.titleText' }"/>
+							<Label text="{/#Partner/SoldTo/Name1/@sap:label}"/>
+							<Text text="{SoldTo/Name1}"/>
+							<Text text="{SoldTo/Name2}"/>
+							<Label text="{/#Partner/SoldTo/Ort01/@sap:label}"/>
+							<Text text="{SoldTo/Ort01}"/>
+							<Text text="{SoldTo/Pstlz}"/>
+							<Text text="{SoldTo/Land1}"/>
+							<Label text="{/#Partner/SoldTo/Stras/@sap:label}"/>
+							<Text text="{SoldTo/Stras}"/>
+							<Text text="{SoldTo/Hsnm1}"/>
+							<Text text="{SoldTo/Hsnm2}"/>
+							<Label text="{/#Partner/SoldTo/Telnr/@sap:label}"/>
+							<Text text="{SoldTo/Telnr}"/>
+							<Label text="{/#Partner/SoldTo/Mobnr/@sap:label}"/>
+							<Text text="{SoldTo/Mobnr}"/>
+							<Label text="{/#Partner/SoldTo/Email/@sap:label}"/>
+							<Text text="{SoldTo/Email}"/>
+							<Label text="{/#Partner/SoldTo/Birth/@sap:label}"/>
+							<Text text="{ path: 'SoldTo/Birth', type:'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.YYYY'} }"/>
+							<Label text="{/#Partner/SoldTo/Dlnot/@sap:label}"/>
+							<Text text="{SoldTo/Dlnot}"/>
+							<Label text="{/#Partner/SoldTo/Intad/@sap:label}"/>
+							<Text text="{SoldTo/Intad}"/>
+							<Label text="{/#Partner/SoldTo/Stcd2/@sap:label}"/>
+							<Text text="{SoldTo/Stcd2}"/>
+						</f:content>
+					</f:SimpleForm>
+				</l:BlockLayoutCell>
+				<l:BlockLayoutCell class="sapUiNoContentPadding">
+					<f:SimpleForm editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="4"
+						adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1"
+						singleContainerFullSize="false" id="__form1">
+						<f:content>
+							<Toolbar>
+								<core:Icon src="sap-icon://shipping-status"/>
+								<Title text="Ship-to: {ShipTo/Partnerid}" level="H5" titleStyle="H5"/>
+								<ToolbarSpacer/>
+								<core:Icon src="{ path: 'ShipTo/Status', formatter: '.formatter.statusIcon' }"
+									color="{ path: 'ShipTo/Status', formatter: '.formatter.statusColor' }"/>
+							</Toolbar>
+							<Label text="{/#Partner/ShipTo/Title/@sap:label}"/>
+							<Text text="{ path:'ShipTo/Title', formatter: '.formatter.titleText' }"/>
+							<Label text="{/#Partner/ShipTo/Name1/@sap:label}"/>
+							<Text text="{ShipTo/Name1}"/>
+							<Text text="{ShipTo/Name2}"/>
+							<Label text="{/#Partner/ShipTo/Ort01/@sap:label}"/>
+							<Text text="{ShipTo/Ort01}"/>
+							<Text text="{ShipTo/Pstlz}"/>
+							<Text text="{ShipTo/Land1}"/>
+							<Label text="{/#Partner/ShipTo/Stras/@sap:label}"/>
+							<Text text="{ShipTo/Stras}"/>
+							<Text text="{ShipTo/Hsnm1}"/>
+							<Text text="{ShipTo/Hsnm2}"/>
+							<Label text="{/#Partner/ShipTo/Telnr/@sap:label}"/>
+							<Text text="{ShipTo/Telnr}"/>
+							<Label text="{/#Partner/ShipTo/Mobnr/@sap:label}"/>
+							<Text text="{ShipTo/Mobnr}"/>
+							<Label text="{/#Partner/ShipTo/Email/@sap:label}"/>
+							<Text text="{ShipTo/Email}"/>
+							<Label text="{/#Partner/ShipTo/Birth/@sap:label}"/>
+							<Text text="{ path: 'ShipTo/Birth', type:'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.YYYY'} }"/>
+							<Label text="{/#Partner/ShipTo/Dlnot/@sap:label}"/>
+							<Text text="{ShipTo/Dlnot}"/>
+							<Label text="{/#Partner/ShipTo/Intad/@sap:label}"/>
+							<Text text="{ShipTo/Intad}"/>
+							<Label text="{/#Partner/ShipTo/Stcd2/@sap:label}"/>
+							<Text text="{ShipTo/Stcd2}"/>
+						</f:content>
+					</f:SimpleForm>
+				</l:BlockLayoutCell>
+			</l:BlockLayoutRow>
+			<l:BlockLayoutRow>
+				<l:BlockLayoutCell class="sapUiNoContentPadding">
+					<s:SmartTable entitySet="OrderSet" id="_table" tableType="ResponsiveTable" useVariantManagement="false" useTablePersonalisation="true"
+						header="Orders" showRowCount="false" enableAutoBinding="true" app:useSmartField="true" class="sapUiTinyMargin"
+						persistencyKey="SmartTableAnalytical_Explored" noData="No orders" tableBindingPath="PartnerToOrders">
+						<!-- layout data used to make the table growing but the filter bar fixed -->
+						<s:layoutData>
+							<FlexItemData growFactor="1" baseSize="0%"/>
+						</s:layoutData>
+						<Table>
+							<columns>
+								<Column width="100px">
+									<customData>
+										<core:CustomData key="p13nData" value='\{"columnKey": "Stdat", "maxLength": "5","columnIndex":"4", "leadingProperty": "Stdat"}'/>
+									</customData>
+									<Text text="{/#Order/Stdat/@sap:label}"/>
+								</Column>
+								<Column width="100px">
+									<customData>
+										<core:CustomData key="p13nData" value='\{"columnKey": "Cldat", "maxLength": "5","columnIndex":"5", "leadingProperty": "Cldat"}'/>
+									</customData>
+									<Text text="{/#Order/Cldat/@sap:label}"/>
+								</Column>								
+							</columns>
+							<items>
+								<ColumnListItem>
+									<cells>
+										<Text text="{ path: 'Stdat', type:'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.YYYY'} }"/>
+										<Text text="{ path: 'Cldat', type:'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.YYYY'} }"/>
+									</cells>
+								</ColumnListItem>
+							</items>
+						</Table>
+					</s:SmartTable>
+				</l:BlockLayoutCell>
+			</l:BlockLayoutRow>
+		</l:BlockLayout>
+	</l:VerticalLayout>
 </core:FragmentDefinition>

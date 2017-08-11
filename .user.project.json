@@ -9,14 +9,14 @@
       "ui5VerSource": null,
       "isDefaultVersion": 0,
       "urlParameters": [],
-      "hashParameter": "/PartnerSet/1",
+      "hashParameter": "/AccountDetails/1",
       "backendSystem": [],
       "urlParametersNotNeeded": true,
       "_metadata": {
         "id": 3199039,
         "runnerId": "webapprunner",
         "displayName": "Account Details",
-        "lastRunTimeStamp": 1501161589633
+        "lastRunTimeStamp": 1502279044374
       }
     },
     {

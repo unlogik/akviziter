@@ -96,11 +96,9 @@
 			}
 		},
 		"resources": {
-			"css": [
-				{
-					"uri": "css/style.css"
-				}
-			]
+			"css": [{
+				"uri": "css/style.css"
+			}]
 		},
 		"routing": {
 			"config": {
@@ -111,33 +109,27 @@
 				"controlAggregation": "pages",
 				"transition": "fade"
 			},
-			"routes": [
-				{
-					"pattern": "accounts",
-					"name": "Accounts",
-					"target": "accounts"
-				},
-				{
-					"pattern": "orders",
-					"name": "Orders",
-					"target": "orders"
-				},
-				{
-					"pattern": "PartnerSet/{objectId}",
-					"name": "object",
-					"target": "object"
-				},
-				{
-					"pattern": "accountDetails",
-					"name": "AccountDetails",
-					"target": "accountDetails"
-				},
-				{
-					"pattern": "",
-					"name": "Splash",
-					"target": "splash"
-				}
-			],
+			"routes": [{
+				"pattern": "Accounts",
+				"name": "Accounts",
+				"target": "accounts"
+			}, {
+				"pattern": "orders",
+				"name": "Orders",
+				"target": "orders"
+			}, {
+				"pattern": "PartnerSet/{objectId}",
+				"name": "object",
+				"target": "object"
+			}, {
+				"pattern": "AccountDetails/{SetId}/:Editable:",
+				"name": "AccountDetails",
+				"target": "accountDetails"
+			}, {
+				"pattern": "",
+				"name": "Splash",
+				"target": "splash"
+			}],
 			"targets": {
 				"accounts": {
 					"viewName": "Accounts",
@@ -147,7 +139,9 @@
 					"viewName": "Orders"
 				},
 				"accountDetails": {
-					"viewName": "AccountDetails"
+					"viewName": "AccountDetails",
+					"viewId": "accountDetails",
+					"viewLevel": 2
 				},
 				"object": {
 					"viewName": "AccountDetails",

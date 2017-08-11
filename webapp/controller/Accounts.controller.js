@@ -98,13 +98,13 @@ sap.ui.define([
 			// The source is the list item that got pressed
 			var oItem = oEvent.getSource();
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-			oRouter.navTo("object", {
-				objectId: oItem.getBindingContext().getProperty("Setid")
+			oRouter.navTo("AccountDetails", {
+				SetId: oItem.getBindingContext().getProperty("Setid")
 			});
 		},
 		onAdd: function() {
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-		    oRouter.navTo("object", { objectId: "NEW" });
+		    oRouter.navTo("AccountDetails", { SetId: "NEW" });
 /*				var oModel = this.getView().getModel();
 			oModel.create("/PartnerSet", {
 				Setid: '0',

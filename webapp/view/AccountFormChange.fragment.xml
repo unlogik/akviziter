@@ -1,217 +1,224 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core"
-	xmlns:s="sap.ui.comp.smarttable" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
-	<VBox fitContainer="true" width="100%">
-		<layoutData>
-			<FlexItemData growFactor="7"/>
-		</layoutData>
-		<items>
-			<!--<l:VerticalLayout>-->
-			<!--<f:Form editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="3" labelSpanS="12"-->
-			<!--	adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1"-->
-			<!--	singleContainerFullSize="false" id="__form3">-->
-			<f:Form editable="true">
-				<f:layout>
-					<f:ResponsiveGridLayout labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0"
-						emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1" singleContainerFullSize="false"/>
-				</f:layout>
-				<f:formContainers>
-					<f:FormContainer>
-						<f:formElements>
-							<f:FormElement label="Note">
-								<!--   <layoutData>-->
-								<!--                    <FlexItemData alignSelf="Center"/>-->
-								<!--                   </layoutData>-->
-								<f:fields>
-									<TextArea value="Lorem ipsum" layoutData="{growFactor:'1', alignSelf: sap.m.FlexAlignSelf.Center}"/>
-								</f:fields>
-							</f:FormElement>
-						</f:formElements>
-					</f:FormContainer>
-					<f:FormContainer>
-						<f:formElements>
-							<f:FormElement label="Agent">
-								<f:fields>
-									<Input id="__Agent" value="{Agent}"/>
-								</f:fields>
-							</f:FormElement>
-						</f:formElements>
-					</f:FormContainer>
-				</f:formContainers>
-			</f:Form>
-			<!--</l:VerticalLayout>    -->
-			<HBox fitContainer="true" alignItems="Stretch">
-				<layoutData>
-					<FlexItemData growFactor="3"/>
-				</layoutData>
-				<items>
-					<f:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="3" labelSpanS="12"
-						adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1"
-						singleContainerFullSize="false" id="__form4">
-						<f:content>
-							<Toolbar>
-								<core:Icon src="sap-icon://customer"/>
-								<Title text="Sold-to: {SoldTo/Partnerid}" level="H5" titleStyle="H5"/>
-								<ToolbarSpacer/>
-								<core:Icon src="{ path: 'SoldTo/Status', formatter: '.formatter.statusIcon' }"
-									color="{ path: 'SoldTo/Status', formatter: '.formatter.statusColor' }"/>
-							</Toolbar>
-							<Label text="{/#Partner/SoldTo/Title/@sap:label}"/>
-							<Select id="__SoldTo_Title" showSecondaryValues="true" selectedKey="{SoldTo/Title}"
-								items="{ path: '/PartnerTitleSet', sorter: { path: 'Title' } }">
-								<core:ListItem key="{Title}" text="{TitleMedi}" additionalText="{Title}"/>
-							</Select>
-							<Label text="{/#Partner/SoldTo/Name1/@sap:label}" required="true"/>
-							<Input id="__SoldTo_Name1" value="{SoldTo/Name1}" liveChange="onSoldToName1Change"/>
-							<Input id="__SoldTo_Name2" value="{SoldTo/Name2}"/>
-							<Label text="{/#Partner/SoldTo/Ort01/@sap:label}" required="true"/>
-							<Input id="__SoldTo_Ort01" value="{SoldTo/Ort01}" placeholder="City..." showSuggestion="true" showTableSuggestionValueHelp="false"
-								suggestionRows="{/CitySet}" suggest="onCitySuggest" suggestionItemSelected="onCitySelect" maxSuggestionWidth="500px"
-								liveChange="onSoldToCityChange">
-								<suggestionColumns>
-									<Column hAlign="Begin" popinDisplay="Inline" demandPopin="true">
-										<Label text="Name"/>
-									</Column>
-									<Column hAlign="Center" popinDisplay="Inline" demandPopin="true" minScreenWidth="Tablet">
-										<Label text="Code"/>
-									</Column>
-									<Column hAlign="Center" popinDisplay="Inline" demandPopin="false" minScreenWidth="Tablet">
-										<Label text="City Srch"/>
-									</Column>
-								</suggestionColumns>
-								<suggestionRows>
-									<ColumnListItem>
-										<cells>
-											<Label text="{CityName}"/>
-											<Label text="{CityCode}"/>
-											<Label text="{McCity}"/>
-										</cells>
-									</ColumnListItem>
-								</suggestionRows>
-							</Input>
-							<Input id="__SoldTo_Pstlz" value="{SoldTo/Pstlz}" liveChange="onSoldToCityChange"/>
-							<Input id="__SoldTo_Land1" value="{SoldTo/Land1}" placeholder="Land..." showSuggestion="true" suggest="handleSuggest"
-								suggestionItems="{/CountrySet}" maxSuggestionWidth="200px" liveChange="onSoldToCityChange">
-								<suggestionItems>
-									<core:ListItem text="{Land1}" additionalText="{Landx}"/>
-								</suggestionItems>
-							</Input>
-							<Label text="{/#Partner/SoldTo/Stras/@sap:label}" required="true"/>
-							<Input id="__SoldTo_Stras" value="{SoldTo/Stras}" placeholder="Street..." showSuggestion="true" showTableSuggestionValueHelp="false"
-								suggest="onStreetSuggest" suggestionRows="{/StreetSet}" maxSuggestionWidth="500px">
-								<suggestionColumns>
-									<Column hAlign="Begin" popinDisplay="Inline" demandPopin="true">
-										<Label text="Street"/>
-									</Column>
-									<Column hAlign="Center" popinDisplay="Inline" demandPopin="true" minScreenWidth="Tablet">
-										<Label text="Code"/>
-									</Column>
-									<Column hAlign="Center" popinDisplay="Inline" demandPopin="false" minScreenWidth="Tablet">
-										<Label text="City Srch"/>
-									</Column>
-								</suggestionColumns>
-								<suggestionRows>
-									<ColumnListItem>
-										<cells>
-											<Label text="{Street}"/>
-											<Label text="{CityCode}"/>
-											<Label text="{McCity}"/>
-										</cells>
-									</ColumnListItem>
-								</suggestionRows>
-							</Input>
-							<Input id="__SoldTo_Hsnm1" value="{SoldTo/Hsnm1}"/>
-							<Input id="__SoldTo_Hsnm2" value="{SoldTo/Hsnm2}"/>
-							<Label text="{/#Partner/SoldTo/Telnr/@sap:label}"/>
-							<Input id="__SoldTo_Telnr" value="{SoldTo/Telnr}" type="Tel"/>
-							<Label text="{/#Partner/SoldTo/Mobnr/@sap:label}"/>
-							<Input id="__SoldTo_Mobnr" value="{SoldTo/Mobnr}" type="Tel"/>
-							<Label text="{/#Partner/SoldTo/Email/@sap:label}"/>
-							<Input id="__SoldTo_Email" value="{SoldTo/Email}" type="Email"/>
-							<Label text="{/#Partner/SoldTo/Birth/@sap:label}"/>
-							<DatePicker id="__SoldTo_Birth" dateValue="{SoldTo/Birth}" displayFormat="dd.MM.yyyy" change="dateChange"/>
-							<!--<Input id="__SoldTo_Birth" value="{SoldTo/Birth}"/>-->
-							<Label text="{/#Partner/SoldTo/Dlnot/@sap:label}"/>
-							<Input id="__SoldTo_Dlnot" value="{SoldTo/Dlnot}"/>
-							<Label text="{/#Partner/SoldTo/Intad/@sap:label}"/>
-							<Input id="__SoldTo_Intad" value="{SoldTo/Intad}"/>
-							<Label text="{/#Partner/SoldTo/Stcd2/@sap:label}" required="true"/>
-							<Input id="__SoldTo_Stcd2" value="{SoldTo/Stcd2}" liveChange="onSoldToOIBChange"/>
-							<Toolbar>
-								<core:Icon src="sap-icon://shipping-status"/>
-								<Title text="Ship-to: {ShipTo/Partnerid}" level="H5" titleStyle="H5"/>
-								<ToolbarSpacer/>
-								<core:Icon src="{ path: 'ShipTo/Status', formatter: '.formatter.statusIcon' }"
-									color="{ path: 'ShipTo/Status', formatter: '.formatter.statusIcon' }"/>
-							</Toolbar>
-							<Label text="{/#Partner/ShipTo/Title/@sap:label}"/>
-							<Select id="__ShipTo_Title" showSecondaryValues="true" selectedKey="{ShipTo/Title}"
-								items="{ path: '/PartnerTitleSet', sorter: { path: 'Title' } }">
-								<core:ListItem key="{Title}" text="{TitleMedi}" additionalText="{Title}"/>
-							</Select>
-							<Label text="{/#Partner/ShipTo/Name1/@sap:label}"/>
-							<Input id="__ShipTo_Name1" value="{ShipTo/Name1}"/>
-							<Input id="__ShipTo_Name2" value="{ShipTo/Name2}"/>
-							<Label text="{/#Partner/SoldTo/Ort01/@sap:label}"/>
-							<Input id="__ShipTo_Ort01" value="{ShipTo/Ort01}" placeholder="City..." showSuggestion="true" showTableSuggestionValueHelp="false"
-								suggestionRows="{/CitySet}" suggest="onCitySuggest" suggestionItemSelected="onCitySelect" maxSuggestionWidth="500px">
-								<suggestionColumns>
-									<Column hAlign="Begin" popinDisplay="Inline" demandPopin="true">
-										<Label text="Name"/>
-									</Column>
-									<Column hAlign="Center" popinDisplay="Inline" demandPopin="true" minScreenWidth="Tablet">
-										<Label text="Code"/>
-									</Column>
-									<Column hAlign="Center" popinDisplay="Inline" demandPopin="false" minScreenWidth="Tablet">
-										<Label text="City Srch"/>
-									</Column>
-								</suggestionColumns>
-								<suggestionRows>
-									<ColumnListItem>
-										<cells>
-											<Label text="{CityName}"/>
-											<Label text="{CityCode}"/>
-											<Label text="{McCity}"/>
-										</cells>
-									</ColumnListItem>
-								</suggestionRows>
-							</Input>
-							<Input id="__ShipTo_Pstlz" value="{ShipTo/Pstlz}"/>
-							<Input id="__ShipTo_Land1" value="{ShipTo/Land1}" placeholder="Land..." showSuggestion="true" suggest="handleSuggest"
-								suggestionItems="{/CountrySet}" maxSuggestionWidth="200px">
-								<suggestionItems>
-									<core:ListItem text="{Land1}" additionalText="{Landx}"/>
-								</suggestionItems>
-							</Input> #####
-							<Label text="{/#Partner/ShipTo/Stras/@sap:label}"/>
-							<Input id="__ShipTo_Stras" value="{ShipTo/Stras}"/>
-							<Input id="__ShipTo_Hsnm1" value="{ShipTo/Hsnm1}"/>
-							<Input id="__ShipTo_Hsnm2" value="{ShipTo/Hsnm2}"/>
-							<Label text="{/#Partner/ShipTo/Telnr/@sap:label}"/>
-							<Input id="__ShipTo_Telnr" value="{ShipTo/Telnr}" type="Tel"/>
-							<Label text="{/#Partner/ShipTo/Mobnr/@sap:label}"/>
-							<Input id="__ShipTo_Mobnr" value="{ShipTo/Mobnr}" type="Tel"/>
-							<Label text="{/#Partner/ShipTo/Email/@sap:label}"/>
-							<Input id="__ShipTo_Email" value="{ShipTo/Email}" type="Email"/>
-							<Label text="{/#Partner/ShipTo/Birth/@sap:label}"/>
-							<DatePicker id="__ShipTo_Birth" dateValue="{ShipTo/Birth}" displayFormat="dd.MM.yyyy" change="dateChange"/>
-							<Label text="{/#Partner/ShipTo/Dlnot/@sap:label}"/>
-							<Input id="__ShipTo_Dlnot" value="{ShipTo/Dlnot}"/>
-							<Label text="{/#Partner/ShipTo/Intad/@sap:label}"/>
-							<Input id="__ShipTo_Intad" value="{ShipTo/Intad}"/>
-							<Label text="{/#Partner/ShipTo/Stcd2/@sap:label}"/>
-							<Input id="__ShipTo_Stcd2" value="{ShipTo/Stcd2}"/>
-						</f:content>
-					</f:SimpleForm>
-				</items>
-			</HBox>
-			<s:SmartTable id="LineItemsSmartTable" entitySet="OrderSet" tableType="ResponsiveTable" useVariantManagement="true" persistencyKey="Order" useTablePersonalisation="true"
-				header="Orders" showRowCount="true" enableAutoBinding="true" app:useSmartField="true" class="sapUiResponsiveContentPadding" editable="true"
-				editTogglable="true">
-				<!-- layout data used to make the table growing but the filter bar fixed -->
-				<s:layoutData>
-					<FlexItemData growFactor="1" baseSize="0%"/>
-				</s:layoutData>
-			</s:SmartTable>
-		</items>
-	</VBox>
+	xmlns:s="sap.ui.comp.smarttable" xmlns:sf="sap.ui.comp.smartfield" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    <l:VerticalLayout>
+    <l:BlockLayout>
+        <l:BlockLayoutRow>
+            <l:BlockLayoutCell  class="sapUiNoContentPadding">
+            	<f:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="3" labelSpanS="3"
+            		adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1"
+            		singleContainerFullSize="false" id="__form4">
+            		<f:content>
+            			<Toolbar>
+            				<core:Icon src="sap-icon://customer"/>
+            				<Title text="Sold-to: {SoldTo/Partnerid}" level="H5" titleStyle="H5"/>
+            				<ToolbarSpacer/>
+            				<Button icon="{ path: 'SoldTo/Status', formatter: '.formatter.statusIcon'}"/>
+            			</Toolbar>
+            			<Label text="{/#Partner/SoldTo/Title/@sap:label}"/>
+            			<Select id="__SoldTo_Title" showSecondaryValues="true" selectedKey="{SoldTo/Title}"
+            				items="{ path: '/PartnerTitleSet', sorter: { path: 'Title' } }">
+            				<core:ListItem key="{Title}" text="{TitleMedi}" additionalText="{Title}"/>
+            			</Select>
+            			<Label text="{/#Partner/SoldTo/Name1/@sap:label}" required="true"/>
+            			<Input id="__SoldTo_Name1" value="{SoldTo/Name1}" liveChange="onSoldToName1Change" submit="onEnter"/>
+            			<Input id="__SoldTo_Name2" value="{SoldTo/Name2}" submit="onEnter"/>
+            			<Label text="{/#Partner/SoldTo/Ort01/@sap:label}" required="true"/>
+            			<Input id="__SoldTo_Ort01" value="{SoldTo/Ort01}" placeholder="City..." showSuggestion="true" showTableSuggestionValueHelp="false"
+            				suggestionRows="{/CitySet}" suggest="onCitySuggest" suggestionItemSelected="onCitySelect" maxSuggestionWidth="500px"
+            				liveChange="onSoldToCityChange" submit="onEnter">
+            				<suggestionColumns>
+            					<Column hAlign="Begin" popinDisplay="Inline" demandPopin="true">
+            						<Label text="Name"/>
+            					</Column>
+            					<Column hAlign="Center" popinDisplay="Inline" demandPopin="true" minScreenWidth="Tablet">
+            						<Label text="Code"/>
+            					</Column>
+            					<Column hAlign="Center" popinDisplay="Inline" demandPopin="false" minScreenWidth="Tablet">
+            						<Label text="City Srch"/>
+            					</Column>
+            				</suggestionColumns>
+            				<suggestionRows>
+            					<ColumnListItem>
+            						<cells>
+            							<Label text="{CityName}"/>
+            							<Label text="{CityCode}"/>
+            							<Label text="{McCity}"/>
+            						</cells>
+            					</ColumnListItem>
+            				</suggestionRows>
+            			</Input>
+            			<Input id="__SoldTo_Pstlz" value="{SoldTo/Pstlz}" liveChange="onSoldToCityChange" submit="onEnter"/>
+            			<Input id="__SoldTo_Land1" value="{SoldTo/Land1}" placeholder="Land..." showSuggestion="true" suggest="handleSuggest"
+            				suggestionItems="{/CountrySet}" maxSuggestionWidth="200px" liveChange="onSoldToCityChange" submit="onEnter">
+            				<suggestionItems>
+            					<core:ListItem text="{Land1}" additionalText="{Landx}"/>
+            				</suggestionItems>
+            			</Input>
+            			<Label text="{/#Partner/SoldTo/Stras/@sap:label}" required="true"/>
+            			<Input id="__SoldTo_Stras" value="{SoldTo/Stras}" placeholder="Street..." showSuggestion="true" showTableSuggestionValueHelp="false"
+            				suggest="onStreetSuggest" suggestionRows="{/StreetSet}" maxSuggestionWidth="500px" submit="onEnter">
+            				<suggestionColumns>
+            					<Column hAlign="Begin" popinDisplay="Inline" demandPopin="true">
+            						<Label text="Street"/>
+            					</Column>
+            					<Column hAlign="Center" popinDisplay="Inline" demandPopin="true" minScreenWidth="Tablet">
+            						<Label text="Code"/>
+            					</Column>
+            					<Column hAlign="Center" popinDisplay="Inline" demandPopin="false" minScreenWidth="Tablet">
+            						<Label text="City Srch"/>
+            					</Column>
+            				</suggestionColumns>
+            				<suggestionRows>
+            					<ColumnListItem>
+            						<cells>
+            							<Label text="{Street}"/>
+            							<Label text="{CityCode}"/>
+            							<Label text="{McCity}"/>
+            						</cells>
+            					</ColumnListItem>
+            				</suggestionRows>
+            			</Input>
+            			<Input id="__SoldTo_Hsnm1" value="{SoldTo/Hsnm1}" submit="onEnter"/>
+            			<Input id="__SoldTo_Hsnm2" value="{SoldTo/Hsnm2}" submit="onEnter"/>
+            			<Label text="{/#Partner/SoldTo/Telnr/@sap:label}"/>
+            			<Input id="__SoldTo_Telnr" value="{SoldTo/Telnr}" type="Tel" submit="onEnter"/>
+            			<Label text="{/#Partner/SoldTo/Mobnr/@sap:label}"/>
+            			<Input id="__SoldTo_Mobnr" value="{SoldTo/Mobnr}" type="Tel" submit="onEnter"/>
+            			<Label text="{/#Partner/SoldTo/Email/@sap:label}"/>
+            			<Input id="__SoldTo_Email" value="{SoldTo/Email}" type="Email" submit="onEnter"/>
+            			<Label text="{/#Partner/SoldTo/Birth/@sap:label}"/>
+            			<DatePicker id="__SoldTo_Birth" dateValue="{SoldTo/Birth}" displayFormat="dd.MM.yyyy" change="dateChange"/>
+            			<!--<Input id="__SoldTo_Birth" value="{SoldTo/Birth}"/>-->
+            			<Label text="{/#Partner/SoldTo/Dlnot/@sap:label}"/>
+            			<Input id="__SoldTo_Dlnot" value="{SoldTo/Dlnot}" submit="onEnter"/>
+            			<Label text="{/#Partner/SoldTo/Intad/@sap:label}"/>
+            			<Input id="__SoldTo_Intad" value="{SoldTo/Intad}" submit="onEnter"/>
+            			<Label text="{/#Partner/SoldTo/Stcd2/@sap:label}" required="true"/>
+            			<Input id="__SoldTo_Stcd2" value="{SoldTo/Stcd2}" liveChange="onSoldToOIBChange" submit="onEnter"/>
+            		</f:content>
+            	</f:SimpleForm>	 
+	        </l:BlockLayoutCell>
+	        <l:BlockLayoutCell class="sapUiNoContentPadding">
+            	<f:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="3"
+            		adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1"
+            		singleContainerFullSize="false" id="__form5">	            
+                    <f:content>            		
+            			<Toolbar>
+            				<core:Icon src="sap-icon://shipping-status"/>
+            				<Title text="Ship-to: {ShipTo/Partnerid}" level="H5" titleStyle="H5"/>
+            				<ToolbarSpacer/>
+            				<core:Icon src="{ path: 'ShipTo/Status', formatter: '.formatter.statusIcon' }"
+            					color="{ path: 'ShipTo/Status', formatter: '.formatter.statusIcon' }"/>
+            			</Toolbar>
+            			<Label text="{/#Partner/ShipTo/Title/@sap:label}"/>
+            			<Select id="__ShipTo_Title" showSecondaryValues="true" selectedKey="{ShipTo/Title}"
+            				items="{ path: '/PartnerTitleSet', sorter: { path: 'Title' } }">
+            				<core:ListItem key="{Title}" text="{TitleMedi}" additionalText="{Title}"/>
+            			</Select>
+            			<Label text="{/#Partner/ShipTo/Name1/@sap:label}"/>
+            			<Input id="__ShipTo_Name1" value="{ShipTo/Name1}" submit="onEnter"/>
+            			<Input id="__ShipTo_Name2" value="{ShipTo/Name2}" submit="onEnter"/>
+            			<Label text="{/#Partner/SoldTo/Ort01/@sap:label}" />
+            			<Input id="__ShipTo_Ort01" value="{ShipTo/Ort01}" placeholder="City..." showSuggestion="true" showTableSuggestionValueHelp="false"
+            				suggestionRows="{/CitySet}" suggest="onCitySuggest" suggestionItemSelected="onCitySelect" maxSuggestionWidth="500px" submit="onEnter">
+            				<suggestionColumns>
+            					<Column hAlign="Begin" popinDisplay="Inline" demandPopin="true">
+            						<Label text="Name"/>
+            					</Column>
+            					<Column hAlign="Center" popinDisplay="Inline" demandPopin="true" minScreenWidth="Tablet">
+            						<Label text="Code"/>
+            					</Column>
+            					<Column hAlign="Center" popinDisplay="Inline" demandPopin="false" minScreenWidth="Tablet">
+            						<Label text="City Srch"/>
+            					</Column>
+            				</suggestionColumns>
+            				<suggestionRows>
+            					<ColumnListItem>
+            						<cells>
+            							<Label text="{CityName}"/>
+            							<Label text="{CityCode}"/>
+            							<Label text="{McCity}"/>
+            						</cells>
+            					</ColumnListItem>
+            				</suggestionRows>
+            			</Input>
+            			<Input id="__ShipTo_Pstlz" value="{ShipTo/Pstlz}" submit="onEnter"/>
+            			<Input id="__ShipTo_Land1" value="{ShipTo/Land1}" placeholder="Land..." showSuggestion="true" suggest="handleSuggest"
+            				suggestionItems="{/CountrySet}" maxSuggestionWidth="200px" submit="onEnter">
+            				<suggestionItems>
+            					<core:ListItem text="{Land1}" additionalText="{Landx}"/>
+            				</suggestionItems>
+            			</Input>
+            			<Label text="{/#Partner/ShipTo/Stras/@sap:label}"/>
+            			<Input id="__ShipTo_Stras" value="{ShipTo/Stras}" submit="onEnter"/>
+            			<Input id="__ShipTo_Hsnm1" value="{ShipTo/Hsnm1}" submit="onEnter"/>
+            			<Input id="__ShipTo_Hsnm2" value="{ShipTo/Hsnm2}" submit="onEnter"/>
+            			<Label text="{/#Partner/ShipTo/Telnr/@sap:label}"/>
+            			<Input id="__ShipTo_Telnr" value="{ShipTo/Telnr}" type="Tel" submit="onEnter"/>
+            			<Label text="{/#Partner/ShipTo/Mobnr/@sap:label}"/>
+            			<Input id="__ShipTo_Mobnr" value="{ShipTo/Mobnr}" type="Tel" submit="onEnter"/>
+            			<Label text="{/#Partner/ShipTo/Email/@sap:label}"/>
+            			<Input id="__ShipTo_Email" value="{ShipTo/Email}" type="Email" submit="onEnter"/>
+            			<Label text="{/#Partner/ShipTo/Birth/@sap:label}"/>
+            			<DatePicker id="__ShipTo_Birth" dateValue="{ShipTo/Birth}" displayFormat="dd.MM.yyyy" change="dateChange"/>
+            			<Label text="{/#Partner/ShipTo/Dlnot/@sap:label}"/>
+            			<Input id="__ShipTo_Dlnot" value="{ShipTo/Dlnot}" submit="onEnter"/>
+            			<Label text="{/#Partner/ShipTo/Intad/@sap:label}"/>
+            			<Input id="__ShipTo_Intad" value="{ShipTo/Intad}" submit="onEnter"/>
+            			<Label text="{/#Partner/ShipTo/Stcd2/@sap:label}"/>
+            			<Input id="__ShipTo_Stcd2" value="{ShipTo/Stcd2}" submit="onEnter"/>
+            		</f:content>
+            	</f:SimpleForm>	            
+	        </l:BlockLayoutCell>
+	    </l:BlockLayoutRow>
+	    <l:BlockLayoutRow>
+	        <l:BlockLayoutCell class="sapUiNoContentPadding">
+            	<s:SmartTable id="_tableOrders" entitySet="OrderSet" tableType="ResponsiveTable" useVariantManagement="true" persistencyKey="Order" useTablePersonalisation="true"
+            		header="Orders" showRowCount="true" enableAutoBinding="true" app:useSmartField="true"  editable="true"
+            		editTogglable="true" class="sapUiTinyMargin" noData="No orders" tableBindingPath="PartnerToOrders">
+            		<!-- layout data used to make the table growing but the filter bar fixed -->
+            		<s:customToolbar>
+                        <Toolbar>
+                            <ToolbarSpacer />
+                            <!--<sf:SmartField value="{ModelSet('NEW')/Model}"/>-->
+                            <Input maxLength="8" width="140px" showValueHelp="true" valueHelpRequest="onModelValueHelp" placeholder="Model" showSuggestion="true" suggestionItems="{/ModelSet}" maxSuggestionWidth="200px" id="_inputModel">
+                                <suggestionItems>
+            					    <core:ListItem text="{ModelId}" additionalText="{Ltext}"/>
+            				    </suggestionItems>
+                            </Input>
+                            <Button icon="sap-icon://add" press="onAddOrder"/>
+                            <ToolbarSeparator/>
+                            <Button icon="sap-icon://delete" press="onDeleteOrder"/>
+                            <ToolbarSeparator/>
+                        </Toolbar>
+                        </s:customToolbar>
+						<Table>
+							<columns>
+								<Column width="110px">
+									<customData>
+										<core:CustomData key="p13nData" value='\{"columnKey": "Stdat", "maxLength": "5","columnIndex":"4", "leadingProperty": "Stdat"}'/>
+									</customData>
+									<Text text="{/#Order/Stdat/@sap:label}"/>
+								</Column>
+								<Column width="100px">
+									<customData>
+										<core:CustomData key="p13nData" value='\{"columnKey": "Cldat", "maxLength": "5","columnIndex":"5", "leadingProperty": "Cldat"}'/>
+									</customData>
+									<Text text="{/#Order/Cldat/@sap:label}"/>
+								</Column>								
+							</columns>
+							<items>
+								<ColumnListItem>
+									<cells>
+										<DatePicker dateValue="{Stdat}" displayFormat="dd.MM.yyyy" minDate="{MinStdat}"/>
+										<Text text="{ path: 'Cldat', type:'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.YYYY'} }"/>
+									</cells>
+								</ColumnListItem>
+							</items>
+						</Table>                        
+            	</s:SmartTable>
+	        </l:BlockLayoutCell>
+	    </l:BlockLayoutRow>
+	</l:BlockLayout>
+	</l:VerticalLayout>
 </core:FragmentDefinition>
