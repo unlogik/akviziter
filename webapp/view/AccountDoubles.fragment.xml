@@ -1,0 +1,65 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form">
+	<ResponsivePopover showHeader="false" contentWidth="500px" contentHeight="260px" placement="Bottom">
+		<content>
+			<NavContainer id="navCon">
+				<Page id="master" title="{i18n>accountDoubles}">
+					<Table id="_tableDoubles" items="{SoldToDoubles}" inset="false" mode="SingleSelect">
+						<columns>
+							<Column minScreenWidth="Tablet" demandPopin="true">
+								<Text text="Name"/>
+							</Column>
+							<Column minScreenWidth="Tablet" demandPopin="true">
+								<Text text="Address"/>
+							</Column>
+							<Column minScreenWidth="Tablet" demandPopin="true">
+								<Text text="OIB"/>
+							</Column>
+						</columns>
+						<items>
+							<ColumnListItem type="Navigation" press="onDoublesDetail" selected="{Selected}">
+								<cells>
+									<ObjectIdentifier title="{Name1} {Name2}" text="{Partnerid}"/>
+									<ObjectIdentifier title="{Stras} {Hsnm1}{Hsnm2}" text="{Pstlz} {Ort01}"/>
+									<Text text="{Stcd2}"/>
+								</cells>
+							</ColumnListItem>
+						</items>
+					</Table>
+				</Page>
+				<Page id="detail" showNavButton="true" navButtonPress="onDoublesBack" title="{Name1} {Name2} ({Partnerid})">
+					<VBox class="sapUiNoMargin">
+						<f:SimpleForm id="SimpleFormChange354" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="2"
+							labelSpanM="3" labelSpanS="3" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1"
+							columnsL="4" columnsM="4" singleContainerFullSize="false">
+							<f:content>
+								<Label text="{i18n>accountDoublesName1}"/>
+								<Text text="{Name1}"/>
+								<Label text="{i18n>accountDoublesName2}"/>
+								<Text text="{Name2}"/>
+								<Label text="{i18n>accountDoublesName3}"/>
+								<Text text="{Name3}"/>
+								<Label text="{i18n>accountDoublesName4}"/>
+								<Text text="{Name4}"/>
+								<Label text="{i18n>accountDoublesCity}"/>
+								<Text text="{Ort01}"/>
+								<Label text="{i18n>accountDoublesStreet}"/>
+								<Text text="{Stras}"/>
+								<Label text="{i18n>accountDoublesEmail}"/>
+								<Text text="{Email}"/>
+								<Label text="{i18n>accountDoublesTel}"/>
+								<Text text="{Telnr}"/>
+								<Label text="{i18n>accountDoublesMob}"/>
+								<Text text="{Mobnr}"/>
+								<Label text="{i18n>accountDoublesOIB}"/>
+								<Text text="{Stcd2}"/>
+							</f:content>
+						</f:SimpleForm>
+					</VBox>
+				</Page>
+			</NavContainer>
+		</content>
+		<endButton>
+			<Button id="_btnDoublesAccept" icon="sap-icon://accept" visible="{view>/AccountDetails/editable}"/>
+		</endButton>
+	</ResponsivePopover>
+</core:FragmentDefinition>

@@ -1,0 +1,43 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout">
+	<ResponsivePopover title="{FullName}" class="sapUiPopupWithPadding" placement="Bottom">
+		<endButton>
+			<Button icon="sap-icon://log" press="onUserLogout" tooltip="Log out"/>
+		</endButton>
+		<content>
+			<f:Form id="FormDisplay354" editable="false">
+				<f:layout>
+					<f:ResponsiveGridLayout labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4"
+						emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false"/>
+				</f:layout>
+				<f:formContainers>
+					<f:FormContainer>
+						<f:formElements>
+							<f:FormElement label="{i18n>mainUserName}">
+								<f:fields>
+									<Text text="{FullName}"/>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="{i18n>mainUserAcquisiter}">
+								<f:fields>
+									<Select items="{ path: '/AcquisiterSet' }" selectedKey="{/UserSet('CURRENT')/Akvid}" change="onAcqChange" enabled="{AkvSelectable}" forceSelection="false">
+										<core:ListItem key="{Akvid}" text="{Akvid}/ {AkvName}" />
+									</Select>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="{i18n>mainUserActions}">
+								<f:fields >
+									<HBox>
+										<core:Icon src="sap-icon://document" visible="{AuthCreate}" class="sapUiTinyMarginEnd"/>
+										<core:Icon src="sap-icon://display" visible="{AuthRead}" class="sapUiTinyMarginEnd"/>
+										<core:Icon src="sap-icon://edit" visible="{AuthUpdate}" class="sapUiTinyMarginEnd"/>
+										<core:Icon src="sap-icon://delete" visible="{AuthDelete}" class="sapUiTinyMarginEnd"/>
+									</HBox>
+								</f:fields>
+							</f:FormElement>
+						</f:formElements>
+					</f:FormContainer>
+				</f:formContainers>
+			</f:Form>
+		</content>
+	</ResponsivePopover>
+</core:FragmentDefinition>

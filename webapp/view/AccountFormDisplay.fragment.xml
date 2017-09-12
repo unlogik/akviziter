@@ -12,8 +12,7 @@
 								<core:Icon src="sap-icon://customer"/>
 								<Title text="Sold-to: {SoldTo/Partnerid}" level="H5" titleStyle="H5"/>
 								<ToolbarSpacer/>
-								<core:Icon src="{ path: 'SoldTo/Status', formatter: '.formatter.statusIcon' }"
-									color="{ path: 'SoldTo/Status', formatter: '.formatter.statusColor' }"/>
+								<Button id="_btn_SoldToDoubles" icon="{ path: 'SoldTo/Status', formatter: '.formatter.statusIcon'}" press="onDoublesDisplay" visible="{SoldTo/Doubles}"/>
 							</Toolbar>
 							<Label text="{/#Partner/SoldTo/Title/@sap:label}"/>
 							<Text text="{ path:'SoldTo/Title', formatter: '.formatter.titleText' }"/>
@@ -54,8 +53,7 @@
 								<core:Icon src="sap-icon://shipping-status"/>
 								<Title text="Ship-to: {ShipTo/Partnerid}" level="H5" titleStyle="H5"/>
 								<ToolbarSpacer/>
-								<core:Icon src="{ path: 'ShipTo/Status', formatter: '.formatter.statusIcon' }"
-									color="{ path: 'ShipTo/Status', formatter: '.formatter.statusColor' }"/>
+								<Button id="_btn_ShipToDoubles" icon="{ path: 'SoldTo/Status', formatter: '.formatter.statusIcon'}" press="onDoublesDisplay" visible="{ShipTo/Doubles}"/>
 							</Toolbar>
 							<Label text="{/#Partner/ShipTo/Title/@sap:label}"/>
 							<Text text="{ path:'ShipTo/Title', formatter: '.formatter.titleText' }"/>
@@ -91,7 +89,7 @@
 			<l:BlockLayoutRow>
 				<l:BlockLayoutCell class="sapUiNoContentPadding">
 					<s:SmartTable entitySet="OrderSet" id="_table" tableType="ResponsiveTable" useVariantManagement="false" useTablePersonalisation="true"
-						header="Orders" showRowCount="false" enableAutoBinding="true" app:useSmartField="true" class="sapUiTinyMargin"
+						header="Orders" showRowCount="false" enableAutoBinding="true" app:useSmartField="true" editable="false" class="sapUiTinyMargin"
 						persistencyKey="SmartTableAnalytical_Explored" noData="No orders" tableBindingPath="PartnerToOrders">
 						<!-- layout data used to make the table growing but the filter bar fixed -->
 						<s:layoutData>
@@ -110,7 +108,7 @@
 										<core:CustomData key="p13nData" value='\{"columnKey": "Cldat", "maxLength": "5","columnIndex":"5", "leadingProperty": "Cldat"}'/>
 									</customData>
 									<Text text="{/#Order/Cldat/@sap:label}"/>
-								</Column>								
+								</Column>
 							</columns>
 							<items>
 								<ColumnListItem>

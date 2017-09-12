@@ -4,10 +4,15 @@
 			<Page title="{i18n>titleAccounts}" showNavButton="true" navButtonPress="onNavBack">
 				<headerContent>
 				    <Toolbar>
-					<Button id="__button3" tooltip="New" icon="sap-icon://add" press="onAdd"/>
-					<u:FileUploader id="fileUploader" name="myFileUpload" uploadUrl="upload/" buttonOnly="true" icon="sap-icon://upload" iconOnly="true" change="onUpload"/>
-					<Button icon="sap-icon://delete" press="onDelete"/>
-					<Button icon="sap-icon://add-document" press="onAddOrder"/>
+					<Button id="__button3" tooltip="New" icon="sap-icon://add" press="onAdd" visible="{/UserSet('CURRENT')/AuthCreate}"/>
+					<u:FileUploader id="fileUploader" name="myFileUpload" uploadUrl="upload/" buttonOnly="true" icon="sap-icon://upload" iconOnly="true" change="onUpload" visible="{/UserSet('CURRENT')/AuthCreate}"/>
+					<Button icon="sap-icon://delete" press="onDelete" tooltip="{i18n>accountsDelete}" visible="{/UserSet('CURRENT')/AuthDelete}"/>
+                    <Input maxLength="8" width="140px" showValueHelp="true" valueHelpRequest="onModelValueHelp" placeholder="Model" showSuggestion="true" suggestionItems="{/ModelSet}" maxSuggestionWidth="200px" id="_inputModel" value="{view>/Accounts/model}">
+                        <suggestionItems>
+    					    <core:ListItem text="{ModelId}" additionalText="{Ltext}"/>
+    				    </suggestionItems>
+                    </Input>					
+					<Button icon="sap-icon://add-document" press="onAddOrder" visible="{/UeerSet('CURRENT')/AuthUpdate}"/>
 					<ToolbarSeparator/>
 					<Button icon="sap-icon://message-information" press="onInfo"/>
 					<Button icon="sap-icon://settings" press="onOpenSettings"/>
@@ -36,6 +41,11 @@
 							<Column id="__column0" width="50px">
 								<header>
 									<Label text="{/#Partner/Setid/@sap:label}" id="__label0"/>
+								</header>
+							</Column>
+							<Column id="__column01" width="50px" visible="{/UserSet('CURRENT')/AkvSelectable}">
+								<header>
+									<Label text="AkvID"/>
 								</header>
 							</Column>
 							<Column id="__column1">
@@ -68,6 +78,7 @@
 							<ColumnListItem type="Navigation" press="onBPDetails">
 								<cells>
 									<Text text="{Setid}" id="__text28"/>
+									<Text text="{Akvid}" visible="{/UserSet('CURRENT')/AkvSelectable}"/>
 									<ObjectIdentifier title="{SoldTo/Name1} {SoldTo/Name2}" text="{ShipTo/Name1} {ShipTo/Name2}" class="sapMTableContentMargin"/>
 									<Text text="{SoldTo/Stras} {SoldTo/Hsnm1},{SoldTo/Pstlz} {SoldTo/Ort01}\n{ShipTo/Stras} {ShipTo/Hsnm1}, {ShipTo/Pstlz} {ShipTo/Ort01}" id="__text29"/>
 									<Text text="{SoldTo/Telnr},{SoldTo/Mobnr}\n{ShipTo/Telnr},{ShipTo/Mobnr}" id="__text30"/>

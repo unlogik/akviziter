@@ -12,7 +12,7 @@
             				<core:Icon src="sap-icon://customer"/>
             				<Title text="Sold-to: {SoldTo/Partnerid}" level="H5" titleStyle="H5"/>
             				<ToolbarSpacer/>
-            				<Button icon="{ path: 'SoldTo/Status', formatter: '.formatter.statusIcon'}"/>
+            				<Button id="_btn1_SoldToDoubles" icon="{ path: 'SoldTo/Status', formatter: '.formatter.statusIcon'}" press="onDoublesDisplay"/>
             			</Toolbar>
             			<Label text="{/#Partner/SoldTo/Title/@sap:label}"/>
             			<Select id="__SoldTo_Title" showSecondaryValues="true" selectedKey="{SoldTo/Title}"
@@ -107,8 +107,7 @@
             				<core:Icon src="sap-icon://shipping-status"/>
             				<Title text="Ship-to: {ShipTo/Partnerid}" level="H5" titleStyle="H5"/>
             				<ToolbarSpacer/>
-            				<core:Icon src="{ path: 'ShipTo/Status', formatter: '.formatter.statusIcon' }"
-            					color="{ path: 'ShipTo/Status', formatter: '.formatter.statusIcon' }"/>
+            				<Button id="_btn1_ShipToDoubles" icon="{ path: 'ShipTo/Status', formatter: '.formatter.statusIcon'}" press="onDoublesDisplay"/>
             			</Toolbar>
             			<Label text="{/#Partner/ShipTo/Title/@sap:label}"/>
             			<Select id="__ShipTo_Title" showSecondaryValues="true" selectedKey="{ShipTo/Title}"
@@ -175,7 +174,7 @@
 	        <l:BlockLayoutCell class="sapUiNoContentPadding">
             	<s:SmartTable id="_tableOrders" entitySet="OrderSet" tableType="ResponsiveTable" useVariantManagement="true" persistencyKey="Order" useTablePersonalisation="true"
             		header="Orders" showRowCount="true" enableAutoBinding="true" app:useSmartField="true"  editable="true"
-            		editTogglable="true" class="sapUiTinyMargin" noData="No orders" tableBindingPath="PartnerToOrders">
+            		 class="sapUiTinyMargin" noData="No orders" tableBindingPath="PartnerToOrders">
             		<!-- layout data used to make the table growing but the filter bar fixed -->
             		<s:customToolbar>
                         <Toolbar>

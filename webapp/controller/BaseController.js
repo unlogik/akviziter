@@ -1,6 +1,9 @@
 sap.ui.define([
-	"sap/ui/core/mvc/Controller"
-], function(Controller) {
+	"sap/ui/core/mvc/Controller",
+	'sap/ui/model/json/JSONModel',
+	'sap/m/MessageStrip',
+	"sap/m/MessageToast"
+], function(Controller, JSONModel, MessageStrip, MessageToast) {
 	"use strict";
 
 	return Controller.extend("bp.controller.BaseController", {
@@ -34,8 +37,8 @@ sap.ui.define([
 			return this.getView().setModel(oModel, sName);
 		},
 
-		getComponentModel: function(sName){
-		  return this.getOwnerComponent().getModel(sName);  
+		getComponentModel: function(sName) {
+			return this.getOwnerComponent().getModel(sName);
 		},
 
 		/**
@@ -43,21 +46,64 @@ sap.ui.define([
 		 * @public
 		 * @returns {sap.ui.model.resource.ResourceModel} the resourceModel of the component
 		 */
-			getResourceBundle: function() {
+		getResourceBundle: function() {
 			return this.getOwnerComponent().getModel("i18n").getResourceBundle();
 		},
 
+		setViewModel: function(sName) {
+			var sViewName = this.getView().getViewName(); //getViewName returns "" empty string in onInit()
+			var sName = sViewName.match(/[^/.]+$/);                         
+			this.getView().setViewName(sName); //why not set viewName(!?)
+			var oViewModel = this.getModel("view");
+			if (oViewModel === undefined) {
+				oViewModel = new JSONModel();
+				this.setModel(oViewModel, "view");
+			}
+			var oData = {};
+			oData[sName] = {};
+			//var sJSON = "{ '" + sName +"' : { } }";
+			oViewModel.setData(oData, true);
+		},
+
+		setViewProperty: function(sProperty, sValue) {
+		    //var sViewName = this.getView().getViewName();
+			this.getModel("view").setProperty("/" + this.getView().getViewName() + "/" + sProperty, sValue);
+		},
+		getViewProperty: function(sProperty) {
+		    //var sViewName = this.getView().getViewName();
+			var value = this.getModel("view").getProperty("/" + this.getView().getViewName() + "/" + sProperty);
+			return value;
+		},
+
 		/**
-		 * Event handler when the share by E-Mail button has been clicked
+		 * Display Message Toast
 		 * @public
+		 *  @param {string} sName the model name
 		 */
-		onShareEmailPress: function() {
-			var oViewModel = (this.getModel("objectView") || this.getModel("worklistView"));
-			sap.m.URLHelper.triggerEmail(
-				null,
-				oViewModel.getProperty("/shareSendEmailSubject"),
-				oViewModel.getProperty("/shareSendEmailMessage")
-			);
+		msgToast: function(sText, pos='center center') {
+			MessageToast.show( sText, { at: pos });
+		},
+        /**
+		 * Display Message Toast
+		 * @public
+		 * @param {string} sName the model name
+		 */		
+		msgStrip: function (sText, sType, sIcon, closeButton=true) {
+			var oMs = sap.ui.getCore().byId("_msgStrip");
+			if (oMs) {
+				oMs.destroy();
+			}
+			var oMsgStrip = new MessageStrip("_msgStrip", {
+				text: sText,
+				showCloseButton: closeButton,
+				showIcon: sIcon,
+				type: sType
+			});
+			this.getView().addContent(oMsgStrip);
+		},
+
+		getI18n: function (sProperty) {
+			return this.getModel("i18n").getResourceBundle().getText(sProperty);
 		}
 
 	});
