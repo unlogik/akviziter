@@ -16,14 +16,14 @@
             			</Toolbar>
             			<Label text="{/#Partner/SoldTo/Title/@sap:label}"/>
             			<Select id="__SoldTo_Title" showSecondaryValues="true" selectedKey="{SoldTo/Title}"
-            				items="{ path: '/PartnerTitleSet', sorter: { path: 'Title' } }">
+            				items="{ path: '/PartnerTitleSet', sorter: { path: 'Title' } }" forceSelection="false">
             				<core:ListItem key="{Title}" text="{TitleMedi}" additionalText="{Title}"/>
             			</Select>
             			<Label text="{/#Partner/SoldTo/Name1/@sap:label}" required="true"/>
             			<Input id="__SoldTo_Name1" value="{SoldTo/Name1}" liveChange="onSoldToName1Change" submit="onEnter"/>
             			<Input id="__SoldTo_Name2" value="{SoldTo/Name2}" submit="onEnter"/>
             			<Label text="{/#Partner/SoldTo/Ort01/@sap:label}" required="true"/>
-            			<Input id="__SoldTo_Ort01" value="{SoldTo/Ort01}" placeholder="City..." showSuggestion="true" showTableSuggestionValueHelp="false"
+            			<Input id="__SoldTo_Ort01" value="{SoldTo/Ort01}" placeholder="City" showSuggestion="true" showTableSuggestionValueHelp="false"
             				suggestionRows="{/CitySet}" suggest="onCitySuggest" suggestionItemSelected="onCitySelect" maxSuggestionWidth="500px"
             				liveChange="onSoldToCityChange" submit="onEnter">
             				<suggestionColumns>
@@ -47,9 +47,9 @@
             					</ColumnListItem>
             				</suggestionRows>
             			</Input>
-            			<Input id="__SoldTo_Pstlz" value="{SoldTo/Pstlz}" liveChange="onSoldToCityChange" submit="onEnter"/>
+            			<Input id="__SoldTo_Pstlz" value="{SoldTo/Pstlz}" liveChange="onSoldToCityChange" submit="onEnter" editable="false"/>
             			<Input id="__SoldTo_Land1" value="{SoldTo/Land1}" placeholder="Land..." showSuggestion="true" suggest="handleSuggest"
-            				suggestionItems="{/CountrySet}" maxSuggestionWidth="200px" liveChange="onSoldToCityChange" submit="onEnter">
+            				suggestionItems="{/CountrySet}" maxSuggestionWidth="200px" liveChange="onSoldToCityChange" submit="onEnter" editable="false">
             				<suggestionItems>
             					<core:ListItem text="{Land1}" additionalText="{Landx}"/>
             				</suggestionItems>
@@ -78,7 +78,7 @@
             					</ColumnListItem>
             				</suggestionRows>
             			</Input>
-            			<Input id="__SoldTo_Hsnm1" value="{SoldTo/Hsnm1}" submit="onEnter"/>
+            			<Input id="__SoldTo_Hsnm1" value="{SoldTo/Hsnm1}" submit="onEnter" type="Number"/>
             			<Input id="__SoldTo_Hsnm2" value="{SoldTo/Hsnm2}" submit="onEnter"/>
             			<Label text="{/#Partner/SoldTo/Telnr/@sap:label}"/>
             			<Input id="__SoldTo_Telnr" value="{SoldTo/Telnr}" type="Tel" submit="onEnter"/>
@@ -94,12 +94,12 @@
             			<Label text="{/#Partner/SoldTo/Intad/@sap:label}"/>
             			<Input id="__SoldTo_Intad" value="{SoldTo/Intad}" submit="onEnter"/>
             			<Label text="{/#Partner/SoldTo/Stcd2/@sap:label}" required="true"/>
-            			<Input id="__SoldTo_Stcd2" value="{SoldTo/Stcd2}" liveChange="onSoldToOIBChange" submit="onEnter"/>
+            			<Input id="__SoldTo_Stcd2" value="{SoldTo/Stcd2}" liveChange="onSoldToOIBChange" submit="onEnter" type="Number" maxLength="11"/>
             		</f:content>
             	</f:SimpleForm>	 
 	        </l:BlockLayoutCell>
 	        <l:BlockLayoutCell class="sapUiNoContentPadding">
-            	<f:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="3"
+            	<f:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="3" labelSpanS="3"
             		adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1"
             		singleContainerFullSize="false" id="__form5">	            
                     <f:content>            		
@@ -111,7 +111,7 @@
             			</Toolbar>
             			<Label text="{/#Partner/ShipTo/Title/@sap:label}"/>
             			<Select id="__ShipTo_Title" showSecondaryValues="true" selectedKey="{ShipTo/Title}"
-            				items="{ path: '/PartnerTitleSet', sorter: { path: 'Title' } }">
+            				items="{ path: '/PartnerTitleSet', sorter: { path: 'Title' } }" forceSelection="false">
             				<core:ListItem key="{Title}" text="{TitleMedi}" additionalText="{Title}"/>
             			</Select>
             			<Label text="{/#Partner/ShipTo/Name1/@sap:label}"/>
@@ -141,16 +141,38 @@
             					</ColumnListItem>
             				</suggestionRows>
             			</Input>
-            			<Input id="__ShipTo_Pstlz" value="{ShipTo/Pstlz}" submit="onEnter"/>
+            			<Input id="__ShipTo_Pstlz" value="{ShipTo/Pstlz}" submit="onEnter" editable="false"/>
             			<Input id="__ShipTo_Land1" value="{ShipTo/Land1}" placeholder="Land..." showSuggestion="true" suggest="handleSuggest"
-            				suggestionItems="{/CountrySet}" maxSuggestionWidth="200px" submit="onEnter">
+            				suggestionItems="{/CountrySet}" maxSuggestionWidth="200px" submit="onEnter" editable="false">
             				<suggestionItems>
             					<core:ListItem text="{Land1}" additionalText="{Landx}"/>
             				</suggestionItems>
             			</Input>
             			<Label text="{/#Partner/ShipTo/Stras/@sap:label}"/>
-            			<Input id="__ShipTo_Stras" value="{ShipTo/Stras}" submit="onEnter"/>
-            			<Input id="__ShipTo_Hsnm1" value="{ShipTo/Hsnm1}" submit="onEnter"/>
+            			<Input id="__ShipTo_Stras" value="{ShipTo/Stras}" placeholder="Street..." showSuggestion="true" showTableSuggestionValueHelp="false"
+            				suggest="onStreetSuggest" suggestionRows="{/StreetSet}" maxSuggestionWidth="500px" submit="onEnter">
+            				<suggestionColumns>
+            					<Column hAlign="Begin" popinDisplay="Inline" demandPopin="true">
+            						<Label text="Street"/>
+            					</Column>
+            					<Column hAlign="Center" popinDisplay="Inline" demandPopin="true" minScreenWidth="Tablet">
+            						<Label text="Code"/>
+            					</Column>
+            					<Column hAlign="Center" popinDisplay="Inline" demandPopin="false" minScreenWidth="Tablet">
+            						<Label text="City Srch"/>
+            					</Column>
+            				</suggestionColumns>
+            				<suggestionRows>
+            					<ColumnListItem>
+            						<cells>
+            							<Label text="{Street}"/>
+            							<Label text="{CityCode}"/>
+            							<Label text="{McCity}"/>
+            						</cells>
+            					</ColumnListItem>
+            				</suggestionRows>
+            			</Input>
+            			<Input id="__ShipTo_Hsnm1" value="{ShipTo/Hsnm1}" submit="onEnter" type="Number"/>
             			<Input id="__ShipTo_Hsnm2" value="{ShipTo/Hsnm2}" submit="onEnter"/>
             			<Label text="{/#Partner/ShipTo/Telnr/@sap:label}"/>
             			<Input id="__ShipTo_Telnr" value="{ShipTo/Telnr}" type="Tel" submit="onEnter"/>
@@ -165,7 +187,7 @@
             			<Label text="{/#Partner/ShipTo/Intad/@sap:label}"/>
             			<Input id="__ShipTo_Intad" value="{ShipTo/Intad}" submit="onEnter"/>
             			<Label text="{/#Partner/ShipTo/Stcd2/@sap:label}"/>
-            			<Input id="__ShipTo_Stcd2" value="{ShipTo/Stcd2}" submit="onEnter"/>
+            			<Input id="__ShipTo_Stcd2" value="{ShipTo/Stcd2}" submit="onEnter" type="Number" maxLength="11"/>
             		</f:content>
             	</f:SimpleForm>	            
 	        </l:BlockLayoutCell>
@@ -180,7 +202,7 @@
                         <Toolbar>
                             <ToolbarSpacer />
                             <!--<sf:SmartField value="{ModelSet('NEW')/Model}"/>-->
-                            <Input maxLength="8" width="140px" showValueHelp="true" valueHelpRequest="onModelValueHelp" placeholder="Model" showSuggestion="true" suggestionItems="{/ModelSet}" maxSuggestionWidth="200px" id="_inputModel">
+                            <Input maxLength="8" width="140px" showValueHelp="true" valueHelpRequest="onModelValueHelp" placeholder="Model" showSuggestion="true" suggestionItems="{/ModelSet}" maxSuggestionWidth="200px" id="_inputModel" value="{view>/AccountDetails/model}">
                                 <suggestionItems>
             					    <core:ListItem text="{ModelId}" additionalText="{Ltext}"/>
             				    </suggestionItems>
@@ -209,7 +231,7 @@
 							<items>
 								<ColumnListItem>
 									<cells>
-										<DatePicker dateValue="{Stdat}" displayFormat="dd.MM.yyyy" minDate="{MinStdat}"/>
+										<DatePicker dateValue="{Stdat}" displayFormat="dd.MM.YYYY" minDate="{MinStdat}"/>
 										<Text text="{ path: 'Cldat', type:'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.YYYY'} }"/>
 									</cells>
 								</ColumnListItem>

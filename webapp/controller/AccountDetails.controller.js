@@ -163,13 +163,18 @@ sap.ui.define([
 			var oView = this.getView();
 			var oData = oView.getBindingContext().getObject();
 			var oModel = this.getModel();
-			var sModel = this.getView().byId("_inputModel").getValue();
+			var sModel = this.getViewProperty("model");
+		    if (!sModel){
+		        this.msgToast(this.getI18n("msgNoModel"));
+		        return;
+		    }
 			oModel.create("/OrderSet", {
 				Setid: oData.Setid,
 				Model: sModel
 			}, {
 				success: function (oData_, response) {
-					MessageToast.show("Model " + sModel + " je uspješno dodan!");
+					that.msgToast("Model " + sModel + " je uspješno dodan!");
+					that.setViewProperty("model", "");
 					//oModel.update("/PartnerSet('" + oData.Setid + "')", oData);
 					//oModel.update(sPath, oData);
 					//oView.byId("_tableOrders").setTableBindingPath("PartnerToOrders");
@@ -438,12 +443,18 @@ sap.ui.define([
 		},
 
 		onStreetSuggest: function (oEvent) {
+		    var sCity;
+		    if(oEvent.getSource().getId().match(/SoldTo/)){
+		        sCity = this.getView().getBindingContext().getProperty("SoldTo/Ort01")
+		    }else{
+		        sCity = this.getView().getBindingContext().getProperty("ShipTo/Ort01")
+		    }
 			var sTerm = oEvent.getParameter("suggestValue");
 			var aFilters = [];
 			if (sTerm) {
 				aFilters.push(new Filter("Street", sap.ui.model.FilterOperator.StartsWith, sTerm));
-				if (this.sCityCode) {
-					aFilters.push(new Filter("CityCode", sap.ui.model.FilterOperator.EQ, this.sCityCode));
+				if (sCity) {
+					aFilters.push(new Filter("CityCode", sap.ui.model.FilterOperator.EQ, sCity));
 				}
 			}
 			oEvent.getSource().getBinding("suggestionRows").filter(aFilters);

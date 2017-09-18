@@ -151,7 +151,7 @@ sap.ui.define([
 				title: 'Confirm',
 				type: 'Message',
 				content: new Text({
-					text: 'Are you sure you want to submit your shopping cart?'
+					text: this.getI18n("msgSubmitPopup")
 				}),
 				beginButton: new Button({
 					text: "{i18n>submitButton}",
