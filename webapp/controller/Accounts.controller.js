@@ -211,7 +211,7 @@ sap.ui.define([
 			var oModel = this.getModel();
 			//Prep header-level group/changeset params  
 			var mParameters = {
-				"groupId": "grpid",
+				"groupId": "Partner",
 				"changeSetId": "grpid",
 				"success": this._createBatchSuccess.bind(this),
 				"error": this._createBatchError.bind(this) //function(oError) { }.bind(this)

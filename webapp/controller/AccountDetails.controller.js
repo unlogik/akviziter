@@ -610,6 +610,7 @@ sap.ui.define([
 			}
 			// Everything went fine.
 			this.setViewProperty("busy", false);
+			this.setViewProperty("messageShow",  false );
 		},
 
 		onEdit: function () {
@@ -711,8 +712,11 @@ sap.ui.define([
 		},
 		
 		onMessageChange: function(oEvent ){
-		    var count = oEvent.getParameter("newMessages").length;
+		    //var count = oEvent.getParameter("newMessages").length;
+		    var oMessage = sap.ui.getCore().getMessageManager().getMessageModel();
+		    var count = oMessage.getData().length
 		    this.setViewProperty("messageCount", count);
+		    //this.setViewProperty("messageShow", true);
 		    this.setViewProperty("messageShow", (count > 0) ? true: false );
 		}
 
