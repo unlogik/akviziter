@@ -64,6 +64,14 @@ sap.ui.define([], function () {
                 return;
             }
             return new Date(oValue);
+		},
+		inputQuantity: function(oValue){
+		    if(oValue > 3){
+		      return "Warning";
+		    }
+		    else{
+		        return "None";
+		    }
 		}
 	};
 });

@@ -102,8 +102,13 @@ sap.ui.define([
 			this.getView().addContent(oMsgStrip);
 		},
 
-		getI18n: function (sProperty) {
-			return this.getModel("i18n").getResourceBundle().getText(sProperty);
+		getI18n: function (sProperty, v1, v2, v3, v4) {
+		    var aVar = [];
+		    if( typeof v1 !== "undefined"){  aVar.push(v1) };
+		    if( typeof v2 !== "undefined"){  aVar.push(v2) };
+		    if( typeof v3 !== "undefined"){  aVar.push(v3) };
+		    if( typeof v4 !== "undefined"){  aVar.push(v4) };
+			return this.getModel("i18n").getResourceBundle().getText(sProperty, aVar);
 		}
 
 	});

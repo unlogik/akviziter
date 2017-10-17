@@ -52,12 +52,21 @@
 								<Text text="{Mobnr}"/>
 								<Label text="{i18n>accountDoublesOIB}"/>
 								<Text text="{Stcd2}"/>
+								<Label text="{i18n>accountDoublesSource}"/>
+								<Text text="{Source}"/>
+								<Label text="{i18n>accountDoublesRole}"/>
+								<Text text="{Role}"/>
+								<Label text="{i18n>accountDoublesAddNo}"/>
+								<Text text="{AddrNumber}"/>
 							</f:content>
 						</f:SimpleForm>
 					</VBox>
 				</Page>
 			</NavContainer>
 		</content>
+		<beginButton>
+		    <Button id="_btnDoublesUnselect" icon="sap-icon://delete" visible="{view>/AccountDetails/editable}"/>
+		</beginButton>
 		<endButton>
 			<Button id="_btnDoublesAccept" icon="sap-icon://accept" visible="{view>/AccountDetails/editable}"/>
 		</endButton>

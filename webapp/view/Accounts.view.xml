@@ -24,7 +24,7 @@
 				<!--	</Toolbar>-->
 				<!--</subHeader>-->
 				<content>
-					<Table noDataText="No data" id="__tablePartners" items="{/PartnerSet}" mode="MultiSelect">
+					<Table noDataText="No data" id="__tablePartners" items="{ path : '/PartnerSet', sorter : { path : 'FileName', group : true } }" mode="MultiSelect">
 						<!--<headerToolbar>-->
 						<!--	<OverflowToolbar>-->
 						<!--		<Title text="Products" level="H2"/>>-->
@@ -43,7 +43,7 @@
 									<Label text="{/#Partner/Setid/@sap:label}" id="__label0"/>
 								</header>
 							</Column>
-							<Column id="__column01" width="50px" visible="{/UserSet('CURRENT')/AkvSelectable}">
+							<Column id="__column01" width="50px" visible="{/UserSet('CURRENT')/AkvSelectable}" minScreenWidth="Tablet">
 								<header>
 									<Label text="AkvID"/>
 								</header>
@@ -53,17 +53,17 @@
 									<Label text="Name" id="__label1"/>
 								</header>
 							</Column>
-							<Column id="__column2">
+							<Column id="__column2" minScreenWidth="Tablet" demandPopin="true">
 								<header>
 									<Label text="Address" id="__label2"/>
 								</header>
 							</Column>
-							<Column id="__column3">
+							<Column id="__column3" minScreenWidth="Tablet" demandPopin="true">
 								<header>
 									<Label text="Telephone" id="__label3"/>
 								</header>
 							</Column>
-    						<Column id="__column4">
+    						<Column id="__column4" minScreenWidth="Tablet">
     							<header>
     								<Label text="Birth" id="__label4"/>
     							</header>

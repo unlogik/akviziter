@@ -107,7 +107,7 @@
             				<core:Icon src="sap-icon://shipping-status"/>
             				<Title text="Ship-to: {ShipTo/Partnerid}" level="H5" titleStyle="H5"/>
             				<ToolbarSpacer/>
-            				<Button id="_btn1_ShipToDoubles" icon="{ path: 'ShipTo/Status', formatter: '.formatter.statusIcon'}" press="onDoublesDisplay"/>
+            				<Button id="_btn1_ShipToDoubles" icon="{ path: 'ShipTo/Status', formatter: '.formatter.statusIcon'}" press="onDoublesDisplay" visible="{ShipTo/Doubles}"/>
             			</Toolbar>
             			<Label text="{/#Partner/ShipTo/Title/@sap:label}"/>
             			<Select id="__ShipTo_Title" showSecondaryValues="true" selectedKey="{ShipTo/Title}"
@@ -227,12 +227,19 @@
 									</customData>
 									<Text text="{/#Order/Cldat/@sap:label}"/>
 								</Column>								
+								<Column width="60px">
+									<customData>
+										<core:CustomData key="p13nData" value='\{"columnKey": "Quant", "maxLength": "5","columnIndex":"9", "leadingProperty": "Quant"}'/>
+									</customData>
+									<Text text="{/#Order/Quant/@sap:label}"/>
+								</Column>								
 							</columns>
 							<items>
 								<ColumnListItem>
 									<cells>
 										<DatePicker dateValue="{Stdat}" displayFormat="dd.MM.YYYY" minDate="{MinStdat}"/>
 										<Text text="{ path: 'Cldat', type:'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.YYYY'} }"/>
+										<Input value="{ path: 'Quant', type:'sap.ui.model.type.Integer' }" type="Number" valueState="{ path: 'Quant', formatter: '.formatter.inputQuantity' }" valueStateText="{i18n>msgQuantityHigh}" maxLength="2"/>
 									</cells>
 								</ColumnListItem>
 							</items>

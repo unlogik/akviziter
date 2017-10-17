@@ -68,7 +68,9 @@ sap.ui.define([
 
 			//	    var oModel = this.getComponentModel();
 			//var oProcessor = new sap.ui.core.message.MessageProcessor();
-			sap.ui.getCore().getMessageManager().registerMessageProcessor(oModel);
+			//sap.ui.getCore().getMessageManager().registerMessageProcessor(oModel);
+			oModel.attachMessageChange( this.onMessageChange, this  );
+			//oProcessor.attachMessageChange(this.onMessageChange, this);
 			//sap.ui.getCore().getMessageManager().registerMessageProcessor( oData );
 			// oProcessor.attachMessageChange( this._messageChange, this );
 			var oMessage = sap.ui.getCore().getMessageManager().getMessageModel();
@@ -257,14 +259,22 @@ sap.ui.define([
 			    var oContext = this._oDoublesPopover.getBindingContext();
 			    var path = oContext.getPath();
 			}*/
-			if(this._oDoublesPopover.isOpen()){
+			var oButtonOpen = oEvent.getSource();
+			var buttonChanged = ( this.doublesPopoverLastOpenBy === oButtonOpen.getId() ) ? false : true ;
+			this.doublesPopoverLastOpenBy = oButtonOpen.getId();
+			
+			if(this._oDoublesPopover.isOpen() && !buttonChanged){
 			    this._oDoublesPopover.close();
 			}else{
 			    this.setViewProperty("editable", this.editable );
 			    sPath = this.getView().getBindingContext().getPath() + "/" + sPath
 			    var oTable = Fragment.byId("_popoverDoubles", "_tableDoubles");
 			    var oButton = Fragment.byId("_popoverDoubles", "_btnDoublesAccept");
-			    oButton.attachPress( {source: sPath}, this.onDoublesSelect, this )
+			    oButton.detachPress(this.onDoublesSelect, this );
+			    oButton.attachPress( {source: sPath}, this.onDoublesSelect, this );
+			    var oButton = Fragment.byId("_popoverDoubles", "_btnDoublesUnselect");
+			    oButton.detachPress(this.onDoublesUnselect, this );
+			    oButton.attachPress( {source: sPath}, this.onDoublesUnselect, this );
 			    var oTemplate = oTable.getBindingInfo("items").template;
 			    oTable.bindItems( { path: sPath, template: oTemplate } );
 			    if(this.getViewProperty("editable")){
@@ -273,9 +283,9 @@ sap.ui.define([
 			        oTable.setMode();
 			    }
     			// delay because addDependent will do a async rerendering and the actionSheet will immediately close without it.
-    			var oButton = oEvent.getSource();
     			jQuery.sap.delayedCall(0, this, function () {
-    				this._oDoublesPopover.openBy(oButton);
+    			    this.onDoublesBack( );
+    				this._oDoublesPopover.openBy(oButtonOpen);
     			});	
 			}            
         },
@@ -296,24 +306,40 @@ sap.ui.define([
 		},
 		
 		onDoublesSelect: function(oEvent, oParam){
-		  var sAssociation = oParam.source.match(/[^/]+$/); //extract associatin from path
-		  var oTable = Fragment.byId("_popoverDoubles", "_tableDoubles"); 
-		  var sProperty;
-		  switch( sAssociation[0] ){
-		      case "ShipToDoubles": 
-		          sProperty = oTable.getBindingContext().getPath() + "/ShipTo/Partnerid";
-		          break;
-		       case "SoldToDoubles":
-		          sProperty = oTable.getBindingContext().getPath() + "/SoldTo/Partnerid";
-		  }
-		  var oItem = oTable.getSelectedItem();
-		  var oContext = oItem.getBindingContext();
-		  var partnerid = oContext.getProperty("Partnerid")
-		  this.getView().getModel().setProperty(sProperty , partnerid)
-		  this.getComponentModel().submitChanges({groupID : "Partner"});
-		  var oInfo = oTable.getBindingInfo();
-		  this._oDoublesPopover.close();
-		  
+            var oTable = Fragment.byId("_popoverDoubles", "_tableDoubles"); 
+            var oItem = oTable.getSelectedItem();
+            var oContext = oItem.getBindingContext();
+            var partnerid = oContext.getProperty("Partnerid");
+            var addrnumber = oContext.getProperty("AddrNumber");
+            var sPath = oTable.getBindingContext().getPath(); 
+            sPath = sPath + this.doublesGetPath(oParam);
+            var oModel = this.getView().getModel();
+            oModel.setProperty(sPath + "/Partnerid", partnerid);
+            oModel.setProperty(sPath + "/Adrnr", addrnumber);
+            this.getComponentModel().submitChanges({groupID : "Partner"});
+            var oInfo = oTable.getBindingInfo();
+            this._oDoublesPopover.close();
+		},
+		
+		onDoublesUnselect: function(oEvent, oParam) {
+		    var oTable = Fragment.byId("_popoverDoubles", "_tableDoubles"); 
+            var sPath = oTable.getBindingContext().getPath();
+            sPath = sPath + this.doublesGetPath(oParam);
+		    var oModel = this.getView().getModel();
+		    oModel.setProperty(sPath + "/Partnerid", "");
+		    oModel.setProperty(sPath + "/Adrnr", "");
+		    this.getComponentModel().submitChanges({groupID : "Partner"});
+		    this._oDoublesPopover.close();    
+		},
+		
+		doublesGetPath: function(oParam){
+            var sAssociation = oParam.source.match(/[^/]+$/); //extract associatin from path
+            switch( sAssociation[0] ){
+                case "ShipToDoubles": 
+                    return "/ShipTo";
+                case "SoldToDoubles":
+                    return "/SoldTo";
+            }		    
 		},
 		
 		onModelValueHelp: function () {
@@ -621,9 +647,9 @@ sap.ui.define([
 							Editable: "true"
 						});
 					},
-					/*error: function (oError) {
+					error: function (oError) {
 						sap.m.MessageToast.show(oError);
-					}*/
+					}
 				});
 			} else {
 				//oModel.update(sPath, oData);
@@ -682,6 +708,12 @@ sap.ui.define([
 
 		_messageChange: function (oData, fnFunction, oListener) {
 			var lDAta = oData;
+		},
+		
+		onMessageChange: function(oEvent ){
+		    var count = oEvent.getParameter("newMessages").length;
+		    this.setViewProperty("messageCount", count);
+		    this.setViewProperty("messageShow", (count > 0) ? true: false );
 		}
 
 	});

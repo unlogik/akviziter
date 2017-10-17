@@ -134,7 +134,7 @@ sap.ui.define([
 			if (files && window.FileReader) {
 				var reader = new FileReader();
 				reader.onload = function(e) {
-					this._createFromXLSX(e)
+					this._createFromXLSX(e, files[0])
 				}.bind(this);
 				reader.readAsBinaryString(files[0]);
 			}
@@ -180,7 +180,9 @@ sap.ui.define([
 			var oTable = this.getView().byId("__tablePartners");
 			var aItems = oTable.getSelectedItems();
 			for (var i = 0; i < aItems.length; i++) {
-				var id = aItems[i].getCells()[0].getText();
+			    var sPath = aItems[i].getBindingContextPath();
+			    oModel.setProperty( sPath + "/Status", "P" );
+				/*var id = aItems[i].getCells()[0].getText();
 				var oData = {
 					"Status": "P"
 				};
@@ -189,11 +191,12 @@ sap.ui.define([
 						jQuery.sap.require("sap.m.MessageToast");
 						MessageToast.show("el Vuelo '" + name + "' se elimino con exito.");
 					}, this),
-				});
+				});*/
 			}
+			oModel.submitChanges( "Partner" );
 		},
 
-		_createFromXLSX: function(e) {
+		_createFromXLSX: function(e, file) {
 			var data = e.target.result;
 			var wb = XLSX.read(data, {
 				type: 'binary'
@@ -215,6 +218,7 @@ sap.ui.define([
 			};
 			for (var i = 2; i < json.length; i++) {
 				var entity = this._parseEntity(json[i]);
+				entity.FileName = file.name;
 				oModel.create("/PartnerSet", entity, mParameters);
 			}
 			oModel.submitChanges(mParameters);
@@ -222,10 +226,11 @@ sap.ui.define([
 		/* parse excel table format to oData format
 		 */
 		_parseEntity: function(json) {
+		    var oModel = this.getModel();
 			var bptype = null;
 			var field = null;
 			var entity = {
-				"Akvid": "AK1",
+				"Akvid": oModel.getProperty("/UserSet('CURRENT')/Akvid"),
 				"Pubid": "PB1",
 				"SoldTo": {},
 				"ShipTo": {}
@@ -256,7 +261,8 @@ sap.ui.define([
 		},
 
 		_createBatchError: function(oError) {
-			alert("Error occurred ");
+		    var err = JSON.parse( oError.responseText );
+			MessageBox.show( err.error.message.value, MessageBox.Icon.ERROR, "Batch Save", MessageBox.Action.OK);
 		},
 
 		onDataExport: sap.m.Table.prototype.exportData || function(oEvent) {
@@ -416,7 +422,8 @@ sap.ui.define([
 
 		_validateSelected: function() {
 			if (this.getView().byId("__tablePartners").getSelectedItems().length === 0) {
-			    this.msgToast( this.getModel("i18n").getResourceBundle().getText("msgSelectItem") );
+			    //this.msgToast( this.getModel("i18n").getResourceBundle().getText("msgSelectItem") );
+			    this.msgToast( this.getI18n("msgSelectItem" ) );
 				return false;
 			}
 			return true;
