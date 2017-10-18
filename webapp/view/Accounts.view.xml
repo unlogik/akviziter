@@ -3,20 +3,20 @@
 		<pages>
 			<Page title="{i18n>titleAccounts}" showNavButton="true" navButtonPress="onNavBack">
 				<headerContent>
-				    <Toolbar>
-					<Button id="__button3" tooltip="New" icon="sap-icon://add" press="onAdd" visible="{/UserSet('CURRENT')/AuthCreate}"/>
-					<u:FileUploader id="fileUploader" name="myFileUpload" uploadUrl="upload/" buttonOnly="true" icon="sap-icon://upload" iconOnly="true" change="onUpload" visible="{/UserSet('CURRENT')/AuthCreate}"/>
-					<Button icon="sap-icon://delete" press="onDelete" tooltip="{i18n>accountsDelete}" visible="{/UserSet('CURRENT')/AuthDelete}"/>
-                    <Input maxLength="8" width="140px" showValueHelp="true" valueHelpRequest="onModelValueHelp" placeholder="Model" showSuggestion="true" suggestionItems="{/ModelSet}" maxSuggestionWidth="200px" id="_inputModel" value="{view>/Accounts/model}">
-                        <suggestionItems>
-    					    <core:ListItem text="{ModelId}" additionalText="{Ltext}"/>
-    				    </suggestionItems>
-                    </Input>					
-					<Button icon="sap-icon://add-document" press="onAddOrder" visible="{/UeerSet('CURRENT')/AuthUpdate}"/>
-					<ToolbarSeparator/>
-					<Button icon="sap-icon://message-information" press="onInfo"/>
-					<Button icon="sap-icon://settings" press="onOpenSettings"/>
-					</Toolbar>
+				    <OverflowToolbar>
+    					<OverflowToolbarButton id="__button3" text="Add" tooltip="New" icon="sap-icon://add" press="onAdd" visible="{/UserSet('CURRENT')/AuthCreate}"/>
+    					<u:FileUploader id="fileUploader" name="myFileUpload" buttonOnly="true" icon="sap-icon://upload" iconOnly="true" change="onUpload" visible="{/UserSet('CURRENT')/AuthCreate}"/>
+    					<OverflowToolbarButton text="Delete" icon="sap-icon://delete" press="onDelete" tooltip="{i18n>accountsDelete}" visible="{/UserSet('CURRENT')/AuthDelete}"/>
+                        <Input maxLength="8" width="140px" showValueHelp="true" valueHelpRequest="onModelValueHelp" placeholder="Model" showSuggestion="true" suggestionItems="{/ModelSet}" maxSuggestionWidth="200px" id="_inputModel" value="{view>/Accounts/model}">
+                            <suggestionItems>
+        					    <core:ListItem text="{ModelId}" additionalText="{Ltext}"/>
+        				    </suggestionItems>
+                        </Input>					
+    					<OverflowToolbarButton text="Add Order" icon="sap-icon://add-document" press="onAddOrder" visible="{/UeerSet('CURRENT')/AuthUpdate}"/>
+    					<ToolbarSeparator/>
+    					<OverflowToolbarButton text="Info" icon="sap-icon://message-information" press="onInfo"/>
+    					<OverflowToolbarButton text="Settings" icon="sap-icon://drop-down-list" press="onOpenSettings"/>
+					</OverflowToolbar>
 				</headerContent>
 				<!--<subHeader>-->
 				<!--	<Toolbar>-->

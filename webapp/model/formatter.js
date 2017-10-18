@@ -20,8 +20,8 @@ sap.ui.define([], function () {
             switch(sStatus){
                 case 'E': return "sap-icon://message-error";
                 case 'W': return "sap-icon://message-warning";
-                case 'S': return "sap-icon://messge-success";
-                case 'I': return "sap-icon://messge-info";
+                case 'S': return "sap-icon://message-success";
+                case 'I': return "sap-icon://message-info";
                 case 'A': return "sap-icon://error";
             }		    
 		},

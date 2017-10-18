@@ -5,19 +5,24 @@
 		id="viewSettingsDialog"
 		confirm="onConfirmSettings">
 		<sortItems>
-			<ViewSettingsItem text="{/#Partner/SoldTo/Title/@sap:label}" key="c1"/>
-			<ViewSettingsItem text="{/#Partner/SoldTo/Name1/@sap:label}" key="c2"/>
-			<ViewSettingsItem text="{/#Partner/SoldTo/Name2/@sap:label}" key="c3"/>
+			<ViewSettingsItem text="{/#Partner/SoldTo/Setid/@sap:label}" key="SoldTo/Setid"/>
+			<ViewSettingsItem text="{/#Partner/SoldTo/Title/@sap:label}" key="SoldTo/Title"/>
+			<ViewSettingsItem text="{/#Partner/SoldTo/Name1/@sap:label}" key="SoldTo/Name1"/>
+			<ViewSettingsItem text="{/#Partner/SoldTo/Name2/@sap:label}" key="SoldTo/Name2"/>
 		</sortItems>
+		<groupItems>
+			<ViewSettingsItem text="File Name" key="FileName" />
+			<ViewSettingsItem text="Acquisiter" key="Akvid" />
+		</groupItems>		
 		<filterItems>
 			<ViewSettingsFilterItem
 				text="{i18n>columnStatus}"
-				key="status"
+				key="Status"
 				id="statusFilter">
 				<items>
-					<ViewSettingsItem text="{i18n>msgError}" key="{E}" />
-					<ViewSettingsItem text="{i18n>msgWarning}" key="{W}" />
-					<ViewSettingsItem text="{i18n>msgSuccess}" key="{S}" />
+					<ViewSettingsItem text="{i18n>msgError}" key="Status__EQ__E" />
+					<ViewSettingsItem text="{i18n>msgWarning}" key="Status__EQ__W" />
+					<ViewSettingsItem text="{i18n>msgSuccess}" key="Status__EQ__S" />
 				</items>
 			</ViewSettingsFilterItem>
 		</filterItems>

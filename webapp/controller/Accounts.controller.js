@@ -14,9 +14,11 @@ sap.ui.define([
 	"bp/model/formatter",
 	"bp/lib/JsXlsx",
 	"bp/lib/jszip.min",
-	"bp/lib/xlsx.min"
+	"bp/lib/xlsx.min",
+	"sap/ui/model/Filter",
+	"sap/ui/model/Sorter"
 ], function(BaseController, History, Export, ExportTypeCSV, MessageBox, MessageToast, MessagePopover, MessagePopoverItem, Dialog, Button,
-	Text, Fragment, formatter, XLSX_, JSZip) {
+	Text, Fragment, formatter, XLSX_, JSZip, xlsx, Filter, Sorter) {
 	"use strict";
 
 	var oMessageTemplate = new MessagePopoverItem({
@@ -138,6 +140,7 @@ sap.ui.define([
 				}.bind(this);
 				reader.readAsBinaryString(files[0]);
 			}
+			oEvent.clear();
 		},
 
 		onSubmit: function(oEvent) {
@@ -180,8 +183,8 @@ sap.ui.define([
 			var oTable = this.getView().byId("__tablePartners");
 			var aItems = oTable.getSelectedItems();
 			for (var i = 0; i < aItems.length; i++) {
-			    var sPath = aItems[i].getBindingContextPath();
-			    oModel.setProperty( sPath + "/Status", "P" );
+				var sPath = aItems[i].getBindingContextPath();
+				oModel.setProperty(sPath + "/Status", "P");
 				/*var id = aItems[i].getCells()[0].getText();
 				var oData = {
 					"Status": "P"
@@ -193,7 +196,7 @@ sap.ui.define([
 					}, this),
 				});*/
 			}
-			oModel.submitChanges( "Partner" );
+			oModel.submitChanges("Partner");
 		},
 
 		_createFromXLSX: function(e, file) {
@@ -226,7 +229,7 @@ sap.ui.define([
 		/* parse excel table format to oData format
 		 */
 		_parseEntity: function(json) {
-		    var oModel = this.getModel();
+			var oModel = this.getModel();
 			var bptype = null;
 			var field = null;
 			var entity = {
@@ -256,13 +259,13 @@ sap.ui.define([
 		},
 
 		_createBatchSuccess: function(data, response) {
-			this.getModel().refresh();
+			//this.getModel().refresh();
 			MessageBox.show("Partners created", MessageBox.Icon.SUCCESS, "Batch Save", MessageBox.Action.OK);
 		},
 
 		_createBatchError: function(oError) {
-		    var err = JSON.parse( oError.responseText );
-			MessageBox.show( err.error.message.value, MessageBox.Icon.ERROR, "Batch Save", MessageBox.Action.OK);
+			var err = JSON.parse(oError.responseText);
+			MessageBox.show(err.error.message.value, MessageBox.Icon.ERROR, "Batch Save", MessageBox.Action.OK);
 		},
 
 		onDataExport: sap.m.Table.prototype.exportData || function(oEvent) {
@@ -393,13 +396,13 @@ sap.ui.define([
 			//is there something selected?
 			if (!this._validateSelected()) {
 				return;
-			}		    
-		    var that = this;
-		    var sModel = this.getViewProperty("model");
-		    if (!sModel){
-		        this.msgToast(this.getI18n("msgNoModel"));
-		        return;
-		    }
+			}
+			var that = this;
+			var sModel = this.getViewProperty("model");
+			if (!sModel) {
+				this.msgToast(this.getI18n("msgNoModel"));
+				return;
+			}
 			var oModel = this.getView().getModel();
 			var oTable = this.getView().byId("__tablePartners");
 			var aItems = oTable.getSelectedItems();
@@ -422,8 +425,8 @@ sap.ui.define([
 
 		_validateSelected: function() {
 			if (this.getView().byId("__tablePartners").getSelectedItems().length === 0) {
-			    //this.msgToast( this.getModel("i18n").getResourceBundle().getText("msgSelectItem") );
-			    this.msgToast( this.getI18n("msgSelectItem" ) );
+				//this.msgToast( this.getModel("i18n").getResourceBundle().getText("msgSelectItem") );
+				this.msgToast(this.getI18n("msgSelectItem"));
 				return false;
 			}
 			return true;
@@ -455,57 +458,84 @@ sap.ui.define([
 
 		onOpenSettings: function(oEvent) {
 
-			// create dialog on demand
+			/*			// create dialog on demand
+						if (!this._oVSDialog) {
+							this._oVSDialog = sap.ui.xmlfragment(this.getView().getId(), "bp.view.AccountsSettings", this);
+							this.getView().addDependent(this._oVSDialog);
+						}
+
+						// delay because addDependent is async
+						jQuery.sap.delayedCall(0, this, function() {
+							// apply user selection
+							var aFilterKeys = {};
+							jQuery.each(this._oViewSettings.filter, function(sPropery, aValues) {
+								jQuery.each(aValues, function(i, aValue) {
+									aFilterKeys[aValue] = true;
+								});
+							});
+							this._oVSDialog.setSelectedFilterKeys(aFilterKeys);
+							this._oVSDialog.setSelectedGroupItem(this._oViewSettings.groupProperty);
+							this._oVSDialog.setGroupDescending(this._oViewSettings.groupDescending);
+							jQuery('body').toggleClass("sapUiSizeCompact", this._oViewSettings.compactOn).toggleClass("sapUiSizeCozy", !this._oViewSettings.compactOn);
+
+							// open
+							this._oVSDialog.open(); //By(oEvent.getSource());
+						});
+						*/
 			if (!this._oVSDialog) {
-				this._oVSDialog = sap.ui.xmlfragment(this.getView().getId(), "bp.view.AccountsSettings", this);
+				this._oVSDialog = sap.ui.xmlfragment("bp.view.AccountsSettings", this);
 				this.getView().addDependent(this._oVSDialog);
 			}
-
-			// delay because addDependent is async
-			jQuery.sap.delayedCall(0, this, function() {
-				// apply user selection
-				var aFilterKeys = {};
-				jQuery.each(this._oViewSettings.filter, function(sPropery, aValues) {
-					jQuery.each(aValues, function(i, aValue) {
-						aFilterKeys[aValue] = true;
-					});
-				});
-				this._oVSDialog.setSelectedFilterKeys(aFilterKeys);
-				this._oVSDialog.setSelectedGroupItem(this._oViewSettings.groupProperty);
-				this._oVSDialog.setGroupDescending(this._oViewSettings.groupDescending);
-				jQuery('body').toggleClass("sapUiSizeCompact", this._oViewSettings.compactOn).toggleClass("sapUiSizeCozy", !this._oViewSettings.compactOn);
-
-				// open
-				this._oVSDialog.open(); //By(oEvent.getSource());
-			});
+			// toggle compact style
+			jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._oVSDialog);
+			this._oVSDialog.open();
 		},
 
-		onConfirmSettings: function(oEvt) {
-			// store filter settings
-			var that = this;
-			this._oViewSettings.filter = {};
-			var aFilterItems = oEvt.getParameter("filterItems");
-			jQuery.each(aFilterItems, function(i, oItem) {
-				var sKey = oItem.getKey();
-				var sParentKey = oItem.getParent().getKey();
-				if (!that._oViewSettings.filter.hasOwnProperty(sParentKey)) {
-					that._oViewSettings.filter[sParentKey] = [];
-				}
-				that._oViewSettings.filter[sParentKey].push(sKey);
+		onConfirmSettings: function(oEvent) {
+			var oView = this.getView();
+			var oTable = oView.byId("__tablePartners");
+
+			var mParams = oEvent.getParameters();
+			var oBinding = oTable.getBinding("items");
+
+			// apply sorter to binding
+			// (grouping comes before sorting)
+			var sPath;
+			var bDescending;
+			var vGroup;
+			var aSorters = [];
+			if (mParams.groupItem) {
+				sPath = mParams.groupItem.getKey();
+				bDescending = mParams.groupDescending;
+				//vGroup = this.mGroupFunctions[sPath];
+				vGroup = true;
+				aSorters.push(new Sorter(sPath, bDescending, vGroup));
+			}
+			if(mParams.sortItem){
+    			sPath = mParams.sortItem.getKey();
+    			bDescending = mParams.sortDescending;
+    			aSorters.push(new Sorter(sPath, bDescending));
+			}
+			if(aSorters.length>0){
+			    oBinding.sort(aSorters);
+			}
+
+			// apply filters to binding
+			var aFilters = [];
+			jQuery.each(mParams.filterItems, function(i, oItem) {
+				var aSplit = oItem.getKey().split("__");
+				var sPath = aSplit[0];
+				var sOperator = aSplit[1];
+				var sValue1 = aSplit[2];
+				var sValue2 = aSplit[3];
+				var oFilter = new Filter(sPath, sOperator, sValue1, sValue2);
+				aFilters.push(oFilter);
 			});
+			oBinding.filter(aFilters);
 
-			// store group settings
-			var oGroupItem = oEvt.getParameter("groupItem");
-			var sNewGroup = (oGroupItem) ? oGroupItem.getKey() : null;
-			this._oViewSettings.groupProperty = sNewGroup;
-			this._oViewSettings.groupDescending = oEvt.getParameter("groupDescending");
-
-			// update local storage
-			var s = JSON.stringify(this._oViewSettings);
-			this._oStorage.put(this._sStorageKey, s);
-
-			// update view
-			this._updateView();
+			// update filter bar
+			//oView.byId("vsdFilterBar").setVisible(aFilters.length > 0);
+			//oView.byId("vsdFilterLabel").setText(mParams.filterString);
 		},
 
 		onModelValueHelp: function() {

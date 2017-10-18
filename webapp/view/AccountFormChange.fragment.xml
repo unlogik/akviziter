@@ -47,9 +47,9 @@
             					</ColumnListItem>
             				</suggestionRows>
             			</Input>
-            			<Input id="__SoldTo_Pstlz" value="{SoldTo/Pstlz}" liveChange="onSoldToCityChange" submit="onEnter" editable="false"/>
+            			<Input id="__SoldTo_Pstlz" value="{SoldTo/Pstlz}" submit="onEnter" editable="false"/>
             			<Input id="__SoldTo_Land1" value="{SoldTo/Land1}" placeholder="Land..." showSuggestion="true" suggest="handleSuggest"
-            				suggestionItems="{/CountrySet}" maxSuggestionWidth="200px" liveChange="onSoldToCityChange" submit="onEnter" editable="false">
+            				suggestionItems="{/CountrySet}" maxSuggestionWidth="200px" submit="onEnter" editable="false">
             				<suggestionItems>
             					<core:ListItem text="{Land1}" additionalText="{Landx}"/>
             				</suggestionItems>
