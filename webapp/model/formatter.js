@@ -72,6 +72,48 @@ sap.ui.define([], function () {
 		    else{
 		        return "None";
 		    }
+		},
+		multiAddr:function( sSoldStras, sSoldHsnm1, sSoldHsnm2, sSoldOrt01, sShipStras, sShipHsnm1, sShipHsnm2, sShipOrt01){
+		    var sFirstLine;
+		    var sSecondLine;
+		    sFirstLine  = sSoldStras + " " + sSoldHsnm1 + sSoldHsnm2;
+		    sSecondLine = sShipStras + " " + sShipHsnm1 + sShipHsnm2;
+		    if(!sFirstLine){
+		        sFirstLine = sSoldOrt01;
+		    }else if(!sSoldOrt01){
+		        //sFirstLine = sSoldTel;
+		    }else{
+		        sFirstLine = sFirstLine + ', ' + sSoldOrt01;
+		    }
+		    if(!sSecondLine){
+		        sSecondLine = sShipOrt01;
+		    }else if(!sShipOrt01){
+		        //sSecondLine = sShipTel;
+		    }else{
+		        sSecondLine = sSecondLine + ', ' + sShipOrt01;
+		    }		    
+		    return sFirstLine + "\n" + sSecondLine;
+		},
+		
+		multiTel: function( sSoldTel, sSoldMob, sShipTel, sShipMob ){
+		    var sFirstLine;
+		    var sSecondLine;
+		    if(!sSoldTel){
+		        sFirstLine = sSoldMob;
+		    }else if(!sSoldMob){
+		        sFirstLine = sSoldTel;
+		    }else{
+		        sFirstLine = sSoldTel + ', ' + sSoldMob;
+		    }
+		    if(!sShipTel){
+		        sSecondLine = sShipMob;
+		    }else if(!sShipMob){
+		        sSecondLine = sShipTel;
+		    }else{
+		        sSecondLine = sShipTel + ', ' + sShipMob;
+		    }
+		    return sFirstLine + "\n" + sSecondLine;
+		    
 		}
 	};
 });

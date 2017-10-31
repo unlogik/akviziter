@@ -89,8 +89,8 @@
 			<l:BlockLayoutRow>
 				<l:BlockLayoutCell class="sapUiNoContentPadding">
 					<s:SmartTable entitySet="OrderSet" id="_table" tableType="ResponsiveTable" useVariantManagement="true" useTablePersonalisation="true"
-						header="Orders" showRowCount="false" enableAutoBinding="true" app:useSmartField="true" editable="false" class="sapUiTinyMargin"
-						 noData="No orders" tableBindingPath="PartnerToOrders" persistencyKey="SmartTablePKey">
+						header="Orders" showRowCount="false" enableAutoBinding="true" app:useSmartField="true" editable="false" class="sapUiTinyMarginBeginEnd sapUiNoMarginTop"
+						 noData="No orders" tableBindingPath="PartnerToOrders" persistencyKey="SmartTable_Orders">
 						<!-- layout data used to make the table growing but the filter bar fixed -->
 						<s:layoutData>
 							<FlexItemData growFactor="1" baseSize="0%"/>

@@ -1,21 +1,26 @@
-<mvc:View xmlns:core="sap.ui.core" xmlns:u="sap.ui.unified" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:smartTable="sap.ui.comp.smarttable" xmlns:html="http://www.w3.org/1999/xhtml" controllerName="bp.controller.Accounts">
+<mvc:View xmlns:core="sap.ui.core" xmlns:u="sap.ui.unified" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+	xmlns:smartTable="sap.ui.comp.smarttable" xmlns:html="http://www.w3.org/1999/xhtml" controllerName="bp.controller.Accounts">
 	<App>
 		<pages>
 			<Page title="{i18n>titleAccounts}" showNavButton="true" navButtonPress="onNavBack">
 				<headerContent>
-				    <OverflowToolbar>
-    					<OverflowToolbarButton id="__button3" text="Add" tooltip="New" icon="sap-icon://add" press="onAdd" visible="{/UserSet('CURRENT')/AuthCreate}"/>
-    					<u:FileUploader id="fileUploader" name="myFileUpload" buttonOnly="true" icon="sap-icon://upload" iconOnly="true" change="onUpload" visible="{/UserSet('CURRENT')/AuthCreate}"/>
-    					<OverflowToolbarButton text="Delete" icon="sap-icon://delete" press="onDelete" tooltip="{i18n>accountsDelete}" visible="{/UserSet('CURRENT')/AuthDelete}"/>
-                        <Input maxLength="8" width="140px" showValueHelp="true" valueHelpRequest="onModelValueHelp" placeholder="Model" showSuggestion="true" suggestionItems="{/ModelSet}" maxSuggestionWidth="200px" id="_inputModel" value="{view>/Accounts/model}">
-                            <suggestionItems>
-        					    <core:ListItem text="{ModelId}" additionalText="{Ltext}"/>
-        				    </suggestionItems>
-                        </Input>					
-    					<OverflowToolbarButton text="Add Order" icon="sap-icon://add-document" press="onAddOrder" visible="{/UeerSet('CURRENT')/AuthUpdate}"/>
-    					<ToolbarSeparator/>
-    					<OverflowToolbarButton text="Info" icon="sap-icon://message-information" press="onInfo"/>
-    					<OverflowToolbarButton text="Settings" icon="sap-icon://drop-down-list" press="onOpenSettings"/>
+					<OverflowToolbar>
+						<OverflowToolbarButton id="__button3" text="Add" tooltip="New" icon="sap-icon://add" press="onAdd"
+							visible="{/UserSet('CURRENT')/AuthCreate}"/>
+						<u:FileUploader id="fileUploader" name="myFileUpload" buttonOnly="true" icon="sap-icon://upload" iconOnly="true" change="onUpload"
+							visible="{/UserSet('CURRENT')/AuthCreate}"/>
+						<OverflowToolbarButton text="Delete" icon="sap-icon://delete" press="onDelete" tooltip="{i18n>accountsDelete}"
+							visible="{/UserSet('CURRENT')/AuthDelete}"/>
+						<Input maxLength="8" width="140px" showValueHelp="true" valueHelpRequest="onModelValueHelp" placeholder="Model" showSuggestion="true"
+							suggestionItems="{/ModelSet}" maxSuggestionWidth="200px" id="_inputModel" value="{view>/Accounts/model}">
+							<suggestionItems>
+								<core:ListItem text="{ModelId}" additionalText="{Ltext}"/>
+							</suggestionItems>
+						</Input>
+						<OverflowToolbarButton text="Add Order" icon="sap-icon://add-document" press="onAddOrder" visible="{/UeerSet('CURRENT')/AuthUpdate}"/>
+						<ToolbarSeparator/>
+						<OverflowToolbarButton text="Info" icon="sap-icon://message-information" press="onInfo"/>
+						<OverflowToolbarButton text="Settings" icon="sap-icon://drop-down-list" press="onOpenSettings"/>
 					</OverflowToolbar>
 				</headerContent>
 				<!--<subHeader>-->
@@ -24,12 +29,13 @@
 				<!--	</Toolbar>-->
 				<!--</subHeader>-->
 				<content>
-					<Table noDataText="No data" id="__tablePartners" items="{ path : '/PartnerSet', sorter : { path : 'FileName', group : true } }" mode="MultiSelect">
+					<Table noDataText="No data" id="__tablePartners" items="{ path : '/PartnerSet', sorter : { path : 'FileName', group : true } }"
+						mode="MultiSelect">
 						<!--<headerToolbar>-->
 						<!--	<OverflowToolbar>-->
 						<!--		<Title text="Products" level="H2"/>>-->
 						<!--		<ToolbarSpacer/>-->
-								<!--  Add the Personalization button -->
+						<!--  Add the Personalization button -->
 						<!--		<Button icon="sap-icon://action-settings" press="onPersonalize">-->
 						<!--			<layoutData>-->
 						<!--				<OverflowToolbarLayoutData priority="NeverOverflow"/>-->
@@ -63,16 +69,16 @@
 									<Label text="Telephone" id="__label3"/>
 								</header>
 							</Column>
-    						<Column id="__column4" minScreenWidth="Tablet">
-    							<header>
-    								<Label text="Birth" id="__label4"/>
-    							</header>
-    						</Column>
-    						<Column width="30px">
-    							<header>
-    								<Label text="{i18n>columnStatus}"/>
-    							</header>
-    						</Column>    						
+							<Column id="__column4" minScreenWidth="Tablet">
+								<header>
+									<Label text="Birth" id="__label4"/>
+								</header>
+							</Column>
+							<Column width="30px">
+								<header>
+									<Label text="{i18n>columnStatus}"/>
+								</header>
+							</Column>
 						</columns>
 						<items>
 							<ColumnListItem type="Navigation" press="onBPDetails">
@@ -80,11 +86,15 @@
 									<Text text="{Setid}" id="__text28"/>
 									<Text text="{Akvid}" visible="{/UserSet('CURRENT')/AkvSelectable}"/>
 									<ObjectIdentifier title="{SoldTo/Name1} {SoldTo/Name2}" text="{ShipTo/Name1} {ShipTo/Name2}" class="sapMTableContentMargin"/>
-									<Text text="{SoldTo/Stras} {SoldTo/Hsnm1},{SoldTo/Pstlz} {SoldTo/Ort01}\n{ShipTo/Stras} {ShipTo/Hsnm1}, {ShipTo/Pstlz} {ShipTo/Ort01}" id="__text29"/>
-									<Text text="{SoldTo/Telnr},{SoldTo/Mobnr}\n{ShipTo/Telnr},{ShipTo/Mobnr}" id="__text30"/>
+									<Text
+										text="{ parts: [ {path: 'SoldTo/Stras'}, {path: 'SoldTo/Hsnm1'}, {path: 'SoldTo/Hsnm2'}, {path: 'SoldTo/Ort01'}, {path: 'ShipTo/Stras'}, {path: 'ShipTo/Hsnm1'}, {path: 'ShipTo/Hsnm2'}, {path: 'ShipTo/Ort01'}], formatter: '.formatter.multiAddr'}"
+										id="__text29"/>
+									<Text
+										text="{ parts: [ {path: 'SoldTo/Telnr'}, {path: 'SoldTo/Mobnr'}, {path: 'ShipTo/Telnr'}, {path: 'ShipTo/Mobnr'}] , formatter: '.formatter.multiTel'}"
+										id="__text30"/>
 									<sap.ui.layout:VerticalLayout width="100%" xmlns:sap.ui.layout="sap.ui.layout" id="__layout0">
-									<Text text="{ path: 'SoldTo/Birth',                         type: 'sap.ui.model.type.Date',                                                     formatOptions: {                                                         pattern: 'dd.MM.YYYY'                                                     }                                                 }" id="__text31"/>
-									<Text text="{ path: 'ShipTo/Birth',                         type: 'sap.ui.model.type.Date',                                                     formatOptions: {                                                         pattern: 'dd.MM.YYYY'                                                     }                                                 }" id="__text33"/>
+										<Text text="{ path: 'SoldTo/Birth', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.YYYY' } }" id="__text31"/>
+										<Text text="{ path: 'ShipTo/Birth', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.YYYY' } }" id="__text33"/>
 									</sap.ui.layout:VerticalLayout>
 									<!--<core:Icon src="{= ${Status} === '2' ? 'sap-icon://action' : 'sap-icon://account' }"/>-->
 									<core:Icon src="{ path: 'Status', formatter: '.formatter.messageIcon' }" color="{ path: 'Status', formatter: '.formatter.messageColor' }"/>
@@ -93,13 +103,13 @@
 						</items>
 					</Table>
 				</content>
-        		<footer>
-        			<Toolbar>
-        				<Button icon="sap-icon://message-popup" text="{message>count}" type="Emphasized" press="onMessages"/>
-        				<ToolbarSpacer/>
-        				<Button icon="sap-icon://action" type="Accept" press="onSubmit"/>
-        			</Toolbar>
-        		</footer>				
+				<footer>
+					<Toolbar>
+						<Button icon="sap-icon://message-popup" text="{message>count}" type="Emphasized" press="onMessages"/>
+						<ToolbarSpacer/>
+						<Button icon="sap-icon://action" type="Accept" press="onSubmit"/>
+					</Toolbar>
+				</footer>
 			</Page>
 		</pages>
 	</App>

@@ -1,6 +1,7 @@
 sap.ui.define([
-	"sap/ui/core/mvc/Controller"
-], function(Controller) {
+	"sap/ui/core/mvc/Controller",
+	"sap/ushell/ui/launchpad/LoadingDialog"
+], function(Controller, LoadingDialog) {
 	"use strict";
 
 	return Controller.extend("bp.controller.Dummy", {
@@ -10,9 +11,12 @@ sap.ui.define([
 		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
 		 * @memberOf bp.view.Dummy
 		 */
-		//	onInit: function() {
-		//
-		//	},
+			onInit: function() {
+
+                //var viewHtml = new sap.ui.core.HTML().setDOMContent(resultDocument);
+                //viewHtml.placeAt("SplashContainer");
+                //this.getView().byId().placeAt(viewHtml);
+			}
 
 		/**
 		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
