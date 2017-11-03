@@ -342,7 +342,7 @@ sap.ui.define([
 				title: 'Confirm',
 				type: 'Message',
 				content: new Text({
-					text: 'Are you sure you want to delete?'
+					text: '{i18n>msgDeleteQuestion}'
 				}),
 				beginButton: new Button({
 					text: "{i18n>delButton}",
@@ -367,27 +367,23 @@ sap.ui.define([
 		},
 
 		_delete: function() {
+		    var that = this;
 			var oModel = this.getView().getModel();
 			var oTable = this.getView().byId("__tablePartners");
 			var aItems = oTable.getSelectedItems();
 			for (var i = 0; i < aItems.length; i++) {
 				var id = aItems[i].getCells()[0].getText();
-				oModel.remove("/PartnerSet('" + id + "')", null, {
-					success: jQuery.proxy(function() {
-						jQuery.sap.require("sap.m.MessageToast");
-						MessageToast.show("el Vuelo '" + name + "' se elimino con exito.");
-					}, this),
-
-					error: jQuery.proxy(function(mResponse) {
-						var body = mResponse.response.body;
-						var res = body.split(",");
-						/*eslint no-console: "error"*/
-						console.log(res);
-						MessageBox.show("Se produjo un problema eliminando el vuelo.", {
+				oModel.remove("/PartnerSet('" + id + "')", {
+					success: function(oData) {
+					    that.msgToast(that.getI18n("msgDataDeleted"));
+					},
+					error: function(oResponse) {
+						var response = JSON.parse(oResponse.response.body);
+						MessageBox.show(response.message, {
 							icon: sap.m.MessageBox.Icon.ERROR,
-							title: "Vuelos"
+							title: "{i18n>msgTileError}"
 						});
-					}, this)
+					}
 				});
 			}
 		},
@@ -413,11 +409,15 @@ sap.ui.define([
 					Model: sModel
 				}, {
 					success: function(oData_, response) {
-						MessageToast.show("Model " + sModel + " je uspješno dodan!");
+						that.msgToast(that.getI18n('msgModelAdded', sModel));
 						that.setViewProperty("model", "");
 					},
-					error: function(oError) {
-						MessageToast.show(oError);
+					error: function(oResponse) {
+						var response = JSON.parse(oResponse.response.body);
+						MessageBox.show(response.message, {
+							icon: sap.m.MessageBox.Icon.ERROR,
+							title: "{i18n>msgTileError}"
+						});
 					}
 				});
 			}
@@ -511,13 +511,13 @@ sap.ui.define([
 				vGroup = true;
 				aSorters.push(new Sorter(sPath, bDescending, vGroup));
 			}
-			if(mParams.sortItem){
-    			sPath = mParams.sortItem.getKey();
-    			bDescending = mParams.sortDescending;
-    			aSorters.push(new Sorter(sPath, bDescending));
+			if (mParams.sortItem) {
+				sPath = mParams.sortItem.getKey();
+				bDescending = mParams.sortDescending;
+				aSorters.push(new Sorter(sPath, bDescending));
 			}
-			if(aSorters.length>0){
-			    oBinding.sort(aSorters);
+			if (aSorters.length > 0) {
+				oBinding.sort(aSorters);
 			}
 
 			// apply filters to binding
