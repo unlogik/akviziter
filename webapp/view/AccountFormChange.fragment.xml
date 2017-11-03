@@ -89,7 +89,7 @@
 							<Label text="{/#Partner/SoldTo/Email/@sap:label}"/>
 							<Input id="__SoldTo_Email" value="{SoldTo/Email}" type="Email" submit="onEnter"/>
 							<Label text="{/#Partner/SoldTo/Birth/@sap:label}"/>
-							<DatePicker id="__SoldTo_Birth" dateValue="{SoldTo/Birth}" displayFormat="dd.MM.yyyy" change="dateChange"/>
+							<DatePicker id="__SoldTo_Birth" dateValue="{SoldTo/Birth}" displayFormat="dd.MM.yyyy"/>
 							<!--<Input id="__SoldTo_Birth" value="{SoldTo/Birth}"/>-->
 							<Label text="{/#Partner/SoldTo/Dlnot/@sap:label}"/>
 							<Input id="__SoldTo_Dlnot" value="{SoldTo/Dlnot}" submit="onEnter"/>
@@ -184,7 +184,7 @@
 							<Label text="{/#Partner/ShipTo/Email/@sap:label}"/>
 							<Input id="__ShipTo_Email" value="{ShipTo/Email}" type="Email" submit="onEnter"/>
 							<Label text="{/#Partner/ShipTo/Birth/@sap:label}"/>
-							<DatePicker id="__ShipTo_Birth" dateValue="{ShipTo/Birth}" displayFormat="dd.MM.yyyy" change="dateChange"/>
+							<DatePicker id="__ShipTo_Birth" dateValue="{ShipTo/Birth}" displayFormat="dd.MM.yyyy"/>
 							<Label text="{/#Partner/ShipTo/Dlnot/@sap:label}"/>
 							<Input id="__ShipTo_Dlnot" value="{ShipTo/Dlnot}" submit="onEnter"/>
 							<Label text="{/#Partner/ShipTo/Intad/@sap:label}"/>
@@ -206,7 +206,7 @@
 								<ToolbarSpacer/>
 								<!--<sf:SmartField value="{ModelSet('NEW')/Model}"/>-->
 								<Input maxLength="8" width="140px" showValueHelp="true" valueHelpRequest="onModelValueHelp" placeholder="Model" showSuggestion="true"
-									suggestionItems="{/ModelSet}" maxSuggestionWidth="200px" id="_inputModel" value="{view>/AccountDetails/model}">
+									suggestionItems="{/ModelSet}" maxSuggestionWidth="300px" id="_inputModel" value="{view>/AccountDetails/model}">
 									<suggestionItems>
 										<core:ListItem text="{ModelId}" additionalText="{Ltext}"/>
 									</suggestionItems>
@@ -241,7 +241,7 @@
 							<items>
 								<ColumnListItem>
 									<cells>
-										<DatePicker dateValue="{Stdat}" displayFormat="dd.MM.YYYY" minDate="{MinStdat}"/>
+										<DatePicker dateValue="{Stdat}" displayFormat="dd.MM.YYYY" minDate="{ path: 'MinStdat', formatter: '.formatter.dateJS'}"/>
 										<Text text="{ path: 'Cldat', type:'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.YYYY'} }"/>
 										<Input value="{ path: 'Quant', type:'sap.ui.model.type.Integer' }" type="Number"
 											valueState="{ path: 'Quant', formatter: '.formatter.inputQuantity' }" valueStateText="{i18n>msgQuantityHigh}" maxLength="2"/>

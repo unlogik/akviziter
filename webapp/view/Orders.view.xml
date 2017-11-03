@@ -5,9 +5,9 @@
 			<sf:SmartFilterBar id="sf_Report" entityType="Report" persistencyKey="SmartFilter_Report">
 				<sf:controlConfiguration>
 					<sf:ControlConfiguration key="Partnerbp" visibleInAdvancedArea="true" preventInitialDataFetchInValueHelpDialog="false"></sf:ControlConfiguration>
-					<sf:ControlConfiguration key="Crdat"  filterType="interval" visibleInAdvancedArea="true" />
-					<sf:ControlConfiguration key="Status"  filterType="multiple" visibleInAdvancedArea="true"/>
-					<sf:ControlConfiguration key="Reason"  filterType="multiple" visibleInAdvancedArea="true"/>
+					<sf:ControlConfiguration key="Crdat" filterType="interval" visibleInAdvancedArea="true"/>
+					<sf:ControlConfiguration key="Status" filterType="multiple" visibleInAdvancedArea="true"/>
+					<sf:ControlConfiguration key="Reason" filterType="multiple" visibleInAdvancedArea="true"/>
 				</sf:controlConfiguration>
 			</sf:SmartFilterBar>
 			<s:SmartTable entitySet="ReportSet" id="_table" tableType="ResponsiveTable" useVariantManagement="true" useTablePersonalisation="true"
@@ -15,7 +15,7 @@
 				persistencyKey="SmartTable_Report" smartFilterId="sf_Report" noData="{i18n>msgNoData}" demandPopin="true">
 				<Table>
 					<columns>
-						<Column width="110px">
+						<Column width="100px">
 							<customData>
 								<core:CustomData key="p13nData" value='\{"columnKey": "Begda", "maxLength": "5","columnIndex":"4", "leadingProperty": "Begda"}'/>
 							</customData>

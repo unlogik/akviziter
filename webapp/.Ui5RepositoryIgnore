@@ -1,0 +1,8 @@
+index.html
+manifest.json
+lib/JsXlsx.js
+lib/jszip.min.js
+lib/xlsx.min.js
+src/splash.PNG
+src/webui.jpg
+localService/*

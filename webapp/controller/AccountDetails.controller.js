@@ -162,6 +162,7 @@ sap.ui.define([
 		},
 
 		onAddOrder: function () {
+		    var that = this;
 			var oView = this.getView();
 			var oData = oView.getBindingContext().getObject();
 			var oModel = this.getModel();
@@ -175,7 +176,7 @@ sap.ui.define([
 				Model: sModel
 			}, {
 				success: function (oData_, response) {
-					that.msgToast("Model " + sModel + " je uspješno dodan!");
+					that.msgToast( that.getI18n('msgModelAdded', sModel ));
 					that.setViewProperty("model", "");
 					//oModel.update("/PartnerSet('" + oData.Setid + "')", oData);
 					//oModel.update(sPath, oData);
