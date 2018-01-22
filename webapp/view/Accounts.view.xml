@@ -2,7 +2,7 @@
 	xmlns:smartTable="sap.ui.comp.smarttable" xmlns:html="http://www.w3.org/1999/xhtml" controllerName="bp.controller.Accounts">
 	<App>
 		<pages>
-			<Page title="{i18n>titleAccounts}" showNavButton="true" navButtonPress="onNavBack">
+			<Page title="{i18n>titleOrders}" showNavButton="true" navButtonPress="onNavBack">
 				<headerContent>
 					<OverflowToolbar>
 						<OverflowToolbarButton id="__button3" text="Add" tooltip="New" icon="sap-icon://add" press="onAdd"
@@ -56,28 +56,39 @@
 							</Column>
 							<Column id="__column1">
 								<header>
-									<Label text="Name" id="__label1"/>
+									<Label text="{i18n>columnName}" id="__label1"/>
 								</header>
 							</Column>
 							<Column id="__column2" minScreenWidth="Tablet" demandPopin="true">
 								<header>
-									<Label text="Address" id="__label2"/>
+									<Label text="{i18n>columnAddress}" id="__label2"/>
 								</header>
 							</Column>
-							<Column id="__column3" minScreenWidth="Tablet" demandPopin="true">
+							<Column id="__column3" minScreenWidth="Tablet" demandPopin="true" width="150px">
 								<header>
 									<Label text="Telephone" id="__label3"/>
 								</header>
 							</Column>
-							<Column id="__column4" minScreenWidth="Tablet">
+							<Column minScreenWidth="Tablet" demandPopin="true" width="170px">
 								<header>
-									<Label text="Birth" id="__label4"/>
+									<Label text="{/#Partner/SoldTo/Email/@sap:label}"/>
+								</header>
+							</Column>							
+							<Column id="__column4" minScreenWidth="Tablet" width="100px">
+								<header>
+									<Label text="{i18n>columnBirth}" id="__label4"/>
 								</header>
 							</Column>
-							<Column width="30px">
+							<Column id="__column5" minScreenWidth="Tablet" width="100px">
 								<header>
-									<Label text="{i18n>columnStatus}"/>
+									<Label text="{/#Partner/SoldTo/Stcd2/@sap:label}" id="__label5"/>
 								</header>
+							</Column>							
+							<Column width="30px">
+							    <header>
+									<!--core:Icon src="sap-icon://validate" tooltip="{i18n>columnStatus}"/-->
+									<Label text="{i18n>columnStatus}"/>
+							    </header>
 							</Column>
 						</columns>
 						<items>
@@ -92,10 +103,12 @@
 									<Text
 										text="{ parts: [ {path: 'SoldTo/Telnr'}, {path: 'SoldTo/Mobnr'}, {path: 'ShipTo/Telnr'}, {path: 'ShipTo/Mobnr'}] , formatter: '.formatter.multiTel'}"
 										id="__text30"/>
+									<Text text="{SoldTo/Email}\n{ShipTo/Email}"></Text>
 									<sap.ui.layout:VerticalLayout width="100%" xmlns:sap.ui.layout="sap.ui.layout" id="__layout0">
 										<Text text="{ path: 'SoldTo/Birth', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.YYYY' } }" id="__text31"/>
 										<Text text="{ path: 'ShipTo/Birth', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.YYYY' } }" id="__text33"/>
 									</sap.ui.layout:VerticalLayout>
+									<Text text="{SoldTo/Stcd2}\n{ShipTo/Stcd2}"></Text>
 									<!--<core:Icon src="{= ${Status} === '2' ? 'sap-icon://action' : 'sap-icon://account' }"/>-->
 									<core:Icon src="{ path: 'Status', formatter: '.formatter.messageIcon' }" color="{ path: 'Status', formatter: '.formatter.messageColor' }"/>
 								</cells>

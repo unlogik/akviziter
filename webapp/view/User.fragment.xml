@@ -1,8 +1,8 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout">
 	<ResponsivePopover title="{FullName}" class="sapUiPopupWithPadding" placement="Bottom">
-		<endButton>
+	<!--	<endButton>
 			<Button icon="sap-icon://log" press="onUserLogout" tooltip="Log out"/>
-		</endButton>
+		</endButton>-->
 		<content>
 			<f:Form id="FormDisplay354" editable="false">
 				<f:layout>

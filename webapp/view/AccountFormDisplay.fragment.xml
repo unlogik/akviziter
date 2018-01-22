@@ -10,7 +10,7 @@
 						<f:content>
 							<Toolbar>
 								<core:Icon src="sap-icon://customer"/>
-								<Title text="Sold-to: {SoldTo/Partnerid}" level="H5" titleStyle="H5"/>
+								<Title text="{parts:['i18n>labelSoldTo', 'SoldTo/Partnerid'], formatter: 'jQuery.sap.formatMessage'}" level="H5" titleStyle="H5"/>
 								<ToolbarSpacer/>
 								<Button id="_btn_SoldToDoubles" icon="{ path: 'SoldTo/Status', formatter: '.formatter.statusIcon'}" press="onDoublesDisplay" visible="{SoldTo/Doubles}"/>
 							</Toolbar>
@@ -51,7 +51,7 @@
 						<f:content>
 							<Toolbar>
 								<core:Icon src="sap-icon://shipping-status"/>
-								<Title text="Ship-to: {ShipTo/Partnerid}" level="H5" titleStyle="H5"/>
+								<Title text="{parts:['i18n>labelShipTo', 'ShipTo/Partnerid'], formatter: 'jQuery.sap.formatMessage'}" level="H5" titleStyle="H5"/>
 								<ToolbarSpacer/>
 								<Button id="_btn_ShipToDoubles" icon="{ path: 'SoldTo/Status', formatter: '.formatter.statusIcon'}" press="onDoublesDisplay" visible="{ShipTo/Doubles}"/>
 							</Toolbar>

@@ -1,6 +1,6 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:html="http://www.w3.org/1999/xhtml"
 	xmlns:s="sap.ui.comp.smarttable" xmlns:sf="sap.ui.comp.smartfilterbar" controllerName="bp.controller.Orders">
-	<Page title="{i18n>titleOrders}" showNavButton="true" navButtonPress="onNavBack">
+	<Page title="{i18n>titleAnalysis}" showNavButton="true" navButtonPress="onNavBack">
 		<content>
 			<sf:SmartFilterBar id="sf_Report" entityType="Report" persistencyKey="SmartFilter_Report">
 				<sf:controlConfiguration>

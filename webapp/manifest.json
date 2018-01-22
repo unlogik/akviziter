@@ -38,6 +38,7 @@
 	"sap.ui": {
 		"_version": "1.1.0",
 		"technology": "UI5",
+		"fullWidth": true, 
 		"icons": {
 			"icon": "",
 			"favIcon": "",
@@ -133,15 +134,19 @@
 			"targets": {
 				"accounts": {
 					"viewName": "Accounts",
-					"viewLevel": 1
+					"viewLevel": 1,
+					"transition": "slide"
 				},
 				"orders": {
-					"viewName": "Orders"
+					"viewName": "Orders",
+					"viewLevel": 1,
+					"transition": "slide"
 				},
 				"accountDetails": {
 					"viewName": "AccountDetails",
 					"viewId": "accountDetails",
-					"viewLevel": 2
+					"viewLevel": 2,
+					"transition": "slide"
 				},
 				"object": {
 					"viewName": "AccountDetails",

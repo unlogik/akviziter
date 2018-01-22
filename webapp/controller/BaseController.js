@@ -109,6 +109,16 @@ sap.ui.define([
 		    if( typeof v3 !== "undefined"){  aVar.push(v3) };
 		    if( typeof v4 !== "undefined"){  aVar.push(v4) };
 			return this.getModel("i18n").getResourceBundle().getText(sProperty, aVar);
+		},
+		
+		parseResponse: function( oResponse){
+		    var sMsg;
+		    if(typeof(oResponse.respone) !== 'undefined' ){
+		      sMsg = JSON.parse( oResponse.response.body );
+		    }else{
+		        sMsg = oResponse;
+		    }
+		    return sMsg;
 		}
 
 	});

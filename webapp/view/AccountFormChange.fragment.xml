@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core"
-	xmlns:s="sap.ui.comp.smarttable" xmlns:sf="sap.ui.comp.smartfield" 
+	xmlns:s="sap.ui.comp.smarttable" xmlns:sf="sap.ui.comp.smartfield"
 	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
 	<l:VerticalLayout>
 		<l:BlockLayout>
@@ -11,21 +11,22 @@
 						<f:content>
 							<Toolbar>
 								<core:Icon src="sap-icon://customer"/>
-								<Title text="Sold-to: {SoldTo/Partnerid}" level="H5" titleStyle="H5"/>
+								<Title text="{parts:['i18n>labelSoldTo', 'SoldTo/Partnerid'], formatter: 'jQuery.sap.formatMessage'}" level="H5" titleStyle="H5"/>
 								<ToolbarSpacer/>
 								<Button id="_btn1_SoldToDoubles" icon="{ path: 'SoldTo/Status', formatter: '.formatter.statusIcon'}" press="onDoublesDisplay"
 									visible="{SoldTo/Doubles}"/>
 							</Toolbar>
-							<Label text="{/#Partner/SoldTo/Title/@sap:label}"/>
+							<Label text="{/#Partner/SoldTo/Title/@sap:label}" required="true"/>
 							<Select id="__SoldTo_Title" showSecondaryValues="true" selectedKey="{SoldTo/Title}"
 								items="{ path: '/PartnerTitleSet', sorter: { path: 'Title' } }" forceSelection="false">
 								<core:ListItem key="{Title}" text="{TitleMedi}" additionalText="{Title}"/>
 							</Select>
 							<Label text="{/#Partner/SoldTo/Name1/@sap:label}" required="true"/>
-							<Input id="__SoldTo_Name1" value="{SoldTo/Name1}" liveChange="onSoldToName1Change" submit="onEnter"/>
-							<Input id="__SoldTo_Name2" value="{SoldTo/Name2}" submit="onEnter"/>
+							<Input id="__SoldTo_Name1" value="{SoldTo/Name1}" liveChange="onSoldToName1Change" placeholder="{i18n>placeholderName1}"
+								submit="onEnter"/>
+							<Input id="__SoldTo_Name2" value="{SoldTo/Name2}" submit="onEnter" placeholder="{i18n>placeholderName2}"/>
 							<Label text="{/#Partner/SoldTo/Ort01/@sap:label}" required="true"/>
-							<Input id="__SoldTo_Ort01" value="{SoldTo/Ort01}" placeholder="City" showSuggestion="true" showTableSuggestionValueHelp="false"
+							<Input id="__SoldTo_Ort01" value="{SoldTo/Ort01}" placeholder="{i18n>placeholderCity}" showSuggestion="true" showTableSuggestionValueHelp="false"
 								suggestionRows="{/CitySet}" suggest="onCitySuggest" suggestionItemSelected="onCitySelect" maxSuggestionWidth="500px"
 								liveChange="onSoldToCityChange" submit="onEnter">
 								<suggestionColumns>
@@ -57,7 +58,7 @@
 								</suggestionItems>
 							</Input>
 							<Label text="{/#Partner/SoldTo/Stras/@sap:label}" required="true"/>
-							<Input id="__SoldTo_Stras" value="{SoldTo/Stras}" placeholder="Street..." showSuggestion="true" showTableSuggestionValueHelp="false"
+							<Input id="__SoldTo_Stras" value="{SoldTo/Stras}" placeholder="{i18n>placeholderStreet}" showSuggestion="true" showTableSuggestionValueHelp="false"
 								suggest="onStreetSuggest" suggestionRows="{/StreetSet}" maxSuggestionWidth="500px" submit="onEnter">
 								<suggestionColumns>
 									<Column hAlign="Begin" popinDisplay="Inline" demandPopin="true">
@@ -80,8 +81,8 @@
 									</ColumnListItem>
 								</suggestionRows>
 							</Input>
-							<Input id="__SoldTo_Hsnm1" value="{SoldTo/Hsnm1}" submit="onEnter" type="Number"/>
-							<Input id="__SoldTo_Hsnm2" value="{SoldTo/Hsnm2}" submit="onEnter"/>
+							<Input id="__SoldTo_Hsnm1" value="{SoldTo/Hsnm1}" submit="onEnter" type="Number" placeholder="{i18n>placeholderHouseNo}"/>
+							<Input id="__SoldTo_Hsnm2" value="{SoldTo/Hsnm2}" submit="onEnter" placeholder="{i18n>placeholderHouseNoAfix}"/>
 							<Label text="{/#Partner/SoldTo/Telnr/@sap:label}"/>
 							<Input id="__SoldTo_Telnr" value="{SoldTo/Telnr}" type="Tel" submit="onEnter"/>
 							<Label text="{/#Partner/SoldTo/Mobnr/@sap:label}"/>
@@ -96,7 +97,7 @@
 							<Label text="{/#Partner/SoldTo/Intad/@sap:label}"/>
 							<Input id="__SoldTo_Intad" value="{SoldTo/Intad}" submit="onEnter"/>
 							<Label text="{/#Partner/SoldTo/Stcd2/@sap:label}" required="true"/>
-							<Input id="__SoldTo_Stcd2" value="{SoldTo/Stcd2}" liveChange="onSoldToOIBChange" submit="onEnter" type="Number" maxLength="11"/>
+							<Input id="__SoldTo_Stcd2" value="{SoldTo/Stcd2}" liveChange="onSoldToOIBChange" submit="onEnter" maxLength="11"/>
 						</f:content>
 					</f:SimpleForm>
 				</l:BlockLayoutCell>
@@ -107,7 +108,7 @@
 						<f:content>
 							<Toolbar>
 								<core:Icon src="sap-icon://shipping-status"/>
-								<Title text="Ship-to: {ShipTo/Partnerid}" level="H5" titleStyle="H5"/>
+								<Title text="{parts:['i18n>labelShipTo', 'ShipTo/Partnerid'], formatter: 'jQuery.sap.formatMessage'}" level="H5" titleStyle="H5"/>
 								<ToolbarSpacer/>
 								<Button id="_btn1_ShipToDoubles" icon="{ path: 'ShipTo/Status', formatter: '.formatter.statusIcon'}" press="onDoublesDisplay"
 									visible="{ShipTo/Doubles}"/>
@@ -118,10 +119,10 @@
 								<core:ListItem key="{Title}" text="{TitleMedi}" additionalText="{Title}"/>
 							</Select>
 							<Label text="{/#Partner/ShipTo/Name1/@sap:label}"/>
-							<Input id="__ShipTo_Name1" value="{ShipTo/Name1}" submit="onEnter"/>
-							<Input id="__ShipTo_Name2" value="{ShipTo/Name2}" submit="onEnter"/>
+							<Input id="__ShipTo_Name1" value="{ShipTo/Name1}" submit="onEnter" placeholder="{i18n>placeholderName1}"/>
+							<Input id="__ShipTo_Name2" value="{ShipTo/Name2}" submit="onEnter" placeholder="{i18n>placeholderName2}"/>
 							<Label text="{/#Partner/SoldTo/Ort01/@sap:label}"/>
-							<Input id="__ShipTo_Ort01" value="{ShipTo/Ort01}" placeholder="City..." showSuggestion="true" showTableSuggestionValueHelp="false"
+							<Input id="__ShipTo_Ort01" value="{ShipTo/Ort01}" placeholder="{i18n>placeholderCity}" showSuggestion="true" showTableSuggestionValueHelp="false"
 								suggestionRows="{/CitySet}" suggest="onCitySuggest" suggestionItemSelected="onCitySelect" maxSuggestionWidth="500px" submit="onEnter">
 								<suggestionColumns>
 									<Column hAlign="Begin" popinDisplay="Inline" demandPopin="true">
@@ -152,7 +153,7 @@
 								</suggestionItems>
 							</Input>
 							<Label text="{/#Partner/ShipTo/Stras/@sap:label}"/>
-							<Input id="__ShipTo_Stras" value="{ShipTo/Stras}" placeholder="Street..." showSuggestion="true" showTableSuggestionValueHelp="false"
+							<Input id="__ShipTo_Stras" value="{ShipTo/Stras}" placeholder="{i18n>placeholderStreet}" showSuggestion="true" showTableSuggestionValueHelp="false"
 								suggest="onStreetSuggest" suggestionRows="{/StreetSet}" maxSuggestionWidth="500px" submit="onEnter">
 								<suggestionColumns>
 									<Column hAlign="Begin" popinDisplay="Inline" demandPopin="true">
@@ -175,8 +176,8 @@
 									</ColumnListItem>
 								</suggestionRows>
 							</Input>
-							<Input id="__ShipTo_Hsnm1" value="{ShipTo/Hsnm1}" submit="onEnter" type="Number"/>
-							<Input id="__ShipTo_Hsnm2" value="{ShipTo/Hsnm2}" submit="onEnter"/>
+							<Input id="__ShipTo_Hsnm1" value="{ShipTo/Hsnm1}" submit="onEnter" type="Number" placeholder="{i18n>placeholderHouseNo}"/>
+							<Input id="__ShipTo_Hsnm2" value="{ShipTo/Hsnm2}" submit="onEnter" placeholder="{i18n>placeholderHouseNoAfix}"/>
 							<Label text="{/#Partner/ShipTo/Telnr/@sap:label}"/>
 							<Input id="__ShipTo_Telnr" value="{ShipTo/Telnr}" type="Tel" submit="onEnter"/>
 							<Label text="{/#Partner/ShipTo/Mobnr/@sap:label}"/>
@@ -190,7 +191,7 @@
 							<Label text="{/#Partner/ShipTo/Intad/@sap:label}"/>
 							<Input id="__ShipTo_Intad" value="{ShipTo/Intad}" submit="onEnter"/>
 							<Label text="{/#Partner/ShipTo/Stcd2/@sap:label}"/>
-							<Input id="__ShipTo_Stcd2" value="{ShipTo/Stcd2}" submit="onEnter" type="Number" maxLength="11"/>
+							<Input id="__ShipTo_Stcd2" value="{ShipTo/Stcd2}" submit="onEnter" maxLength="11"/>
 						</f:content>
 					</f:SimpleForm>
 				</l:BlockLayoutCell>
@@ -199,7 +200,8 @@
 				<l:BlockLayoutCell class="sapUiNoContentPadding">
 					<s:SmartTable id="_tableOrders" entitySet="OrderSet" tableType="ResponsiveTable" useVariantManagement="true"
 						persistencyKey="SmartTable_Orders" useTablePersonalisation="true" header="Orders" showRowCount="true" enableAutoBinding="true"
-						app:useSmartField="true" editable="true" class="sapUiTinyMarginBeginEnd sapUiNoMarginTop" noData="No orders" tableBindingPath="PartnerToOrders">
+						app:useSmartField="true" editable="true" class="sapUiTinyMarginBeginEnd sapUiNoMarginTop" noData="No orders"
+						tableBindingPath="PartnerToOrders">
 						<!-- layout data used to make the table growing but the filter bar fixed -->
 						<s:customToolbar>
 							<Toolbar>

@@ -8,7 +8,6 @@
 			<ViewSettingsItem text="{/#Partner/SoldTo/Setid/@sap:label}" key="SoldTo/Setid"/>
 			<ViewSettingsItem text="{/#Partner/SoldTo/Title/@sap:label}" key="SoldTo/Title"/>
 			<ViewSettingsItem text="{/#Partner/SoldTo/Name1/@sap:label}" key="SoldTo/Name1"/>
-			<ViewSettingsItem text="{/#Partner/SoldTo/Name2/@sap:label}" key="SoldTo/Name2"/>
 		</sortItems>
 		<groupItems>
 			<ViewSettingsItem text="File Name" key="FileName" />

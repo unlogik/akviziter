@@ -118,7 +118,9 @@ sap.ui.define([], function () {
 		
 		dateJS: function( oDate ){
 		    //var rDate = new Date(oDate.getFullYear(), oDate.getMonth(), oDate.getDay() );
-		    oDate.setHours( 0 );
+		    if (oDate !== null) {
+		      oDate.setHours( 0 );
+		    }
 		    return oDate;
 		}
 	};

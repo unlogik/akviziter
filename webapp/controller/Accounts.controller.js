@@ -123,10 +123,13 @@ sap.ui.define([
 								});
 								//sSuccessMessage += oView.getModel("i18n").getProperty("NewEntry") + ": " + oData.Kjahr + " " + oData.Hjahr + "\r\n";
 							},
-							error: function(oError) {
-								var oResponseBody = JSON.parse(oError.response.body);
-								// console.log(oResponseBody);
-							}
+        					error: function(oResponse) {
+        						var response = JSON.parse(oResponse.response.body);
+        						MessageBox.show(response.message, {
+        							icon: sap.m.MessageBox.Icon.ERROR,
+        							title: "{i18n>msgTileError}"
+        						});
+        					}
 						});
 						oRouter.navTo("AccountDetails");*/
 		},
@@ -442,6 +445,7 @@ sap.ui.define([
 
 		onDownloadTemplate: function(oEvent) {
 			sap.m.URLHelper.redirect("src/PartnerTemplate.xlsx", true);
+			//sap.m.URLHelper.redirect("/sap/bc/bsp/sap/zakv_cdv/src/PartnerTemplate.xlsx", true);
 		},
 
 		onInfoClose: function(oEvent) {

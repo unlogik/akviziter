@@ -6,12 +6,13 @@ sap.ui.define([
 	"sap/ui/model/Filter",
 	"sap/m/MessagePopover",
 	"sap/m/MessagePopoverItem",
+	"sap/m/MessageBox",
 	"sap/m/Dialog",
 	"sap/m/Button",
 	"sap/m/Text",
 	'sap/ui/core/Fragment',
 	"bp/model/formatter"
-], function(BaseController, JSONModel, History, MessageToast, Filter, MessagePopover, MessagePopoverItem, Dialog, Button, Text, Fragment,
+], function(BaseController, JSONModel, History, MessageToast, Filter, MessagePopover, MessagePopoverItem, MessageBox, Dialog, Button, Text, Fragment,
 	formatter) {
 	"use strict";
 
@@ -70,7 +71,10 @@ sap.ui.define([
 			//	    var oModel = this.getComponentModel();
 			//var oProcessor = new sap.ui.core.message.MessageProcessor();
 			//sap.ui.getCore().getMessageManager().registerMessageProcessor(oModel);
-			oModel.attachMessageChange(this.onMessageChange, this);
+			
+			//???? see what to do
+			//oModel.attachMessageChange(this.onMessageChange, this);
+			
 			//oProcessor.attachMessageChange(this.onMessageChange, this);
 			//sap.ui.getCore().getMessageManager().registerMessageProcessor( oData );
 			// oProcessor.attachMessageChange( this._messageChange, this );
@@ -99,7 +103,7 @@ sap.ui.define([
 			this.setViewModel();
 			this.setViewProperty("editable", false);
 			//this.adjustViewModel();
-
+            this.setViewProperty("messageShow",true);
 		},
 
 		/**
@@ -186,7 +190,7 @@ sap.ui.define([
 					//oView.byId("_tableOrders").setTableBindingPath("PartnerToOrders");
 				},
 				error: function(oResponse) {
-					var response = JSON.parse( oResponse.response.body );
+					var response = this.parseResponse(oResponse);
 					MessageBox.show(response.message, {
 						icon: sap.m.MessageBox.Icon.ERROR,
 						title: "{i18n>msgTileError}"
@@ -627,7 +631,7 @@ sap.ui.define([
 			}
 			// Everything went fine.
 			this.setViewProperty("busy", false);
-			this.setViewProperty("messageShow", false);
+			//this.setViewProperty("messageShow", false);
 		},
 
 		onEdit: function() {
@@ -649,30 +653,56 @@ sap.ui.define([
 			}
 		},
 
-		onSave: function() {
+		onSave: function(oEvent) {
 			var that = this;
 			var oView = this.getView();
 			//var oData = oView.getBindingContext().getObject();
 			var oData = this.getPartnerSet(oView);
+			if (typeof(oEvent) === 'undefined'){
+			    oData.SaveType = 'soft';
+			}else{
+			    oData.SaveType = 'hard';
+			}
 			var sPath = oView.getBindingContext().sPath;
 			var oModel = this.getModel();
+			
 			if (oData.Setid === 'NEW') {
 				oModel.create("/PartnerSet", oData, {
 					success: function(oData, response) {
+					    oModel.resetChanges();
+					    sap.ui.core.BusyIndicator.hide();
 						var oRouter = sap.ui.core.UIComponent.getRouterFor(that);
 						oRouter.navTo("AccountDetails", {
 							SetId: oData.Setid,
 							Editable: "true"
 						});
 					},
-					error: function(oError) {
-						sap.m.MessageToast.show(oError);
+					error: function(oResponse) {
+					    sap.ui.core.BusyIndicator.hide();
+						var response = that.parseResponse( oResponse );
+						MessageBox.show(response.message, {
+							icon: sap.m.MessageBox.Icon.ERROR,
+							title: "{i18n>msgTileError}"
+						});
 					}
 				});
 			} else {
 				//oModel.update(sPath, oData);
+				var sPath = oView.getBindingContext().getPath();
+				oModel.setProperty( sPath + '/SaveType', oData.SaveType);
 				oModel.submitChanges({
-					groupID: "Partner,Order"
+					groupID: "Partner,Order",
+					success: function(oData, response) {
+					    sap.ui.core.BusyIndicator.hide();
+					},
+					error: function(oResponse) {
+					    sap.ui.core.BusyIndicator.hide();
+						var response = that.parseResponse( oResponse );
+						MessageBox.show(response.message, {
+							icon: sap.m.MessageBox.Icon.ERROR,
+							title: "{i18n>msgTileError}"
+						});
+					}					
 				});
 			}
 			//this._toggleButtonsAndView(false);
@@ -686,6 +716,7 @@ sap.ui.define([
 			var rData = {};
 			rData.Setid = oData.Setid;
 			rData.Akvid = oModel.getProperty("/UserSet('CURRENT')/Akvid");
+			//rData.SaveType = oData.SaveType;
 			rData.ShipTo = oData.ShipTo;
 			rData.SoldTo = oData.SoldTo;
 			return rData;
@@ -733,10 +764,17 @@ sap.ui.define([
 		onMessageChange: function(oEvent) {
 			//var count = oEvent.getParameter("newMessages").length;
 			var oMessage = sap.ui.getCore().getMessageManager().getMessageModel();
-			var count = oMessage.getData().length
+			var messageButtonType;
+			var count = oMessage.getData().length;
+			if( count == 0){ 
+			    count = null; 
+			    messageButtonType = "Default";
+			}else{
+			    messageButtonType = "Emphasized";
+			}
 			this.setViewProperty("messageCount", count);
-			//this.setViewProperty("messageShow", true);
-			this.setViewProperty("messageShow", (count > 0) ? true : false);
+			this.setViewProperty("messageButtonType", messageButtonType);
+			//this.setViewProperty("messageShow", (count > 0) ? true : false);
 		}
 
 	});

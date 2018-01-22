@@ -2,7 +2,7 @@
 	controllerName="bp.controller.Dummy">
 	<App>
 		<pages>
-			<Page title="Welcome to new web interface" id="SplashContainer">
+			<Page title="{i18n>appTitle}">
 				<content>
 					<html:style>
 						.spinner { width: 100px; height: 100px; margin: 50px auto; position: relative; } .ball-1 { height: 50%; width: 50%; left: 50%; top: 50%;
@@ -17,13 +17,13 @@
 						80px; left: 80px; } } @keyframes size { 50% { transform: scale(0.5, 0.5); } } @keyframes zindex { 100% { z-index: 10; } } @keyframes shrink
 						{ 50% { transform: scale(0.9, 0.9); } }
 					</html:style>
-					<FlexBox justifyContent="Center" alignItems="Center">
+					<FlexBox height="100%" justifyContent="Center" alignItems="Center"><items>
 						<html:div class="spinner">
 							<html:div class="ball ball-1"/>
 							<html:div class="ball ball-2"/>
 							<html:div class="ball ball-3"/>
 							<html:div class="ball ball-4"/>
-						</html:div>
+						</html:div></items>
 					</FlexBox>
 				</content>
 			</Page>

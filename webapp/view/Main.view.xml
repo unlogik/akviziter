@@ -16,23 +16,23 @@
 				</ToolbarSpacer>
 				<Text text="{/UserSet('CURRENT')/FullName}/ {/UserSet('CURRENT')/Akvid}"/>
 				<core:Icon src="sap-icon://message-error" color="red" tooltip="{i18n>mainNoAcquisiter}" visible="{view>/Main/akvidWarrning}"/>
-				<Button icon="sap-icon://account" type="Transparent" press="onUser">
+				<Button icon="sap-icon://action-settings" type="Transparent" press="onUser">
 					<layoutData>
 						<OverflowToolbarLayoutData priority="NeverOverflow"/>
 					</layoutData>
 				</Button>
-				<Button icon="sap-icon://action-settings" type="Transparent" press="onOpenAppSettings">
+<!--				<Button icon="sap-icon://action-settings" type="Transparent" press="onOpenAppSettings">
 					<layoutData>
 						<OverflowToolbarLayoutData priority="NeverOverflow"/>
 					</layoutData>
-				</Button>
+				</Button>-->
 			</tnt:ToolHeader>
 		</tnt:header>
 		<tnt:sideContent>
 			<tnt:SideNavigation>
 				<tnt:NavigationList id="navigationList" width="320px" itemSelect="onSelect">
-					<tnt:NavigationListItem text="{i18n>navAccounts}" key="Accounts" icon="sap-icon://employee"></tnt:NavigationListItem>
-					<tnt:NavigationListItem text="{i18n>navOrders}" key="Orders" icon="sap-icon://request"></tnt:NavigationListItem>
+					<tnt:NavigationListItem text="{i18n>navOrders}" key="Accounts" icon="sap-icon://employee"></tnt:NavigationListItem>
+					<tnt:NavigationListItem text="{i18n>navAnalysis}" key="Orders" icon="sap-icon://request"></tnt:NavigationListItem>
 				</tnt:NavigationList>
 			</tnt:SideNavigation>
 		</tnt:sideContent>
