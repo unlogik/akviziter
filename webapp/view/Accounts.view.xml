@@ -64,22 +64,22 @@
 									<Label text="{i18n>columnAddress}" id="__label2"/>
 								</header>
 							</Column>
-							<Column id="__column3" minScreenWidth="Tablet" demandPopin="true" width="150px">
+							<Column id="__column3" minScreenWidth="Desktop" demandPopin="true" width="150px">
 								<header>
 									<Label text="Telephone" id="__label3"/>
 								</header>
 							</Column>
-							<Column minScreenWidth="Tablet" demandPopin="true" width="170px">
+							<Column minScreenWidth="Desktop" width="170px">
 								<header>
 									<Label text="{/#Partner/SoldTo/Email/@sap:label}"/>
 								</header>
 							</Column>							
-							<Column id="__column4" minScreenWidth="Tablet" width="100px">
+							<Column id="__column4" minScreenWidth="Desktop" width="100px">
 								<header>
 									<Label text="{i18n>columnBirth}" id="__label4"/>
 								</header>
 							</Column>
-							<Column id="__column5" minScreenWidth="Tablet" width="100px">
+							<Column id="__column5" minScreenWidth="Desktop" width="100px" demandPopin="true">
 								<header>
 									<Label text="{/#Partner/SoldTo/Stcd2/@sap:label}" id="__label5"/>
 								</header>

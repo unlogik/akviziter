@@ -245,7 +245,7 @@
 									<cells>
 										<DatePicker dateValue="{Stdat}" displayFormat="dd.MM.YYYY" minDate="{ path: 'MinStdat', formatter: '.formatter.dateJS'}"/>
 										<Text text="{ path: 'Cldat', type:'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.YYYY'} }"/>
-										<Input value="{ path: 'Quant', type:'sap.ui.model.type.Integer' }" type="Number"
+										<Input value="{ path: 'Quant', type:'sap.ui.model.type.Integer' }" type="Number" submit="onEnter"
 											valueState="{ path: 'Quant', formatter: '.formatter.inputQuantity' }" valueStateText="{i18n>msgQuantityHigh}" maxLength="2"/>
 									</cells>
 								</ColumnListItem>
