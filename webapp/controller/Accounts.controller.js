@@ -444,8 +444,8 @@ sap.ui.define([
 		},
 
 		onDownloadTemplate: function(oEvent) {
-			sap.m.URLHelper.redirect("src/PartnerTemplate.xlsx", true);
-			//sap.m.URLHelper.redirect("/sap/bc/bsp/sap/zakv_cdv/src/PartnerTemplate.xlsx", true);
+			//sap.m.URLHelper.redirect("src/PartnerTemplate.xlsx", true);
+			sap.m.URLHelper.redirect("/sap/bc/bsp/sap/zakv_cdv/src/PartnerTemplate.xlsx", true);
 		},
 
 		onInfoClose: function(oEvent) {

@@ -1,5 +1,5 @@
 {
-	"_version": "1.1.0",
+	"_version": "1.5.0",
 	"sap.app": {
 		"_version": "1.1.0",
 		"id": "bp",
@@ -38,7 +38,7 @@
 	"sap.ui": {
 		"_version": "1.1.0",
 		"technology": "UI5",
-		"fullWidth": true, 
+		"fullWidth": true,
 		"icons": {
 			"icon": "",
 			"favIcon": "",
@@ -90,16 +90,19 @@
 				"settings": {
 					"defaultOperationMode": "Server",
 					"defaultBindingMode": "TwoWay",
-					"defaultCountMode": "Request"
+					"defaultCountMode": "Request",
+					"countSupported": "False"
 				},
 				"dataSource": "Akviziter",
 				"preload": true
 			}
 		},
 		"resources": {
-			"css": [{
-				"uri": "css/style.css"
-			}]
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			]
 		},
 		"routing": {
 			"config": {
@@ -110,35 +113,41 @@
 				"controlAggregation": "pages",
 				"transition": "fade"
 			},
-			"routes": [{
-				"pattern": "Accounts",
-				"name": "Accounts",
-				"target": "accounts"
-			}, {
-				"pattern": "orders",
-				"name": "Orders",
-				"target": "orders"
-			}, {
-				"pattern": "PartnerSet/{objectId}",
-				"name": "object",
-				"target": "object"
-			}, {
-				"pattern": "AccountDetails/{SetId}/:Editable:",
-				"name": "AccountDetails",
-				"target": "accountDetails"
-			}, {
-				"pattern": "",
-				"name": "Splash",
-				"target": "splash"
-			}],
+			"routes": [
+				{
+					"pattern": "Accounts",
+					"name": "Accounts",
+					"target": "accounts"
+				},
+				{
+					"pattern": "Analysis",
+					"name": "Analysis",
+					"target": "analysis"
+				},
+				{
+					"pattern": "PartnerSet/{objectId}",
+					"name": "object",
+					"target": "object"
+				},
+				{
+					"pattern": "AccountDetails/{SetId}/:Editable:",
+					"name": "AccountDetails",
+					"target": "accountDetails"
+				},
+				{
+					"pattern": "",
+					"name": "Splash",
+					"target": "splash"
+				}
+			],
 			"targets": {
 				"accounts": {
 					"viewName": "Accounts",
 					"viewLevel": 1,
 					"transition": "slide"
 				},
-				"orders": {
-					"viewName": "Orders",
+				"analysis": {
+					"viewName": "Report",
 					"viewLevel": 1,
 					"transition": "slide"
 				},
@@ -158,5 +167,9 @@
 				}
 			}
 		}
+	},
+	"sap.platform.abap": {
+		"uri": "/sap/bc/ui5_ui5/sap/zakv_cqs/webapp",
+		"_version": "1.1.0"
 	}
 }

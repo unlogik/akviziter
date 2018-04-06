@@ -87,6 +87,7 @@ sap.ui.define([
 			this._showFormFragment("Display");
 			var oModel = this.getOwnerComponent().getModel();
 			oModel.read("/PartnerTitleSet");
+			//oModel.setRefreshAfterChange(false);
 			//*var oSelect = this.getView().byId("__ShipTo_Title");*/
 			/*.setModel(oModel);*/
 
@@ -98,10 +99,10 @@ sap.ui.define([
 			//oModel.attachMessageChange(this.onMessageChange, this);
 
 			//oProcessor.attachMessageChange(this.onMessageChange, this);
-			//sap.ui.getCore().getMessageManager().registerMessageProcessor( oData );
+			//sap.ui.getCore().getMessageManager().registerMessageProcessor( oModel );
 			// oProcessor.attachMessageChange( this._messageChange, this );
 			var oMessage = sap.ui.getCore().getMessageManager().getMessageModel();
-			this.getView().setModel(oMessage, "message");
+			//this.getView().setModel(oMessage, "message");
 			oMessagePopover.setModel(oMessage, "message");
 			sap.ui.getCore().getMessageManager().registerObject(this.getView(), true);
 
@@ -159,7 +160,7 @@ sap.ui.define([
 		},
 
 		onNavBack: function() {
-		    //var that = this;
+		    var that = this;
 			var oModel = this.getModel();
 			//check pending changes
 			if (this.hasPendingChanges()) {
@@ -181,12 +182,12 @@ sap.ui.define([
 						press: function() {
 							dialog.close();
 							this.doNavBack(this.cons.navTypeNoSave);
-						}
-					}).bind(this),
+						}.bind(this)
+					}),
 					afterClose: function() {
 						dialog.destroy();
 					}
-				}).bind(this);
+				});
 				//bind model to access translations
 				dialog.setModel(this.getModel("i18n"), "i18n");
 				dialog.open();
@@ -655,6 +656,7 @@ sap.ui.define([
 					Setid: sObjectId
 				});
 				this._bindView("/" + sObjectPath);
+				this.getModel().fireMessageChange();
 			}.bind(this));
 			var bEditable = sObjectId === 'NEW' ? true : false;
 			if (!bEditable) {
@@ -672,6 +674,7 @@ sap.ui.define([
 		_bindView: function(sObjectPath) {
 			var oDataModel = this.getModel();
 			var that = this;
+			that.countMessages(sObjectPath);
 			this.getView().bindElement({
 				path: sObjectPath,
 				parameters: {
@@ -690,20 +693,57 @@ sap.ui.define([
 					},
 					dataReceived: function() {
 						that.setViewProperty("busy", false);
-						/*var msgNo = this.getModel().getProperty(sObjectPath+'/PartnerToMessages').length;
-						var messageButtonType;
-            			if( msgNo == 0){ 
-            			    msgNo = null; 
-            			    messageButtonType = "Default";
-            			}else{
-            			    messageButtonType = "Emphasized";
-            			}
-            			that.setViewProperty("messageCount", msgNo);
-            			that.setViewProperty("messageButtonType", messageButtonType);
-            			that.setViewProperty("messageShow", (msgNo > 0) ? true : false);*/
+                        that.countMessages(sObjectPath);
 					}
 				}
 			});
+		},
+		
+		countMessages: function(sObjectPath){
+		    var messages = this.getMessages(sObjectPath);
+		    if ( !messages){
+		        return;
+		    }
+  			var msgNo = messages.length;
+			var messageButtonType;
+			if( msgNo == 0){ 
+			    msgNo = null; 
+			    messageButtonType = "Default";
+			}else{
+			    messageButtonType = "Emphasized";
+			}
+			this.setViewProperty("messageCount", msgNo);
+			this.setViewProperty("messageButtonType", messageButtonType);
+			this.setViewProperty("messageShow", (msgNo > 0) ? true : false);  
+			var oMsgManager = sap.ui.getCore().getMessageManager();
+			/*oMsgManager.removeAllMessages();
+			if (messages){
+			 oMsgManager.addMessages(messages);
+			}*/
+		},
+		
+		getMessages: function(sObjectPath){
+		    var oModel = this.getModel();
+		    var paths = oModel.getProperty(sObjectPath+'/PartnerToMessages');
+		    var messages = [];
+		    for( var i in paths){
+		        var serverMsg = oModel.getProperty("/"+paths[i]);
+		        var message = new sap.ui.core.message.Message({
+		            //id : serverMsg.Id,
+		            message : serverMsg.Msg,
+		            description : serverMsg.Messagev4,
+		            type : serverMsg.MsgType,
+		            code : serverMsg.Number,
+		            target : sObjectPath +"/" + serverMsg.Target,
+		            processor: oModel
+		        } );
+		        messages.push( message );
+		    }
+		    if (messages.length > 0){
+		      return messages;
+		    }else{
+		      return null;
+		    }
 		},
 
 		_onBindingChange: function() {
@@ -749,7 +789,7 @@ sap.ui.define([
 		save: function(saveType){
 			var oModel = this.getModel();
 			//pending changes?
-			if(!this.hasPendingChanges()){
+			if(!this.hasPendingChanges() && saveType == 'soft'){
 			   return; 
 			}
 			var that = this;
@@ -765,7 +805,7 @@ sap.ui.define([
 				oModel.create("/PartnerSet", oData, {
 					success: function(oData, response) {
 						sap.ui.core.BusyIndicator.hide();
-						that.msgToast(that.getI18n('msgChangesSaved', oData.Setid));      
+						that.msgToast(that.getI18n('msgChangesCreated', oData.Setid));      
 						var oRouter = sap.ui.core.UIComponent.getRouterFor(that);
 						oRouter.navTo("AccountDetails", {
 							SetId: oData.Setid,
@@ -788,13 +828,7 @@ sap.ui.define([
 						groupID: "Partner,Order",
 						success: function(oData, response) {
 							sap.ui.core.BusyIndicator.hide();
-							var setid = '?';
-							if(typeof(oData.__batchResponses)!=='undefined'){
-							    setid = oData.__batchResponses[1].data.Setid;
-							}else{
-							    setid = oData.Setid;
-							}
-							that.msgToast(that.getI18n('msgChangesSaved', setid));
+							that.msgToast(that.getI18n('msgChangesSaved'));
 						},
 						error: function(oResponse) {
 							sap.ui.core.BusyIndicator.hide();

@@ -4,7 +4,7 @@ sap.ui.define([
 ], function(Controller, History) {
 	"use strict";
 
-	return Controller.extend("bp.controller.Orders", {
+	return Controller.extend("bp.controller.Report", {
 
 		/**
 		 * Called when a controller is instantiated and its View controls (if available) are already created.
@@ -50,7 +50,18 @@ sap.ui.define([
 				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 				oRouter.navTo("overview", {}, true);
 			}
-		}		
+		},
+		
+		onDateChange: function (oEvent){
+		    var oDateRange = oEvent.getSource();
+		    var from = oDateRange.getDateValue();
+		    var to = oDateRange.getSecondDateValue();
+		    var oFilter = this.getView().byId("sf_Report");
+		    var filterData = oFilter.getFilterData();
+		    filterData.Crdat = { value: "", "ranges":[from,to], items:[] };
+		    oFilter.setFilterData( filterData );
+		    var newFilter = new sap.ui.model.Filter("Crdat", sap.ui.model.FilterOperator.BT, from, to  );
+		}
 
 	});
 

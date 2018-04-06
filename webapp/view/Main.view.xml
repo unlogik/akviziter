@@ -1,6 +1,6 @@
 <mvc:View xmlns:html="http://www.w3.org/1999/xhtml" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:tnt="sap.tnt"
 	controllerName="bp.controller.Main" class="side-navigation-demo" displayBlock="true">
-	<tnt:ToolPage id="toolPage" expanded="false">
+	<tnt:ToolPage id="toolPage" sideExpanded="true">
 		<tnt:header>
 			<tnt:ToolHeader>
 				<Button id="sideNavigationToggleButton" icon="sap-icon://menu2" type="Transparent" press="onSideNavButtonPress">
@@ -32,7 +32,7 @@
 			<tnt:SideNavigation>
 				<tnt:NavigationList id="navigationList" width="320px" itemSelect="onSelect">
 					<tnt:NavigationListItem text="{i18n>navOrders}" key="Accounts" icon="sap-icon://employee"></tnt:NavigationListItem>
-					<tnt:NavigationListItem text="{i18n>navAnalysis}" key="Orders" icon="sap-icon://request"></tnt:NavigationListItem>
+					<tnt:NavigationListItem text="{i18n>navAnalysis}" key="Analysis" icon="sap-icon://request"></tnt:NavigationListItem>
 				</tnt:NavigationList>
 			</tnt:SideNavigation>
 		</tnt:sideContent>

@@ -48,7 +48,7 @@
     "blockPushLevel": "Error"
   },
   "mockpreview": {
-    "mockUri": "/Styria/sap/opu/odata/SAP/ZAKV_SRV",
+    "mockUri": "/Styria/sap/opu/odata/SAP/ZAKV_SRV;o=CDV/",
     "metadataFilePath": "localService/metadata.xml",
     "mockRequestsFilePath": "",
     "loadJSONFiles": true,
@@ -58,5 +58,9 @@
     "/webapp/view/Accounts.view.xml": {
       "entitySet": ""
     }
+  },
+  "deploy": {
+    "destination": "StyriaABAP",
+    "name": "ZAKV_CQS"
   }
 }
