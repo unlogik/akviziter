@@ -16,9 +16,10 @@ sap.ui.define([
 	"bp/lib/jszip.min",
 	"bp/lib/xlsx.min",
 	"sap/ui/model/Filter",
-	"sap/ui/model/Sorter"
+	"sap/ui/model/Sorter",
+    "sap/ui/comp/valuehelpdialog/ValueHelpDialog"
 ], function(BaseController, History, Export, ExportTypeCSV, MessageBox, MessageToast, MessagePopover, MessagePopoverItem, Dialog, Button,
-	Text, Fragment, formatter, XLSX_, JSZip, xlsx, Filter, Sorter) {
+	Text, Fragment, formatter, XLSX_, JSZip, xlsx, Filter, Sorter, ValueHelpDialog ) {
 	"use strict";
 
 	var oMessageTemplate = new MessagePopoverItem({
@@ -125,7 +126,7 @@ sap.ui.define([
 		onBPDetails: function(oEvent) {
 			// The source is the list item that got pressed
 			var oItem = oEvent.getSource();
-			var oRouter = sap.ui.core.UIComponent.getRuploouterFor(this);
+			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			oRouter.navTo("AccountDetails", {
 				SetId: oItem.getBindingContext().getProperty("Setid")
 			});
@@ -452,31 +453,6 @@ sap.ui.define([
 		},
 
 		onOpenSettings: function(oEvent) {
-
-			/*			// create dialog on demand
-						if (!this._oVSDialog) {
-							this._oVSDialog = sap.ui.xmlfragment(this.getView().getId(), "bp.view.AccountsSettings", this);
-							this.getView().addDependent(this._oVSDialog);
-						}
-
-						// delay because addDependent is async
-						jQuery.sap.delayedCall(0, this, function() {
-							// apply user selection
-							var aFilterKeys = {};
-							jQuery.each(this._oViewSettings.filter, function(sPropery, aValues) {
-								jQuery.each(aValues, function(i, aValue) {
-									aFilterKeys[aValue] = true;
-								});
-							});
-							this._oVSDialog.setSelectedFilterKeys(aFilterKeys);
-							this._oVSDialog.setSelectedGroupItem(this._oViewSettings.groupProperty);
-							this._oVSDialog.setGroupDescending(this._oViewSettings.groupDescending);
-							jQuery('body').toggleClass("sapUiSizeCompact", this._oViewSettings.compactOn).toggleClass("sapUiSizeCozy", !this._oViewSettings.compactOn);
-
-							// open
-							this._oVSDialog.open(); //By(oEvent.getSource());
-						});
-						*/
 			if (!this._oVSDialog) {
 				this._oVSDialog = sap.ui.xmlfragment("bp.view.AccountsSettings", this);
 				this.getView().addDependent(this._oVSDialog);
@@ -536,7 +512,7 @@ sap.ui.define([
 		onModelValueHelp: function() {
 			var that = this;
 			var oInput = this.getView().byId("_inputModel");
-			var oValueHelpDialog = new sap.ui.comp.valuehelpdialog.ValueHelpDialog({
+			var oValueHelpDialog = new ValueHelpDialog({
 				//basicSearchText: "Odaberi Model", //this.theTokenInput.getValue(), 
 				title: "Company",
 				supportMultiselect: false,

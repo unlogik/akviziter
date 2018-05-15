@@ -11,10 +11,10 @@ sap.ui.define([
 	"sap/m/Button",
 	"sap/m/Text",
 	'sap/ui/core/Fragment',
-	"bp/model/formatter"
+	"bp/model/formatter",
+	"sap/ui/comp/valuehelpdialog/ValueHelpDialog"
 ], function(BaseController, JSONModel, History, MessageToast, Filter, MessagePopover, MessagePopoverItem, MessageBox, Dialog, Button,
-	Text, Fragment,
-	formatter) {
+	Text, Fragment,	formatter, ValueHelpDialog) {
 	"use strict";
 
 	/*	var oMessageTemplate1 = new MessagePopoverItem({
@@ -443,7 +443,7 @@ sap.ui.define([
 		onModelValueHelp: function() {
 			var that = this;
 			var oInput = this.getView().byId("_inputModel");
-			var oValueHelpDialog = new sap.ui.comp.valuehelpdialog.ValueHelpDialog({
+			var oValueHelpDialog = new ValueHelpDialog({
 				//basicSearchText: "Odaberi Model", //this.theTokenInput.getValue(), 
 				title: "Company",
 				supportMultiselect: false,

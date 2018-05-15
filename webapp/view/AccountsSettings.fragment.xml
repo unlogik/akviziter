@@ -24,6 +24,11 @@
 					<ViewSettingsItem text="{i18n>msgSuccess}" key="Status__EQ__S" />
 				</items>
 			</ViewSettingsFilterItem>
+			<ViewSettingsFilterItem
+				text="{i18n>columnFile}"
+				key="File"
+				id="statusFile">
+			</ViewSettingsFilterItem>			
 		</filterItems>
 	</ViewSettingsDialog>
 </core:FragmentDefinition>

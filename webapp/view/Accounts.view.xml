@@ -49,9 +49,9 @@
 									<Label text="{/#Partner/Setid/@sap:label}" id="__label0"/>
 								</header>
 							</Column>
-							<Column id="__column01" width="50px" visible="{/UserSet('CURRENT')/AkvSelectable}" minScreenWidth="Tablet">
+							<Column id="__column01" width="50px" visible="{/UserSet('CURRENT')/AkvSelectable}" minScreenWidth="Tablet" mergeDuplicates="true">
 								<header>
-									<Label text="AkvID"/>
+									<Label text="AkvID" />
 								</header>
 							</Column>
 							<Column id="__column1">
