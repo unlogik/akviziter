@@ -8,7 +8,7 @@
 						<OverflowToolbarButton id="__button3" text="Add" tooltip="New" icon="sap-icon://add" press="onAdd"
 							visible="{/UserSet('CURRENT')/AuthCreate}"/>
 						<u:FileUploader id="fileUploader" name="myFileUpload" buttonOnly="true" icon="sap-icon://upload" iconOnly="true" change="onUpload"
-							visible="{/UserSet('CURRENT')/AuthCreate}"/>
+							visible="{/UserSet('CURRENT')/AuthCreate}" fileType="xls,xlsx"/>
 						<OverflowToolbarButton text="Delete" icon="sap-icon://delete" press="onDelete" tooltip="{i18n>accountsDelete}"
 							visible="{/UserSet('CURRENT')/AuthDelete}"/>
 						<Input maxLength="8" width="140px" showValueHelp="true" valueHelpRequest="onModelValueHelp" placeholder="Model" showSuggestion="true"

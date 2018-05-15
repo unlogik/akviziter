@@ -20,18 +20,17 @@ sap.ui.define([
 		 * (NOT before the first rendering! onInit() is used for that one!).
 		 * @memberOf bp.view.App
 		 */
-		//	onBeforeRendering: function() {
-		//
-		//	},
+		/*		onBeforeRendering: function() {
+				},
 
 		/**
 		 * Called when the View has been rendered (so its HTML is part of the document). Post-rendering manipulations of the HTML could be done here.
 		 * This hook is the same one that SAPUI5 controls get after being rendered.
 		 * @memberOf bp.view.App
 		 */
-		//	onAfterRendering: function() {
-		//
-		//	},
+		onAfterRendering: function() {
+			this.getView().byId("dateCreated").fireChange();
+		},
 
 		/**
 		 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.
@@ -40,7 +39,7 @@ sap.ui.define([
 		//	onExit: function() {
 		//
 		//	}
-		onNavBack: function () {
+		onNavBack: function() {
 			var oHistory = History.getInstance();
 			var sPreviousHash = oHistory.getPreviousHash();
 
@@ -51,16 +50,47 @@ sap.ui.define([
 				oRouter.navTo("overview", {}, true);
 			}
 		},
-		
-		onDateChange: function (oEvent){
-		    var oDateRange = oEvent.getSource();
-		    var from = oDateRange.getDateValue();
-		    var to = oDateRange.getSecondDateValue();
-		    var oFilter = this.getView().byId("sf_Report");
-		    var filterData = oFilter.getFilterData();
-		    filterData.Crdat = { value: "", "ranges":[from,to], items:[] };
-		    oFilter.setFilterData( filterData );
-		    var newFilter = new sap.ui.model.Filter("Crdat", sap.ui.model.FilterOperator.BT, from, to  );
+
+		onBeforeRebindTable: function(oEvent) {
+			// Get bindinParams Object, which includes filters
+			var oBindingParams = oEvent.getParameter("bindingParams");
+			// Create the aFilters array
+			//var aFilters = oBindingParams.filters;
+			// Create the table object
+			var oSmartTable = oEvent.getSource();
+			// Get the SmartFilterBarID
+			var oSmartFilterBar = this.byId(oSmartTable.getSmartFilterId());
+			if (oSmartFilterBar instanceof sap.ui.comp.smartfilterbar.SmartFilterBar) {
+				var oCustomControl = oSmartFilterBar.getControlByKey("Crdat");
+				if (oCustomControl instanceof sap.m.DatePicker) {
+					var from = oCustomControl.getDateValue();
+					var to = oCustomControl.getSecondDateValue();
+					oBindingParams.filters.push(new sap.ui.model.Filter("Crdat", "BT", from, to ));
+				}
+			}
+		},
+
+		onDateChange: function(oEvent) {
+			var oDatePicker = oEvent.getSource();
+			var from = oDatePicker.getDateValue();
+			var to = oDatePicker.getSecondDateValue();
+			var oFilter = this.getView().byId("sf_Report");
+			var filterData = oFilter.getFilterData();
+			if (filterData) {
+				filterData.Crdat = {
+					"low": from,
+					"high": to
+				};
+			} else {
+				filterData = {
+					"Crdat": {
+						"low": from,
+						"high": to
+					}
+				};
+			}
+			oFilter.setFilterData(filterData, true);
+			var newFilter = new sap.ui.model.Filter("Crdat", sap.ui.model.FilterOperator.BT, from, to);
 		}
 
 	});

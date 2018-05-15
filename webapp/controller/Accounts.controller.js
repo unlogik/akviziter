@@ -35,6 +35,31 @@ sap.ui.define([
 			template: oMessageTemplate
 		}
 	});
+	
+
+    const readFile = (file) => {
+      let reader = new window.FileReader();
+    
+      return new Promise((resolve, reject) => {
+        if(!file){
+            return reject("File not selected!")
+        }
+        reader.onload = (event) => {
+          file.data = event.target. result;
+          resolve(file);
+        };
+    
+        reader.onerror = () => {
+          return reject(this);
+        };
+    
+        if (/^image/.test(file.type)) {
+          reader.readAsDataURL(file);
+        } else {
+          reader.readAsBinaryString (file);
+        }
+      })
+    };
 
 	return BaseController.extend("bp.controller.Accounts", {
 		_oVSDialog: null, // set on demand
@@ -100,7 +125,7 @@ sap.ui.define([
 		onBPDetails: function(oEvent) {
 			// The source is the list item that got pressed
 			var oItem = oEvent.getSource();
-			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+			var oRouter = sap.ui.core.UIComponent.getRuploouterFor(this);
 			oRouter.navTo("AccountDetails", {
 				SetId: oItem.getBindingContext().getProperty("Setid")
 			});
@@ -110,42 +135,19 @@ sap.ui.define([
 			oRouter.navTo("AccountDetails", {
 				SetId: "NEW"
 			});
-			/*				var oModel = this.getView().getModel();
-						oModel.create("/PartnerSet", {
-							Setid: '0',
-							Akvid: 'AQ1',
-							Pubid: 'PB1'
-						}, {
-							async: false,
-							success: function(oData, response) {
-								oRouter.navTo("object", {
-									objectId: oData.Setid
-								});
-								//sSuccessMessage += oView.getModel("i18n").getProperty("NewEntry") + ": " + oData.Kjahr + " " + oData.Hjahr + "\r\n";
-							},
-        					error: function(oResponse) {
-        						var response = JSON.parse(oResponse.response.body);
-        						MessageBox.show(response.message, {
-        							icon: sap.m.MessageBox.Icon.ERROR,
-        							title: "{i18n>msgTileError}"
-        						});
-        					}
-						});
-						oRouter.navTo("AccountDetails");*/
 		},
 
 		onUpload: function(oEvent) {
-			var files = oEvent.getParameter("files");
-			if (files && window.FileReader) {
-				var reader = new FileReader();
-				reader.onload = function(e) {
-					this._createFromXLSX(e, files[0])
-				}.bind(this);
-				reader.readAsBinaryString(files[0]);
+		    var files = oEvent.getParameter("files");
+		    var oFileUploader = oEvent.getSource();
+			readFile(files[0]
+			).then( result => {
+			    this._createFromXLSX( result );
+			    oFileUploader.setValue("");
 			}
-			oEvent.clear();
+			).catch( err => console.error( this.getI18n("msgFileError", err) ) );
 		},
-
+		
 		onSubmit: function(oEvent) {
 			//is there something selected?
 			if (!this._validateSelected()) {
@@ -188,45 +190,29 @@ sap.ui.define([
 			for (var i = 0; i < aItems.length; i++) {
 				var sPath = aItems[i].getBindingContextPath();
 				oModel.setProperty(sPath + "/Status", "P");
-				/*var id = aItems[i].getCells()[0].getText();
-				var oData = {
-					"Status": "P"
-				};
-				oModel.update("/PartnerSet('" + id + "')", oData, {
-					success: jQuery.proxy(function() {
-						jQuery.sap.require("sap.m.MessageToast");
-						MessageToast.show("el Vuelo '" + name + "' se elimino con exito.");
-					}, this),
-				});*/
 			}
 			oModel.submitChanges("Partner");
 		},
 
-		_createFromXLSX: function(e, file) {
-			var data = e.target.result;
-			var wb = XLSX.read(data, {
+		_createFromXLSX: function(file) {
+			var wb = XLSX.read(file.data, {
 				type: 'binary'
 			});
 			//wb.SheetNames.forEach(function(sheetName) {
 			var json = XLSX.utils.sheet_to_row_object_array(wb.Sheets["Partner"]);
-			//if (roa.length > 0) {
-			//  result[sheetName] = roa;
-			//alert(JSON.stringify(result));
-			//}
-			//});
 			var oModel = this.getModel();
 			//Prep header-level group/changeset params  
 			var mParameters = {
 				"groupId": "Partner",
-				"changeSetId": "grpid",
-				"success": this._createBatchSuccess.bind(this),
-				"error": this._createBatchError.bind(this) //function(oError) { }.bind(this)
+				"changeSetId": "grpid"
 			};
 			for (var i = 2; i < json.length; i++) {
 				var entity = this._parseEntity(json[i]);
 				entity.FileName = file.name;
 				oModel.create("/PartnerSet", entity, mParameters);
 			}
+			mParameters.success = this._createBatchSuccess.bind(this);
+			mParameters.error = this._createBatchError.bind(this);
 			oModel.submitChanges(mParameters);
 		},
 		/* parse excel table format to oData format
@@ -238,6 +224,7 @@ sap.ui.define([
 			var entity = {
 				"Akvid": oModel.getProperty("/UserSet('CURRENT')/Akvid"),
 				"Pubid": "PB1",
+				"Agent": "",
 				"SoldTo": {},
 				"ShipTo": {}
 			}
@@ -251,6 +238,9 @@ sap.ui.define([
 					field = field[0];
 				}
 				switch (field) {
+				    case "Agent":
+				        entity[field] = json[key];
+				        break;
 					case "Title":
 						entity[bptype][field] = json[key].match(/\d{2}/)[0];
 						break;
@@ -263,7 +253,8 @@ sap.ui.define([
 
 		_createBatchSuccess: function(data, response) {
 			//this.getModel().refresh();
-			MessageBox.show("Partners created", MessageBox.Icon.SUCCESS, "Batch Save", MessageBox.Action.OK);
+			var noCreated = data.__batchResponses[0].__changeResponses.length;
+			MessageBox.show( this.getI18n('msgBatchCreated', noCreated), MessageBox.Icon.SUCCESS, "Batch Save", MessageBox.Action.OK);
 		},
 
 		_createBatchError: function(oError) {

@@ -8,7 +8,8 @@
 					<sf:ControlConfiguration key="Drerz" visibleInAdvancedArea="true"/>
 					<sf:ControlConfiguration key="Crdat" visibleInAdvancedArea="true">
 						<sf:customControl>
-							<DateRangeSelection id="ValidtestFROM_DT" displayFormat="dd.MM.yyyy" dateValue="{/UserSet('CURRENT')/DateFrom}" secondDateValue="{/UserSet('CURRENT')/DateTo}" change="onDateChange"/>
+							<DateRangeSelection id="dateCreated" displayFormat="dd.MM.yyyy" dateValue="{/UserSet('CURRENT')/DateFrom}"
+								secondDateValue="{/UserSet('CURRENT')/DateTo}" change="onDateChange"/>
 						</sf:customControl>
 					</sf:ControlConfiguration>
 					<!--sf:ControlConfiguration key="Status" filterType="multiple" visibleInAdvancedArea="true"/>
@@ -17,7 +18,8 @@
 			</sf:SmartFilterBar>
 			<s:SmartTable entitySet="ReportSet" id="_table" tableType="ResponsiveTable" useVariantManagement="true" useTablePersonalisation="true"
 				header="Status Report" showRowCount="false" enableAutoBinding="true" editable="false" class="sapUiTinyMargin"
-				persistencyKey="SmartTable_Report" smartFilterId="sf_Report" noData="{i18n>msgNoData}" demandPopin="true">
+				persistencyKey="SmartTable_Report" smartFilterId="sf_Report" noData="{i18n>msgNoData}" demandPopin="true"
+				beforeRebindTable="onBeforeRebindTable">
 				<Table>
 					<columns>
 						<Column width="100px">

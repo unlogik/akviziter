@@ -700,11 +700,11 @@ sap.ui.define([
 		},
 		
 		countMessages: function(sObjectPath){
+		    var msgNo = 0;
 		    var messages = this.getMessages(sObjectPath);
-		    if ( !messages){
-		        return;
+		    if ( messages){
+		        msgNo = messages.length;
 		    }
-  			var msgNo = messages.length;
 			var messageButtonType;
 			if( msgNo == 0){ 
 			    msgNo = null; 

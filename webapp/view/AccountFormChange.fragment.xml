@@ -259,6 +259,8 @@
 						<s:customToolbar>
 							<Toolbar>
 								<ToolbarSpacer/>
+								<Label visible="{=${Agent} !== ''}" text="Agent: {Agent}" tooltip="Agent"/>
+								<ToolbarSeparator/>
 								<!--<sf:SmartField value="{ModelSet('NEW')/Model}"/>-->
 								<Input maxLength="8" width="140px" showValueHelp="true" valueHelpRequest="onModelValueHelp" placeholder="Model" showSuggestion="true"
 									suggestionItems="{/ModelSet}" maxSuggestionWidth="300px" id="_inputModel" value="{view>/AccountDetails/model}" submit="onAddOrder">
