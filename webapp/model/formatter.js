@@ -122,6 +122,13 @@ sap.ui.define([], function () {
 		      oDate.setHours( 0 );
 		    }
 		    return oDate;
+		},
+		
+		parseInt : function( oString ){
+		    var int = parseInt( oString, 10 );
+		    if (isNaN(int)) { return 0 }
+		    return int;
 		}
+		
 	};
 });

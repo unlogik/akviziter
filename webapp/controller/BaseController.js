@@ -99,7 +99,10 @@ sap.ui.define([
 				showIcon: sIcon,
 				type: sType
 			});
-			this.getView().addContent(oMsgStrip);
+			var pageId = this.getViewProperty("pageId");
+            var oPage = this.getView().byId(pageId);
+			oPage.insertContent(oMsgStrip);			
+			//this.getView().addContent();
 		},
 
 		getI18n: function (sProperty, v1, v2, v3, v4) {

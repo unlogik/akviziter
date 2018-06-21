@@ -21,16 +21,6 @@
 		<edmx:Include Alias="Aggregation" Namespace="Org.OData.Aggregation.V1"/>
 	</edmx:Reference>
 	<edmx:DataServices>
-		<Schema xmlns="http://docs.oasis-open.org/odata/ns/edm">
-			<Annotations Target="ZAKV_SRV.Partner">
-				<Annotation Term="UI.LineItem">
-					<Collection>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="SAP__Origin"/>
-						</Record>
-					</Collection>
-				</Annotation>
-			</Annotations>
-		</Schema>
+		<Schema xmlns="http://docs.oasis-open.org/odata/ns/edm"/>
 	</edmx:DataServices>
 </edmx:Edmx>

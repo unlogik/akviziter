@@ -26,9 +26,13 @@
 			</ViewSettingsFilterItem>
 			<ViewSettingsFilterItem
 				text="{i18n>columnFile}"
-				key="File"
-				id="statusFile">
-			</ViewSettingsFilterItem>			
+				key="FileName"
+				id="statusFile"
+				items="{ path:'/FileSet', templateShareable:false}">
+    			<items>
+    			    <ViewSettingsItem text="{FileName}" key="{Key}"/>
+    			</items>			    
+			</ViewSettingsFilterItem>
 		</filterItems>
 	</ViewSettingsDialog>
 </core:FragmentDefinition>

@@ -5,4 +5,5 @@ lib/jszip.min.js
 lib/xlsx.min.js
 src/splash.PNG
 src/webui.jpg
+src/PartnerTemplate.xlsx
 localService/*

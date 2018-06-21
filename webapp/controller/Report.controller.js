@@ -73,7 +73,13 @@ sap.ui.define([
 		onDateChange: function(oEvent) {
 			var oDatePicker = oEvent.getSource();
 			var from = oDatePicker.getDateValue();
+			if( from == null ){
+			   from = new Date(); 
+			} 
 			var to = oDatePicker.getSecondDateValue();
+			if( to == null ){
+			    to = new Date(); 
+			}
 			var oFilter = this.getView().byId("sf_Report");
 			var filterData = oFilter.getFilterData();
 			if (filterData) {

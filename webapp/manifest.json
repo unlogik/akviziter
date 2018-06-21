@@ -22,15 +22,15 @@
 					"odataVersion": "2.0",
 					"localUri": "localService/metadata.xml",
 					"annotations": [
-						"annotation0"
+						"annotation"
 					]
 				}
 			},
-			"annotation0": {
-				"uri": "localService/annotation0.xml",
+			"annotation": {
+				"uri": "localService/annotation.xml",
 				"type": "ODataAnnotation",
 				"settings": {
-					"localUri": "localService/annotation0.xml"
+					"localUri": "localService/annotation.xml"
 				}
 			}
 		}

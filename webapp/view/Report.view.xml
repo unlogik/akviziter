@@ -16,7 +16,7 @@
 					<sf:ControlConfiguration key="Reason" filterType="multiple" visibleInAdvancedArea="true"/-->
 				</sf:controlConfiguration>
 			</sf:SmartFilterBar>
-			<s:SmartTable entitySet="ReportSet" id="_table" tableType="ResponsiveTable" useVariantManagement="true" useTablePersonalisation="true"
+			<s:SmartTable entitySet="ReportSet" id="_table" tableType="Table" useVariantManagement="true" useTablePersonalisation="true"
 				header="Status Report" showRowCount="false" enableAutoBinding="true" editable="false" class="sapUiTinyMargin"
 				persistencyKey="SmartTable_Report" smartFilterId="sf_Report" noData="{i18n>msgNoData}" demandPopin="true"
 				beforeRebindTable="onBeforeRebindTable">
@@ -59,6 +59,12 @@
 							</customData>
 							<Text text="{/#Report/Birthsh/@sap:label}"/>
 						</Column>
+					    <Column>
+							<customData>
+								<core:CustomData key="p13nData" value='\{"columnKey": "Partnerbp"\}'/>
+							</customData>
+							<Text text="{/#Report/Partnerbp/@sap:label}"/>
+						</Column>						
 					</columns>
 					<items>
 						<ColumnListItem>
@@ -69,6 +75,7 @@
 								<Text text="{ path: 'Bilda', type:'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.YYYY'} }"/>
 								<Text text="{ path: 'Birthbp', type:'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.YYYY'} }"/>
 								<Text text="{ path: 'Birthsh', type:'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.YYYY'} }"/>
+								<Link text="{Partnerbp}" press="onBP" />								
 							</cells>
 						</ColumnListItem>
 					</items>

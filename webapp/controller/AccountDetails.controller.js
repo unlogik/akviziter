@@ -127,6 +127,7 @@ sap.ui.define([
 			this.setViewProperty("editable", false);
 			//this.adjustViewModel();
 			this.setViewProperty("messageShow", true);
+			this.setViewProperty("pageId", "page");
 		},
 
 		/**
@@ -457,7 +458,6 @@ sap.ui.define([
 					//that.aTokens = oControlEvent.getParameter("tokens");
 					//that.theTokenInput.setTokens(that.aTokens);
 					/*eslint no-debugger: "error"*/
-					debugger;
 					var aTokens = oEvent.getParameter("tokens");
 					if (aTokens.length > 0) {
 						oInput.setValue(aTokens[0].getKey());
@@ -572,7 +572,7 @@ sap.ui.define([
 			var sTerm = oEvent.getParameter("suggestValue");
 			var aFilters = [];
 			if (sTerm) {
-				aFilters.push(new Filter("Street", sap.ui.model.FilterOperator.StartsWith, sTerm));
+				aFilters.push(new Filter("Street", sap.ui.model.FilterOperator.Contains, sTerm));
 				if (sCity) {
 					aFilters.push(new Filter("CityCode", sap.ui.model.FilterOperator.EQ, sCity));
 				}
@@ -825,20 +825,29 @@ sap.ui.define([
 				//oModel.update(sPath, oData);
 				oModel.setProperty(sPath + '/SaveType', oData.SaveType);
 				oModel.submitChanges({
-						groupID: "Partner,Order",
-						success: function(oData, response) {
-							sap.ui.core.BusyIndicator.hide();
-							that.msgToast(that.getI18n('msgChangesSaved'));
-						},
-						error: function(oResponse) {
-							sap.ui.core.BusyIndicator.hide();
-							var response = that.parseResponse(oResponse);
-							MessageBox.show(response.message, {
-								icon: sap.m.MessageBox.Icon.ERROR,
-								title: "{i18n>msgTileError}"
-							});
+					groupID: "Partner,Order",
+					success: (oData, response) => {
+						sap.ui.core.BusyIndicator.hide();
+						for( var i in oData.__batchResponses) { 
+						    var batchResponse = oData.__batchResponses[i];
+						    if (typeof(batchResponse.response) == "undefined") continue;
+						    if ( batchResponse.response.statusCode != "undefined" && batchResponse.response.statusCode != "200" ){
+					            var response = JSON.parse(batchResponse.response.body);
+					            this.msgStrip(response.error.message.value, "Error", true); 
+					            return;
+				            }
 						}
-					});
+						this.msgToast(that.getI18n('msgChangesSaved'));
+					},
+					error: (oResponse) => {
+						sap.ui.core.BusyIndicator.hide();
+						var response = this.parseResponse(oResponse);
+						MessageBox.show(response.message, {
+							icon: sap.m.MessageBox.Icon.ERROR,
+							title: "{i18n>msgTileError}"
+						});
+					}
+				});
 			}
 			//this._toggleButtonsAndView(false);
 			// 			var oInput = this.byId("__SoldTo_Stras");
