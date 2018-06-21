@@ -51,23 +51,32 @@ sap.ui.define([
 			}
 		},
 
-		onBeforeRebindTable: function(oEvent) {
-			// Get bindinParams Object, which includes filters
+		onTableInitialise: function(oEvent){
 			var oBindingParams = oEvent.getParameter("bindingParams");
-			// Create the aFilters array
-			//var aFilters = oBindingParams.filters;
-			// Create the table object
 			var oSmartTable = oEvent.getSource();
-			// Get the SmartFilterBarID
 			var oSmartFilterBar = this.byId(oSmartTable.getSmartFilterId());
 			if (oSmartFilterBar instanceof sap.ui.comp.smartfilterbar.SmartFilterBar) {
 				var oCustomControl = oSmartFilterBar.getControlByKey("Crdat");
 				if (oCustomControl instanceof sap.m.DatePicker) {
 					var from = oCustomControl.getDateValue();
 					var to = oCustomControl.getSecondDateValue();
-					oBindingParams.filters.push(new sap.ui.model.Filter("Crdat", "BT", from, to ));
+        			var filterData = oSmartFilterBar.getFilterData();
+        			if (filterData) {
+        				filterData.Crdat = {
+        					"low": from,
+        					"high": to
+        				};
+        			} else {
+        				filterData = {
+        					"Crdat": {
+        						"low": from,
+        						"high": to
+        					}
+        				};
+        			}					
+					oSmartFilterBar.setFilterData(filterData, true);
 				}
-			}
+			}		    
 		},
 
 		onDateChange: function(oEvent) {

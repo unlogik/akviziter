@@ -19,7 +19,7 @@
 			<s:SmartTable entitySet="ReportSet" id="_table" tableType="Table" useVariantManagement="true" useTablePersonalisation="true"
 				header="Status Report" showRowCount="false" enableAutoBinding="true" editable="false" class="sapUiTinyMargin"
 				persistencyKey="SmartTable_Report" smartFilterId="sf_Report" noData="{i18n>msgNoData}" demandPopin="true"
-				beforeRebindTable="onBeforeRebindTable">
+				initialise="onTableInitialise">
 				<Table>
 					<columns>
 						<Column width="100px">
