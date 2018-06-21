@@ -245,17 +245,20 @@ sap.ui.define([
 				var trunc = this._truncateEntity( entity, i+2 );
 			}
 			// open a WebSocket connection
-           var hostLocation = window.location, socket, socketHostURI, webSocketURI;
+           var hostLocation = window.location, socket, socketHostURI, webSocketURI, wsURI;
             if (hostLocation.protocol === "https:") {
                   socketHostURI = "wss:";
             } else {
                   socketHostURI = "ws:";
             }
             socketHostURI += "//" + hostLocation.host;
-            //var wsURI = socketHostURI + "/sap/bc/apc/sap/zakv_upload";
-            var wsURI = "wss://sapgw.styria-it.hr:8002/sap/bc/apc/sap/zakv_upload"
+            if(hostLocation.host.match(/localhost/)){
+                wsURI = "wss://sapgw.styria-it.hr:8002/sap/bc/apc/sap/zakv_upload"
+            }else{
+                wsURI = socketHostURI + "/sap/bc/apc/sap/zakv_upload";
+            }
+            
 			jQuery.sap.require("sap.ui.core.ws.SapPcpWebSocket");
-            //var ws = new WebSocket("/sap/bc/apc/sap/zakv_upload");
             var ws = new sap.ui.core.ws.SapPcpWebSocket(wsURI , sap.ui.core.ws.SapPcpWebSocket.SUPPORTED_PROTOCOLS.v10);
             ws.attachOpen(() => {
                 for (var i in json) {
