@@ -111,9 +111,10 @@ sap.ui.define([
 		 * This hook is the same one that SAPUI5 controls get after being rendered.
 		 * @memberOf bp.view.Accounts
 		 */
-		//	onAfterRendering: function() {
-		//
-		//	},
+			onAfterRendering: function() {
+			  //this.getView().byId("__tablePartners").setPopinLayout("GridSmall");
+		
+			},
 
 		/**
 		 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.
@@ -153,8 +154,11 @@ sap.ui.define([
 		    var oFileUploader = oEvent.getSource();
 			readFile(files[0]
 			).then( result => {
-			    //this._createFromXLSX( result );
-			    this._webSocketUpload( result );
+			    if(sap.ui.Device.support.websocket){
+			     	this._webSocketUpload( result );   
+			    }else{
+			        this._createFromXLSX( result );
+                }
 			    oFileUploader.setValue("");
 			}
 			).catch( err => console.error( this.getI18n("msgFileError", err) ) );

@@ -13,7 +13,7 @@
 						<OverflowToolbarButton text="Delete" icon="sap-icon://delete" press="onDelete" tooltip="{i18n>accountsDelete}"
 							visible="{/UserSet('CURRENT')/AuthDelete}"/>
 						<Input maxLength="8" width="140px" showValueHelp="true" valueHelpRequest="onModelValueHelp" placeholder="Model" showSuggestion="true"
-							suggestionItems="{/ModelSet}" maxSuggestionWidth="200px" id="_inputModel" value="{view>/Accounts/model}">
+							suggestionItems="{path:'/ModelSet', filters: [{path:'Akvid', operator:'EQ', value1: '{/UserSet/CURRENT/Akvid}' }]}" maxSuggestionWidth="200px" id="_inputModel" value="{view>/Accounts/model}">
 							<suggestionItems>
 								<core:ListItem text="{ModelId}" additionalText="{Ltext}"/>
 							</suggestionItems>
@@ -60,12 +60,12 @@
 									<Label text="{i18n>columnName}" id="__label1"/>
 								</header>
 							</Column>
-							<Column id="__column2" minScreenWidth="Tablet" demandPopin="true">
+							<Column id="__column2" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline">
 								<header>
 									<Label text="{i18n>columnAddress}" id="__label2"/>
 								</header>
 							</Column>
-							<Column id="__column3" minScreenWidth="Desktop" demandPopin="true" width="150px">
+							<Column id="__column3" minScreenWidth="Desktop" demandPopin="true" width="150px" popinDisplay="Inline">
 								<header>
 									<Label text="Telephone" id="__label3"/>
 								</header>
@@ -80,7 +80,7 @@
 									<Label text="{i18n>columnBirth}" id="__label4"/>
 								</header>
 							</Column>
-							<Column id="__column5" minScreenWidth="Desktop" width="100px" demandPopin="true">
+							<Column id="__column5" minScreenWidth="Desktop" width="100px" demandPopin="true" popinDisplay="Inline">
 								<header>
 									<Label text="{/#Partner/SoldTo/Stcd2/@sap:label}" id="__label5"/>
 								</header>
@@ -121,7 +121,7 @@
 					<Toolbar>
 						<Button icon="sap-icon://message-popup" text="{message>count}" type="Emphasized" press="onMessages"/>
 						<ProgressIndicator id="progressIndicator" class="sapUiSmallMargin"
-					       showValue="true" state="Success" width="200px" height="10px" visible="false"/>
+					       showValue="true" state="Success" width="200px" height="15px" visible="false"/>
 						<ToolbarSpacer/>
 						<Button icon="sap-icon://action" type="Accept" press="onSubmit"/>
 					</Toolbar>
