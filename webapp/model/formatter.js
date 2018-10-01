@@ -123,6 +123,12 @@ sap.ui.define([], function () {
 		    }
 		    return oDate;
 		},
+		dateOut: function( oDate ){
+		  if(oDate){
+    		  var date = oDate.toLocaleDateString("de-DE");
+    		  return date;
+		  }
+		},
 		
 		parseInt : function( oString ){
 		    var int = parseInt( oString, 10 );

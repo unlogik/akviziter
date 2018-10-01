@@ -36,27 +36,29 @@
 							<Input id="__SoldTo_Name1" value="{ path:'SoldTo/Name1', type:'sap.ui.model.type.String', constraints:{maxLength:'40'}}" liveChange="onSoldToName1Change" placeholder="{i18n>placeholderName1}" submit="onEnter"
 								editable="{=!${SoldTo/Partnerid}}"/>
 							<Input id="__SoldTo_Name2" value="{ path:'SoldTo/Name2', type:'sap.ui.model.type.String', constraints:{maxLength:'40'}}" submit="onEnter" placeholder="{i18n>placeholderName2}" editable="{=!${SoldTo/Partnerid}}"/>
+							<Label text="{i18n>labelCompany}"/>
+                            <Input id="__SoldTo_Name3" value="{ path:'SoldTo/Name3', type:'sap.ui.model.type.String', constraints:{maxLength:'40'}}" submit="onEnter" placeholder="{i18n>placeholderName3}" editable="{=!${SoldTo/Partnerid}}"/>
+                            <Input id="__SoldTo_Name4" value="{ path:'SoldTo/Name4', type:'sap.ui.model.type.String', constraints:{maxLength:'40'}}" submit="onEnter" placeholder="{i18n>placeholderName4}" editable="{=!${SoldTo/Partnerid}}"/>
 							<Label text="{/#Partner/SoldTo/Ort01/@sap:label}" required="true"/>
 							<Input id="__SoldTo_Ort01" value="{ path:'SoldTo/Ort01', type:'sap.ui.model.type.String', constraints:{maxLength:'40'}}" placeholder="{i18n>placeholderCity}" showSuggestion="true"
 								showTableSuggestionValueHelp="false" suggestionRows="{/CitySet}" suggest="onCitySuggest" suggestionItemSelected="onCitySelect"
 								maxSuggestionWidth="500px" liveChange="onSoldToCityChange" submit="onEnter" editable="{=!${SoldTo/Partnerid}}">
 								<suggestionColumns>
 									<Column hAlign="Begin" popinDisplay="Inline" demandPopin="true">
-										<Label text="Name"/>
+										<Label text="{i18n>labelCity}"/>
 									</Column>
 									<Column hAlign="Center" popinDisplay="Inline" demandPopin="true" minScreenWidth="Tablet">
-										<Label text="Code"/>
+										<Label text="{i18n>labelPostCode}"/>
 									</Column>
-									<Column hAlign="Center" popinDisplay="Inline" demandPopin="false" minScreenWidth="Tablet">
+									<!--Column hAlign="Center" popinDisplay="Inline" demandPopin="false" minScreenWidth="Tablet">
 										<Label text="City Srch"/>
-									</Column>
+									</Column-->
 								</suggestionColumns>
 								<suggestionRows>
 									<ColumnListItem>
 										<cells>
 											<Label text="{CityName}"/>
-											<Label text="{CityCode}"/>
-											<Label text="{McCity}"/>
+											<Label text="{CitySh10}"/>
 										</cells>
 									</ColumnListItem>
 								</suggestionRows>
@@ -80,22 +82,22 @@
 								showTableSuggestionValueHelp="false" filterSuggests="false" suggest="onStreetSuggest" suggestionRows="{/StreetSet}" maxSuggestionWidth="500px" submit="onEnter"
 								editable="{=!${SoldTo/Partnerid}}">
 								<suggestionColumns>
-									<Column hAlign="Begin" popinDisplay="Inline" demandPopin="true">
-										<Label text="Street"/>
+									<Column hAlign="Begin" popinDisplay="Inline" demandPopin="true" width="250px">
+										<Label text="{i18n>labelStreet}"/>
 									</Column>
-									<Column hAlign="Center" popinDisplay="Inline" demandPopin="true" minScreenWidth="Tablet">
-										<Label text="Code"/>
+									<Column hAlign="Center" popinDisplay="Inline" demandPopin="true" minScreenWidth="Tablet" width="65px">
+										<Label text="{i18n>labelPostCode}"/>
 									</Column>
 									<Column hAlign="Center" popinDisplay="Inline" demandPopin="false" minScreenWidth="Tablet">
-										<Label text="City Srch"/>
+										<Label text="{i18n>labelCity}"/>
 									</Column>
 								</suggestionColumns>
 								<suggestionRows>
 									<ColumnListItem>
 										<cells>
 											<Label text="{Street}"/>
-											<Label text="{CityCode}"/>
-											<Label text="{McCity}"/>
+											<Label text="{StreetS15}"/>
+											<Label text="{StreetShr}"/>
 										</cells>
 									</ColumnListItem>
 								</suggestionRows>
@@ -120,7 +122,7 @@
 							<Label text="{/#Partner/SoldTo/Email/@sap:label}"/>
 							<Input id="__SoldTo_Email" value="{path:'SoldTo/Email', type:'sap.ui.model.type.String', constraints:{maxLength:'241'}}" type="Email" submit="onEnter" editable="{=!${SoldTo/Partnerid}}"/>
 							<Label text="{/#Partner/SoldTo/Birth/@sap:label}"/>
-							<DatePicker id="__SoldTo_Birth" dateValue="{SoldTo/Birth}" displayFormat="dd.MM.yyyy" editable="{=!${SoldTo/Partnerid}}"/>
+							<DatePicker id="__SoldTo_Birth" dateValue="{SoldTo/Birth}" displayFormat="dd.MM.yyyy" editable="{=!${SoldTo/Partnerid}}" change="onDateChange"/>
 							<!--<Input id="__SoldTo_Birth" value="{SoldTo/Birth}"/>-->
 							<Label text="{/#Partner/SoldTo/Dlnot/@sap:label}"/>
 							<Input id="__SoldTo_Dlnot" value="{path:'SoldTo/Dlnot', type:'sap.ui.model.type.String', constraints:{maxLength:'40'}}" submit="onEnter" editable="{=!${SoldTo/Partnerid}}"/>
@@ -159,27 +161,29 @@
 							<Label text="{/#Partner/ShipTo/Name1/@sap:label}"/>
 							<Input id="__ShipTo_Name1" value="{path:'ShipTo/Name1', type:'sap.ui.model.type.String', constraints:{maxLength:'40'}}" submit="onEnter" placeholder="{i18n>placeholderName1}" editable="{=!${ShipTo/Partnerid}}"/>
 							<Input id="__ShipTo_Name2" value="{path:'ShipTo/Name2', type:'sap.ui.model.type.String', constraints:{maxLength:'40'}}" submit="onEnter" placeholder="{i18n>placeholderName2}" editable="{=!${ShipTo/Partnerid}}"/>
+							<Label text="{i18n>labelCompany}"/>
+                            <Input id="__ShipTo_Name3" value="{ path:'ShipTo/Name3', type:'sap.ui.model.type.String', constraints:{maxLength:'40'}}" submit="onEnter" placeholder="{i18n>placeholderName3}" editable="{=!${ShipTo/Partnerid}}"/>
+                            <Input id="__ShipTo_Name4" value="{ path:'ShipTo/Name4', type:'sap.ui.model.type.String', constraints:{maxLength:'40'}}" submit="onEnter" placeholder="{i18n>placeholderName4}" editable="{=!${ShipTo/Partnerid}}"/>							
 							<Label text="{/#Partner/SoldTo/Ort01/@sap:label}"/>
 							<Input id="__ShipTo_Ort01" value="{path:'ShipTo/Ort01', type:'sap.ui.model.type.String', constraints:{maxLength:'40'}}" placeholder="{i18n>placeholderCity}" showSuggestion="true"
 								showTableSuggestionValueHelp="false" suggestionRows="{/CitySet}" suggest="onCitySuggest" suggestionItemSelected="onCitySelect"
 								maxSuggestionWidth="500px" submit="onEnter" editable="{=!${ShipTo/Partnerid}}">
 								<suggestionColumns>
 									<Column hAlign="Begin" popinDisplay="Inline" demandPopin="true">
-										<Label text="Name"/>
+										<Label text="{i18n>labelCity}"/>
 									</Column>
 									<Column hAlign="Center" popinDisplay="Inline" demandPopin="true" minScreenWidth="Tablet">
-										<Label text="Code"/>
+										<Label text="{i18n>labelPostCode}"/>
 									</Column>
-									<Column hAlign="Center" popinDisplay="Inline" demandPopin="false" minScreenWidth="Tablet">
+									<!--Column hAlign="Center" popinDisplay="Inline" demandPopin="false" minScreenWidth="Tablet">
 										<Label text="City Srch"/>
-									</Column>
+									</Column-->
 								</suggestionColumns>
 								<suggestionRows>
 									<ColumnListItem>
 										<cells>
 											<Label text="{CityName}"/>
-											<Label text="{CityCode}"/>
-											<Label text="{McCity}"/>
+											<Label text="{CitySh10}"/>
 										</cells>
 									</ColumnListItem>
 								</suggestionRows>
@@ -203,22 +207,22 @@
 								showTableSuggestionValueHelp="false" filterSuggests="false" suggest="onStreetSuggest" suggestionRows="{/StreetSet}" maxSuggestionWidth="500px" submit="onEnter"
 								editable="{=!${ShipTo/Partnerid}}">
 								<suggestionColumns>
-									<Column hAlign="Begin" popinDisplay="Inline" demandPopin="true">
-										<Label text="Street"/>
+									<Column hAlign="Begin" popinDisplay="Inline" demandPopin="true" width="250px">
+										<Label text="{i18n>labelStreet}"/>
 									</Column>
-									<Column hAlign="Center" popinDisplay="Inline" demandPopin="true" minScreenWidth="Tablet">
-										<Label text="Code"/>
+									<Column hAlign="Center" popinDisplay="Inline" demandPopin="true" minScreenWidth="Tablet" width="65px">
+										<Label text="{i18n>labelPostCode}"/>
 									</Column>
 									<Column hAlign="Center" popinDisplay="Inline" demandPopin="false" minScreenWidth="Tablet">
-										<Label text="City Srch"/>
+										<Label text="{i18n>labelCity}"/>
 									</Column>
 								</suggestionColumns>
 								<suggestionRows>
 									<ColumnListItem>
 										<cells>
 											<Label text="{Street}"/>
-											<Label text="{CityCode}"/>
-											<Label text="{McCity}"/>
+											<Label text="{StreetS15}"/>
+											<Label text="{StreetShr}"/>
 										</cells>
 									</ColumnListItem>
 								</suggestionRows>
@@ -243,7 +247,7 @@
 							<Label text="{/#Partner/ShipTo/Email/@sap:label}"/>
 							<Input id="__ShipTo_Email" value="{path:'ShipTo/Email', type:'sap.ui.model.type.String', constraints:{maxLength:'241'}}" type="Email" submit="onEnter" editable="{=!${ShipTo/Partnerid}}"/>
 							<Label text="{/#Partner/ShipTo/Birth/@sap:label}"/>
-							<DatePicker id="__ShipTo_Birth" dateValue="{ShipTo/Birth}" displayFormat="dd.MM.yyyy" editable="{=!${ShipTo/Partnerid}}"/>
+							<DatePicker id="__ShipTo_Birth" dateValue="{ShipTo/Birth}" displayFormat="dd.MM.yyyy" editable="{=!${ShipTo/Partnerid}}" change="onDateChange"/>
 							<Label text="{/#Partner/ShipTo/Dlnot/@sap:label}"/>
 							<Input id="__ShipTo_Dlnot" value="{path:'ShipTo/Dlnot', type:'sap.ui.model.type.String', constraints:{maxLength:'40'}}" submit="onEnter" editable="{=!${ShipTo/Partnerid}}"/>
 							<Label text="{/#Partner/ShipTo/Intad/@sap:label}"/>
@@ -315,8 +319,9 @@
 							<items>
 								<ColumnListItem>
 									<cells>
-										<DatePicker dateValue="{Stdat}" displayFormat="dd.MM.YYYY" minDate="{ path: 'MinStdat', formatter: '.formatter.dateJS'}"/>
-										<Text text="{ path: 'Cldat', type:'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.YYYY'} }"/>
+										<DatePicker dateValue="{Stdat}" displayFormat="dd.MM.YYYY" minDate="{ path: 'MinStdat', formatter: '.formatter.dateJS'}" change="onDateChange"/>
+										<!--Text text="{ path: 'Cldat', type:'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.YYYY'} }"/-->
+										<Text text="{ path: 'Cldat', formatter: '.formatter.dateOut'}"/>
 										<Input value="{Agent}" submit="onEnter"/>
 										<Input value="{Note}" submit="onEnter"/>
 										<Input value="{ path: 'Quant', type:'sap.ui.model.type.Integer' }" type="Number" submit="onEnter"

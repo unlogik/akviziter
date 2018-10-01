@@ -25,6 +25,9 @@
 							<Label text="{/#Partner/SoldTo/Name1/@sap:label}"/>
 							<Text text="{SoldTo/Name1}"/>
 							<Text text="{SoldTo/Name2}"/>
+							<Label text="{i18n>labelCompany}"/>
+                            <Text text="{SoldTo/Name3}"/>
+							<Text text="{SoldTo/Name4}"/>							
 							<Label text="{/#Partner/SoldTo/Ort01/@sap:label}"/>
 							<Text text="{SoldTo/Ort01}"/>
 							<Text text="{SoldTo/Pstlz}"/>
@@ -39,7 +42,7 @@
 							<Label text="{/#Partner/SoldTo/Email/@sap:label}"/>
 							<Text text="{SoldTo/Email}"/>
 							<Label text="{/#Partner/SoldTo/Birth/@sap:label}"/>
-							<Text text="{ path: 'SoldTo/Birth', type:'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.YYYY'} }"/>
+							<Text text="{ path: 'SoldTo/Birth', formatter: '.formatter.dateOut'}"/>
 							<Label text="{/#Partner/SoldTo/Dlnot/@sap:label}"/>
 							<Text text="{SoldTo/Dlnot}"/>
 							<Label text="{/#Partner/SoldTo/Intad/@sap:label}"/>
@@ -71,6 +74,9 @@
 							<Label text="{/#Partner/ShipTo/Name1/@sap:label}"/>
 							<Text text="{ShipTo/Name1}"/>
 							<Text text="{ShipTo/Name2}"/>
+							<Label text="{i18n>labelCompany}"/>
+                            <Text text="{ShipTo/Name3}"/>
+							<Text text="{ShipTo/Name4}"/>							
 							<Label text="{/#Partner/ShipTo/Ort01/@sap:label}"/>
 							<Text text="{ShipTo/Ort01}"/>
 							<Text text="{ShipTo/Pstlz}"/>
@@ -86,7 +92,7 @@
 							<Label text="{/#Partner/ShipTo/Email/@sap:label}"/>
 							<Text text="{ShipTo/Email}"/>
 							<Label text="{/#Partner/ShipTo/Birth/@sap:label}"/>
-							<Text text="{ path: 'ShipTo/Birth', type:'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.YYYY'} }"/>
+							<Text text="{ path: 'ShipTo/Birth', formatter: '.formatter.dateOut'}"/>
 							<Label text="{/#Partner/ShipTo/Dlnot/@sap:label}"/>
 							<Text text="{ShipTo/Dlnot}"/>
 							<Label text="{/#Partner/ShipTo/Intad/@sap:label}"/>
@@ -124,8 +130,8 @@
 							<items>
 								<ColumnListItem>
 									<cells>
-										<Text text="{ path: 'Stdat', type:'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.YYYY'} }"/>
-										<Text text="{ path: 'Cldat', type:'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.YYYY'} }"/>
+										<Text text="{ path: 'Stdat', formatter: '.formatter.dateOut'}"/>
+										<Text text="{ path: 'Cldat', formatter: '.formatter.dateOut'}"/>
 									</cells>
 								</ColumnListItem>
 							</items>

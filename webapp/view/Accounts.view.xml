@@ -106,8 +106,8 @@
 										id="__text30"/>
 									<Text text="{SoldTo/Email}\n{ShipTo/Email}"></Text>
 									<sap.ui.layout:VerticalLayout width="100%" xmlns:sap.ui.layout="sap.ui.layout" id="__layout0">
-										<Text text="{ path: 'SoldTo/Birth', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.YYYY' } }" id="__text31"/>
-										<Text text="{ path: 'ShipTo/Birth', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.YYYY' } }" id="__text33"/>
+										<Text text="{ path: 'SoldTo/Birth', formatter: '.formatter.dateOut'}" id="__text31"/>
+										<Text text="{ path: 'ShipTo/Birth', formatter: '.formatter.dateOut'}" id="__text33"/>
 									</sap.ui.layout:VerticalLayout>
 									<Text text="{SoldTo/Stcd2}\n{ShipTo/Stcd2}"></Text>
 									<!--<core:Icon src="{= ${Status} === '2' ? 'sap-icon://action' : 'sap-icon://account' }"/>-->

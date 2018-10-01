@@ -147,7 +147,14 @@ sap.ui.define([
 			this._toggleButtonsAndView(false);
 			this.setViewProperty("editable", false);
 		},
-
+		
+		onDateChange: function( oEvent ){
+		    var date = oEvent.getSource().getDateValue();
+		    if(date){
+		        date.setHours(3);
+		    }
+		},
+		
 		adjustViewModel: function() {
 			var oView = this.getModel();
 			var oModel = this.getComponentModel();

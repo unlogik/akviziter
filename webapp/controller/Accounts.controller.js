@@ -17,10 +17,10 @@ sap.ui.define([
 	"bp/lib/xlsx.min",
 	"sap/ui/model/Filter",
 	"sap/ui/model/Sorter",
-    "sap/ui/comp/valuehelpdialog/ValueHelpDialog",
-    "sap/ui/core/ws/WebSocket"
+	"sap/ui/comp/valuehelpdialog/ValueHelpDialog",
+	"sap/ui/core/ws/WebSocket"
 ], function(BaseController, History, Export, ExportTypeCSV, MessageBox, MessageToast, MessagePopover, MessagePopoverItem, Dialog, Button,
-	Text, Fragment, formatter, XLSX_, JSZip, xlsx, Filter, Sorter, ValueHelpDialog, WebSocket ) {
+	Text, Fragment, formatter, XLSX_, JSZip, xlsx, Filter, Sorter, ValueHelpDialog, WebSocket) {
 	"use strict";
 
 	var oMessageTemplate = new MessagePopoverItem({
@@ -37,31 +37,30 @@ sap.ui.define([
 			template: oMessageTemplate
 		}
 	});
-	
 
-    const readFile = (file) => {
-      let reader = new window.FileReader();
-    
-      return new Promise((resolve, reject) => {
-        if(!file){
-            return reject("File not selected!")
-        }
-        reader.onload = (event) => {
-          file.data = event.target. result;
-          resolve(file);
-        };
-    
-        reader.onerror = () => {
-          return reject(this);
-        };
-    
-        if (/^image/.test(file.type)) {
-          reader.readAsDataURL(file);
-        } else {
-          reader.readAsBinaryString (file);
-        }
-      })
-    };
+	const readFile = (file) => {
+		let reader = new window.FileReader();
+
+		return new Promise((resolve, reject) => {
+			if (!file) {
+				return reject("File not selected!")
+			}
+			reader.onload = (event) => {
+				file.data = event.target.result;
+				resolve(file);
+			};
+
+			reader.onerror = () => {
+				return reject(this);
+			};
+
+			if (/^image/.test(file.type)) {
+				reader.readAsDataURL(file);
+			} else {
+				reader.readAsBinaryString(file);
+			}
+		})
+	};
 
 	return BaseController.extend("bp.controller.Accounts", {
 		_oVSDialog: null, // set on demand
@@ -83,11 +82,11 @@ sap.ui.define([
 		 */
 		onInit: function() {
 			var oModel = this.getComponentModel();
-			oModel.metadataLoaded().then( () => { 
-			    this.metaModel = oModel.getMetaModel();
-                this.origin = this.metaModel.oMetadata.sUrl.match(/(o=)([A-Z]{3})/);
-                this.origin = this.origin[2];
-			 } );
+			oModel.metadataLoaded().then(() => {
+				this.metaModel = oModel.getMetaModel();
+				this.origin = this.metaModel.oMetadata.sUrl.match(/(o=)([A-Z]{3})/);
+				this.origin = this.origin[2];
+			});
 			sap.ui.getCore().getMessageManager().registerMessageProcessor(oModel);
 			var oMessage = sap.ui.getCore().getMessageManager().getMessageModel();
 			this.getView().setModel(oMessage, "message");
@@ -102,8 +101,8 @@ sap.ui.define([
 		onBeforeRendering: function() {
 			this.setViewModel();
 			this.setViewProperty("pageId", "pageAccounts");
-/*			var button = this.getView().byId("infoBar");
-			button.setStyleClass("spinningBusy");*/
+			/*			var button = this.getView().byId("infoBar");
+						button.setStyleClass("spinningBusy");*/
 		},
 
 		/**
@@ -111,10 +110,10 @@ sap.ui.define([
 		 * This hook is the same one that SAPUI5 controls get after being rendered.
 		 * @memberOf bp.view.Accounts
 		 */
-			onAfterRendering: function() {
-			  //this.getView().byId("__tablePartners").setPopinLayout("GridSmall");
-		
-			},
+		onAfterRendering: function() {
+			//this.getView().byId("__tablePartners").setPopinLayout("GridSmall");
+
+		},
 
 		/**
 		 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.
@@ -134,6 +133,7 @@ sap.ui.define([
 				oRouter.navTo("overview", {}, true);
 			}
 		},
+
 		onBPDetails: function(oEvent) {
 			// The source is the list item that got pressed
 			var oItem = oEvent.getSource();
@@ -150,20 +150,18 @@ sap.ui.define([
 		},
 
 		onUpload: function(oEvent) {
-		    var files = oEvent.getParameter("files");
-		    var oFileUploader = oEvent.getSource();
-			readFile(files[0]
-			).then( result => {
-			    if(sap.ui.Device.support.websocket){
-			     	this._webSocketUpload( result );   
-			    }else{
-			        this._createFromXLSX( result );
-                }
-			    oFileUploader.setValue("");
-			}
-			).catch( err => console.error( this.getI18n("msgFileError", err) ) );
+			var files = oEvent.getParameter("files");
+			var oFileUploader = oEvent.getSource();
+			readFile(files[0]).then(result => {
+				if (sap.ui.Device.support.websocket) {
+					this._webSocketUpload(result);
+				} else {
+					this._createFromXLSX(result);
+				}
+				oFileUploader.setValue("");
+			}).catch(err => console.error(this.getI18n("msgFileError", err)));
 		},
-		
+
 		onSubmit: function(oEvent) {
 			//is there something selected?
 			if (!this._validateSelected()) {
@@ -207,7 +205,30 @@ sap.ui.define([
 				var sPath = aItems[i].getBindingContextPath();
 				oModel.setProperty(sPath + "/Status", "P");
 			}
-			oModel.submitChanges("Partner");
+			oModel.submitChanges({
+				groupID: "Partner",
+				success: (oData, response) => {
+					sap.ui.core.BusyIndicator.hide();
+					for (var i in oData.__batchResponses) {
+						var batchResponse = oData.__batchResponses[i];
+						if (typeof(batchResponse.response) == "undefined") continue;
+						if (batchResponse.response.statusCode != "undefined" && batchResponse.response.statusCode != "200") {
+							var response = JSON.parse(batchResponse.response.body);
+							this.msgStrip(response.error.message.value, "Error", true);
+							return;
+						}
+					}
+					this.msgToast(that.getI18n('msgChangesSaved'));
+				},
+				error: (oResponse) => {
+					sap.ui.core.BusyIndicator.hide();
+					var response = this.parseResponse(oResponse);
+					MessageBox.show(response.message, {
+						icon: sap.m.MessageBox.Icon.ERROR,
+						title: "{i18n>msgTileError}"
+					});
+				}
+			});
 		},
 
 		_createFromXLSX: function(file) {
@@ -224,9 +245,9 @@ sap.ui.define([
 			};
 			for (var i = 2; i < json.length; i++) {
 				var entity = this._parseEntity(json[i]);
-				var trunc = this._truncateEntity( entity, i+2 );
-				if( trunc ){
-				    entity = trunc;
+				var trunc = this._truncateEntity(entity, i + 2);
+				if (trunc) {
+					entity = trunc;
 				}
 				entity.FileName = file.name;
 				oModel.create("/PartnerSet", entity, mParameters);
@@ -235,68 +256,76 @@ sap.ui.define([
 			mParameters.error = this._createBatchError.bind(this);
 			oModel.submitChanges(mParameters);
 		},
-		
-		_webSocketUpload: function( file ){
-		    var oModel = this.getModel();
+
+		_webSocketUpload: function(file) {
+			var oModel = this.getModel();
 			var wb = XLSX.read(file.data, {
 				type: 'binary'
 			});
-			var pcpFields = { "origin": this.origin };
-			var json = XLSX.utils.sheet_to_row_object_array(wb.Sheets["Partner"]);
+			var pcpFields = {
+				"origin": this.origin
+			};
+			var json = this.validateTemplate(wb);
+			if (!json) {
+				return;
+			}
 			//perform length check and return message if any field has been shortened
-			for (var i = 2; i < json.length; i++) {
+			for (var i = 0; i < json.length; i++) {
 				var entity = this._parseEntity(json[i]);
-				var trunc = this._truncateEntity( entity, i+2 );
+				var trunc = this._truncateEntity(entity, i + 2);
 			}
 			// open a WebSocket connection
-           var hostLocation = window.location, socket, socketHostURI, webSocketURI, wsURI;
-            if (hostLocation.protocol === "https:") {
-                  socketHostURI = "wss:";
-            } else {
-                  socketHostURI = "ws:";
-            }
-            socketHostURI += "//" + hostLocation.host;
-            if(hostLocation.host.match(/localhost/)){
-                wsURI = "wss://sapgw.styria-it.hr:8002/sap/bc/apc/sap/zakv_upload"
-            }else{
-                wsURI = socketHostURI + "/sap/bc/apc/sap/zakv_upload";
-            }
-            
+			var hostLocation = window.location,
+				socket, socketHostURI, webSocketURI, wsURI;
+			if (hostLocation.protocol === "https:") {
+				socketHostURI = "wss:";
+			} else {
+				socketHostURI = "ws:";
+			}
+			socketHostURI += "//" + hostLocation.host;
+			if (hostLocation.host.match(/localhost/)) {
+				wsURI = "wss://sapgw.styria-it.hr:8002/sap/bc/apc/sap/zakv_upload"
+			} else {
+				wsURI = socketHostURI + "/sap/bc/apc/sap/zakv_upload";
+			}
+
 			jQuery.sap.require("sap.ui.core.ws.SapPcpWebSocket");
-            var ws = new sap.ui.core.ws.SapPcpWebSocket(wsURI , sap.ui.core.ws.SapPcpWebSocket.SUPPORTED_PROTOCOLS.v10);
-            ws.attachOpen(() => {
-                for (var i in json) {
-                    json[i].Header_Akvid = oModel.getProperty("/UserSet('CURRENT')/Akvid");
-                    json[i].Header_Filename = file.name;
-                }
-                var data = JSON.stringify(json);
-                ws.send(data, pcpFields);
-                this.setProcessing(true);
-            });
-            ws.attachMessage( (msg) => {
-                var oMsg = JSON.parse(msg.mParameters.data);
-                var oProgress = this.getView().byId("progressIndicator");
-                if(oMsg.type == "error"){
-                    this.msgStrip( oMsg.text, "Error", true );
-                }else if(oProgress){
-                    var float = parseFloat(oMsg.percent);
-                    oProgress.setPercentValue( float );
-                    oProgress.setDisplayValue( oMsg.text );
-                    oProgress.setVisible( true );
-                }
-                if(oMsg.done){
-                    ws.close();
-                    setTimeout( () =>{ oProgress.setVisible( false )}, 2000);
-                }
-            });
-            ws.attachClose( () => {
-                this.setProcessing(false);
-                oModel.read("/PartnerSet", {
-                    success: () => {
-                        oModel.refresh();
-                    }
-                });
-            });
+			var ws = new sap.ui.core.ws.SapPcpWebSocket(wsURI, sap.ui.core.ws.SapPcpWebSocket.SUPPORTED_PROTOCOLS.v10);
+			ws.attachOpen(() => {
+				for (var i in json) {
+					json[i].Header_Akvid = oModel.getProperty("/UserSet('CURRENT')/Akvid");
+					json[i].Header_Filename = file.name;
+				}
+				var data = JSON.stringify(json);
+				ws.send(data, pcpFields);
+				this.setProcessing(true);
+			});
+			ws.attachMessage((msg) => {
+				var oMsg = JSON.parse(msg.mParameters.data);
+				var oProgress = this.getView().byId("progressIndicator");
+				if (oMsg.type == "error") {
+					this.msgStrip(oMsg.text, "Error", true);
+				} else if (oProgress) {
+					var float = parseFloat(oMsg.percent);
+					oProgress.setPercentValue(float);
+					oProgress.setDisplayValue(oMsg.text);
+					oProgress.setVisible(true);
+				}
+				if (oMsg.done) {
+					ws.close();
+					setTimeout(() => {
+						oProgress.setVisible(false)
+					}, 2000);
+				}
+			});
+			ws.attachClose(() => {
+				this.setProcessing(false);
+				oModel.read("/PartnerSet", {
+					success: () => {
+						oModel.refresh();
+					}
+				});
+			});
 		},
 		/* parse excel table format to oData format
 		 */
@@ -321,93 +350,176 @@ sap.ui.define([
 					field = field[0];
 				}
 				switch (field) {
-				    case "Agent":
-				        entity[field] = json[key].slice(0,40);
-				        break;
+					case "Agent":
+						entity[field] = json[key].slice(0, 40);
+						break;
 					case "Title":
-						entity[bptype][field] = json[key].match(/\d{2}/)[0];
+						entity[bptype][field] = json[key].match(/\d{2}/);
+						if (entity[bptype][field]) {
+							entity[bptype][field] = entity[bptype][field][0];
+						} else {
+							entity[bptype][field] = "";
+						};
+						break;
+					case "Birth":
+						/*			            var date = new Date( json[key] );
+									            entity[bptype][field] = date.toLocaleDateString('de-DE');*/
+						entity[bptype][field] = json[key] = this.parseDate(json[key]);
 						break;
 					default:
-	                    entity[bptype][field] = json[key];
+						entity[bptype][field] = json[key];
 				}
 			}
 			return entity;
 		},
-        
-        _truncateEntity: function( entity, index ){
-            var trunc;
-            for( var type in entity ){
-                if( typeof(entity[type]) != "object") continue;
-                for( var field in entity[type] ){
-                    var metaData = this.getMetaData( field );
-                    if (metaData == "undefined" && metaData.maxLength == 0) continue;
-                    if ( entity[type][field].length <= metaData.maxLength ) continue;
-                    trunc = entity;
-                    trunc[type][field] = trunc[type][field].slice(0, parseInt(metaData.maxLength))
-                    //var fld = type
-                    var fldName = metaData['sap:label'];
-                    var msg = this.getI18n('msgDataTruncated', index , type + '~' + fldName );
-				    this.msgStrip(msg, "Warning", true );
-                }
+
+		_truncateEntity: function(entity, index) {
+			var trunc;
+			for (var type in entity) {
+				if (typeof(entity[type]) != "object") continue;
+				for (var field in entity[type]) {
+					var metaData = this.getMetaData(field);
+					if (typeof(metaData) == "undefined" || typeof(metaData.maxLength) == "undefined" || metaData.maxLength == 0) continue;
+					if (entity[type][field].length <= metaData.maxLength) continue;
+					trunc = entity;
+					trunc[type][field] = trunc[type][field].slice(0, parseInt(metaData.maxLength))
+						//var fld = type
+					var fldName = metaData['sap:label'];
+					var msg = this.getI18n('msgDataTruncated', index, type + '~' + fldName);
+					this.msgStrip(msg, "Warning", true);
+				}
+			}
+			return trunc;
+		},
+		_truncateTable: function(table, index) {
+			var trunc;
+			for (var rowNo in table) {
+				if (typeof(entity[type]) != "object") continue;
+				for (var field in entity[type]) {
+					var metaData = this.getMetaData(field);
+					if (metaData == "undefined" && metaData.maxLength == 0) continue;
+					if (entity[type][field].length <= metaData.maxLength) continue;
+					trunc = entity;
+					trunc[type][field] = trunc[type][field].slice(0, parseInt(metaData.maxLength))
+						//var fld = type
+					var fldName = metaData['sap:label'];
+					var msg = this.getI18n('msgDataTruncated', index, type + '~' + fldName);
+					this.msgStrip(msg, "Warning", true);
+				}
+			}
+			return trunc;
+		},
+		
+		validateTemplate: function(wb) {
+		    var msg;
+			if (typeof(wb["Partner"]) === 'undefined') {
+				msg = this.getI18n('msgTemplateSheeet');
+				this.msgStrip(msg, "Error", true);
+				return false;
+			}
+			var json = XLSX.utils.sheet_to_row_object_array(wb.Sheets["Partner"]);
+			var checkRow = json[1];
+			if( typeof(checkRow.Header_Agent) === 'undefined' ||
+                typeof(checkRow.SoldTo_Partnerid) === 'undefined' ||
+                typeof(checkRow.SoldTo_Title) === 'undefined' ||
+                typeof(checkRow.SoldTo_Name2) === 'undefined' ||
+                typeof(checkRow.SoldTo_Name1) === 'undefined' ||
+                typeof(checkRow.SoldTo_Name3) === 'undefined' ||
+                typeof(checkRow.SoldTo_Name4) === 'undefined' ||
+                typeof(checkRow.SoldTo_Stras) === 'undefined' ||
+                typeof(checkRow.SoldTo_Hsnm1) === 'undefined' ||
+                typeof(checkRow.SoldTo_Hsnm2) === 'undefined' ||
+                typeof(checkRow.SoldTo_Pstlz) === 'undefined' ||
+                typeof(checkRow.SoldTo_Ort01) === 'undefined' ||
+                typeof(checkRow.SoldTo_Dlnot) === 'undefined' ||
+                typeof(checkRow.SoldTo_Telnr) === 'undefined' ||
+                typeof(checkRow.SoldTo_Mobnr) === 'undefined' ||
+                typeof(checkRow.SoldTo_Email) === 'undefined' ||
+                typeof(checkRow.SoldTo_Birth) === 'undefined' ||
+                typeof(checkRow.SoldTo_Stcd2) === 'undefined' ||
+                typeof(checkRow.SoldTo_Intad) === 'undefined' ||
+                typeof(checkRow.ShipTo_Partnerid) === 'undefined' ||
+                typeof(checkRow.ShipTo_Title) === 'undefined' ||
+                typeof(checkRow.ShipTo_Name2) === 'undefined' ||
+                typeof(checkRow.ShipTo_Name1) === 'undefined' ||
+                typeof(checkRow.ShipTo_Name3) === 'undefined' ||
+                typeof(checkRow.ShipTo_Name4) === 'undefined' ||
+                typeof(checkRow.ShipTo_Stras) === 'undefined' ||
+                typeof(checkRow.ShipTo_Hsnm1) === 'undefined' ||
+                typeof(checkRow.ShipTo_Hsnm2) === 'undefined' ||
+                typeof(checkRow.ShipTo_Pstlz) === 'undefined' ||
+                typeof(checkRow.ShipTo_Ort01) === 'undefined' ||
+                typeof(checkRow.ShipTo_Dlnot) === 'undefined' ||
+                typeof(checkRow.ShipTo_Telnr) === 'undefined' ||
+                typeof(checkRow.ShipTo_Mobnr) === 'undefined' ||
+                typeof(checkRow.ShipTo_Email) === 'undefined' ||
+                typeof(checkRow.ShipTo_Birth) === 'undefined' ||
+                typeof(checkRow.ShipTo_Stcd2) === 'undefined' ||
+                typeof(checkRow.ShipTo_Intad) === 'undefined' ){
+				msg = this.getI18n('msgTemplateTech');
+				this.msgStrip(msg, "Error", true);                
+                return false;
             }
-            return trunc;
-        },
-        _truncateTable: function( table, index ){
-            var trunc;
-            for( var rowNo in table ){
-                if( typeof(entity[type]) != "object") continue;
-                for( var field in entity[type] ){
-                    var metaData = this.getMetaData( field );
-                    if (metaData == "undefined" && metaData.maxLength == 0) continue;
-                    if ( entity[type][field].length <= metaData.maxLength ) continue;
-                    trunc = entity;
-                    trunc[type][field] = trunc[type][field].slice(0, parseInt(metaData.maxLength))
-                    //var fld = type
-                    var fldName = metaData['sap:label'];
-                    var msg = this.getI18n('msgDataTruncated', index , type + '~' + fldName );
-				    this.msgStrip(msg, "Warning", true );
-                }
+            json.splice(0,2);
+            if( json.length == 0){
+				msg = this.getI18n('msgNoData');
+				this.msgStrip(msg, "Warning", true);                
+                return false;                
             }
-            return trunc;
-        },
-        
-        setProcessing: function(switchOn){
-            var style = "spinningBusy";
-            var oFile = this.getView().byId("fileUploader");
-            var oButton = this.getView().byId("refreshIndicator");
-            switch(switchOn){
-                case true:
-                    oButton.addStyleClass(style);
-                    oButton.setVisible(true);
-                    oFile.setVisible(false);
-                    break;
-                case false:
-                    oButton.removeStyleClass(style);
-                    oButton.setVisible(false);
-                    oFile.setVisible(true);
-                    break;
-            }
-        },
-        
+            return json;
+		},
+
+		setProcessing: function(switchOn) {
+			var style = "spinningBusy";
+			var oFile = this.getView().byId("fileUploader");
+			var oButton = this.getView().byId("refreshIndicator");
+			switch (switchOn) {
+				case true:
+					oButton.addStyleClass(style);
+					oButton.setVisible(true);
+					oFile.setVisible(false);
+					break;
+				case false:
+					oButton.removeStyleClass(style);
+					oButton.setVisible(false);
+					oFile.setVisible(true);
+					break;
+			}
+		},
+
 		_createBatchSuccess: function(data, response) {
 			//this.getModel().refresh();
 			var noCreated = data.__batchResponses[0].__changeResponses.length;
-			MessageBox.show( this.getI18n('msgBatchCreated', noCreated), MessageBox.Icon.SUCCESS, "Batch Save", MessageBox.Action.OK);
+			MessageBox.show(this.getI18n('msgBatchCreated', noCreated), MessageBox.Icon.SUCCESS, "Batch Save", MessageBox.Action.OK);
 		},
 
 		_createBatchError: function(oError) {
 			var err = JSON.parse(oError.responseText);
 			MessageBox.show(err.error.message.value, MessageBox.Icon.ERROR, "Batch Save", MessageBox.Action.OK);
 		},
-		
-		getMetaData: function(field){
-		    var BP = this.metaModel.getODataComplexType('ZAKV_SRV.BP');
-		    for( var i in BP.property ) {
-		        var property = BP.property[i];
-		        if (property.name == field){
-		            return property;
-		        }
-		    }
+
+		parseDate: function(sDate) {
+			if (sDate.match(/^[\d]+\//)) { //if contains / as separator, it is date
+				var date = new Date(sDate);
+				if (date != "Invalid Date") {
+					return date.toLocaleDateString('de-DE');
+				}
+			} else {
+				var ssDate = sDate.match(/[\d]{1,2}\.[\d]{1,2}\.[\d]{4}/);;
+				if (ssDate) {
+					return ssDate[0];
+				}
+			}
+		},
+
+		getMetaData: function(field) {
+			var BP = this.metaModel.getODataComplexType('ZAKV_SRV.BP');
+			for (var i in BP.property) {
+				var property = BP.property[i];
+				if (property.name == field) {
+					return property;
+				}
+			}
 		},
 
 		onDataExport: sap.m.Table.prototype.exportData || function(oEvent) {
@@ -509,7 +621,7 @@ sap.ui.define([
 		},
 
 		_delete: function() {
-		    var that = this;
+			var that = this;
 			var oModel = this.getView().getModel();
 			var oTable = this.getView().byId("__tablePartners");
 			var aItems = oTable.getSelectedItems();
@@ -517,7 +629,7 @@ sap.ui.define([
 				var id = aItems[i].getCells()[0].getText();
 				oModel.remove("/PartnerSet('" + id + "')", {
 					success: function(oData) {
-					    that.msgToast(that.getI18n("msgDataDeleted"));
+						that.msgToast(that.getI18n("msgDataDeleted"));
 					},
 					error: function(oResponse) {
 						var response = JSON.parse(oResponse.response.body);
