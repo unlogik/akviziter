@@ -810,22 +810,19 @@ sap.ui.define([
 			if (oData.Setid === 'NEW') {
 				oModel.resetChanges();
 				oModel.create("/PartnerSet", oData, {
-					success: function(oData, response) {
+					success: (oData, response) => {
 						sap.ui.core.BusyIndicator.hide();
-						that.msgToast(that.getI18n('msgChangesCreated', oData.Setid));      
+						this.msgToast(that.getI18n('msgChangesCreated', oData.Setid));      
 						var oRouter = sap.ui.core.UIComponent.getRouterFor(that);
 						oRouter.navTo("AccountDetails", {
 							SetId: oData.Setid,
 							Editable: "true"
 						});
 					},
-					error: function(oResponse) {
+					error: (oResponse) => {
 						sap.ui.core.BusyIndicator.hide();
-						var response = that.parseResponse(oResponse);
-						MessageBox.show(response.message, {
-							icon: sap.m.MessageBox.Icon.ERROR,
-							title: "{i18n>msgTileError}"
-						});
+						var response = this.parseResponse(oResponse);
+						this.msgStrip(response.error.message.value, "Error", true);
 					}
 				});
 			} else {

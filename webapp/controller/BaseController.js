@@ -118,6 +118,8 @@ sap.ui.define([
 		    var sMsg;
 		    if(typeof(oResponse.respone) !== 'undefined' ){
 		      sMsg = JSON.parse( oResponse.response.body );
+		    }else if( typeof(oResponse.responseText) !== 'undefined'){
+		      sMsg = JSON.parse(oResponse.responseText);  
 		    }else{
 		        sMsg = oResponse;
 		    }
