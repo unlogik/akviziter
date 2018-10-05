@@ -15,10 +15,10 @@
 								<ToolbarSpacer/>
 								<Button id="_btn1_SoldToDoubles" icon="{ path: 'SoldTo/Status', formatter: '.formatter.statusIcon'}" press="onDoublesDisplay"
 									visible="{SoldTo/Doubles}"/>
-								<core:Icon src="sap-icon://activity-2" size="80%" visible="{SoldTo/FlgActive}" tooltip="{/#Partner/SoldTo/FlgActive/@sap:label}" color="red"/>
-								<core:Icon src="sap-icon://unpaid-leave" size="80%" visible="{SoldTo/FlgDebtor}" tooltip="{/#Partner/SoldTo/FlgDebtor/@sap:label}" color="red"/>
-								<core:Icon src="sap-icon://locked" size="80%" visible="{SoldTo/FlgBlocked}" tooltip="{/#Partner/SoldTo/FlgBlocked/@sap:label}" color="red"/>
-								<core:Icon src="sap-icon://official-service" size="80%" visible="{SoldTo/FlgSued}" tooltip="{/#Partner/SoldTo/FlgSued/@sap:label}" color="red"/>
+								<core:Icon src="sap-icon://bed" size="90%" visible="{=!${SoldTo/FlgActive} &amp;&amp; ${SoldTo/Partnerid} !== ''}" tooltip="{i18n>toolTipInactive}" color="red"/>
+								<core:Icon src="sap-icon://unpaid-leave" size="90%" visible="{SoldTo/FlgDebtor}" tooltip="{/#Partner/SoldTo/FlgDebtor/@sap:label}" color="red"/>
+								<core:Icon src="sap-icon://locked" size="90%" visible="{SoldTo/FlgBlocked}" tooltip="{/#Partner/SoldTo/FlgBlocked/@sap:label}" color="red"/>
+								<core:Icon src="sap-icon://official-service" size="90%" visible="{SoldTo/FlgSued}" tooltip="{/#Partner/SoldTo/FlgSued/@sap:label}" color="red"/>
 							</Toolbar>
 							<Label text="{/#Partner/SoldTo/Partnerid/@sap:label}"/>
 							<Input id="__SoldTo_Partnerid" 

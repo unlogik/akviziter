@@ -35,7 +35,7 @@ sap.ui.define([
 	var oMessageTemplate = new MessagePopoverItem({
 		type: '{MsgType}',
 		title: '{Msg}',
-		description: "{Msg}",
+		description: "{MsgLong}",
 		subtitle: '{subtitle}',
 		counter: '{counter}'
 	});

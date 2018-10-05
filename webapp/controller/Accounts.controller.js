@@ -272,7 +272,7 @@ sap.ui.define([
 			//perform length check and return message if any field has been shortened
 			for (var i = 0; i < json.length; i++) {
 				var entity = this._parseEntity(json[i]);
-				var trunc = this._truncateEntity(entity, i + 2);
+				var trunc = this._truncateEntity(entity, i + 4);
 			}
 			// open a WebSocket connection
 			var hostLocation = window.location,
@@ -412,7 +412,7 @@ sap.ui.define([
 		
 		validateTemplate: function(wb) {
 		    var msg;
-			if (typeof(wb["Partner"]) === 'undefined') {
+			if (typeof(wb.Sheets["Partner"]) === 'undefined') {
 				msg = this.getI18n('msgTemplateSheeet');
 				this.msgStrip(msg, "Error", true);
 				return false;
