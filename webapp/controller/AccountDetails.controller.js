@@ -63,7 +63,6 @@ sap.ui.define([
 		 */
 
 		onInit: function() {
-			this.sCityCode = null;
 			// Model used to manipulate control states. The chosen values make sure,
 			// detail page is busy indication immediately so there is no break in
 			// between the busy indication for loading the view's meta data
@@ -146,6 +145,13 @@ sap.ui.define([
 		onExit: function() {
 			this._toggleButtonsAndView(false);
 			this.setViewProperty("editable", false);
+			for (var sPropertyName in this._formFragments) {
+				if (!this._formFragments.hasOwnProperty(sPropertyName) || this._formFragments[sPropertyName] == null) {
+					return;
+				}
+				this._formFragments[sPropertyName].destroy();
+				this._formFragments[sPropertyName] = null;
+			}			
 		},
 		
 		onDateChange: function( oEvent ){
@@ -565,8 +571,7 @@ sap.ui.define([
 
 		onCitySelect: function(oEvent) {
 			var row = oEvent.getParameters().selectedRow;
-			var text = row.getCells()[1];
-			this.sCityCode = text.getText();
+			//this.sCityCode = row.getBindingContext().getObject().CityName;
 		},
 
 		onStreetSuggest: function(oEvent) {
@@ -586,7 +591,19 @@ sap.ui.define([
 			}
 			oEvent.getSource().getBinding("suggestionRows").filter(aFilters);
 		},
-
+        
+        onStreetSelect: function(oEvent){
+            var sBPType;
+            var oSelectedItem = oEvent.getParameter("selectedRow");
+            if(oEvent.getParameters().id.lastIndexOf("SoldTo")>-1){
+                sBPType = "__SoldTo_Ort01";
+            }else{
+                sBPType = "__ShipTo_Ort01"; 
+            }
+            var sCityCode  = oSelectedItem.getBindingContext().getObject().StreetShr;
+            this.getView().byId(sBPType).setValue(sCityCode ).setValueState(sap.ui.core.ValueState.None);
+        },
+        
 		onSoldToName1Change: function(oEvent) {
 			if (oEvent.getParameters().value === "") {
 				oEvent.getSource().setValueState(sap.ui.core.ValueState.Error);

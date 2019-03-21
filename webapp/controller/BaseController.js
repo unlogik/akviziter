@@ -100,8 +100,10 @@ sap.ui.define([
 				type: sType
 			});
 			var pageId = this.getViewProperty("pageId");
+			//var pageId = this.getViewProperty("msgStripId");
             var oPage = this.getView().byId(pageId);
 			oPage.insertContent(oMsgStrip);			
+			//oPage.addContent(oMsgStrip);			
 			//this.getView().addContent();
 		},
 

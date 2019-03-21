@@ -1,5 +1,6 @@
-<mvc:View xmlns:core="sap.ui.core" xmlns:u="sap.ui.unified" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+<mvc:View xmlns:core="sap.ui.core" xmlns:u="sap.ui.unified" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:l="sap.ui.layout"
 	xmlns:smartTable="sap.ui.comp.smarttable" xmlns:html="http://www.w3.org/1999/xhtml" controllerName="bp.controller.Accounts">
+    	<!--l:HorizontalLayout class="sapUiContentPadding" id="msgStripAccounts"/-->
 	<App>
 		<pages>
 			<Page title="{i18n>titleOrders}" showNavButton="true" navButtonPress="onNavBack" id="pageAccounts">
@@ -70,7 +71,7 @@
 									<Label text="Telephone" id="__label3"/>
 								</header>
 							</Column>
-							<Column minScreenWidth="Desktop" width="170px">
+							<Column minScreenWidth="Desktop" width="170px" demandPopin="true">
 								<header>
 									<Label text="{/#Partner/SoldTo/Email/@sap:label}"/>
 								</header>
@@ -119,7 +120,8 @@
 				</content>
 				<footer>
 					<Toolbar>
-						<Button icon="sap-icon://message-popup" text="{message>count}" type="Emphasized" press="onMessages"/>
+						<Button icon="sap-icon://message-popup" text="{=${message>/}.length}"
+						visible="{=!!${message>/}.length}" type="Emphasized" press="onMessages"/>
 						<ProgressIndicator id="progressIndicator" class="sapUiSmallMargin"
 					       showValue="true" state="Success" width="200px" height="15px" visible="false"/>
 						<ToolbarSpacer/>

@@ -81,14 +81,19 @@ sap.ui.define([
 		 * @memberOf bp.view.Accounts
 		 */
 		onInit: function() {
+		    this.oView = this.getView();
 			var oModel = this.getComponentModel();
 			oModel.metadataLoaded().then(() => {
 				this.metaModel = oModel.getMetaModel();
 				this.origin = this.metaModel.oMetadata.sUrl.match(/(o=)([A-Z]{3})/);
 				this.origin = this.origin[2];
 			});
-			sap.ui.getCore().getMessageManager().registerMessageProcessor(oModel);
-			var oMessage = sap.ui.getCore().getMessageManager().getMessageModel();
+
+/*
+			sap.ui.getCore().getMessageManager().registerMessageProcessor(oModel);*/
+			var oMManage = sap.ui.getCore().getMessageManager();
+			oMManage.registerObject(this.getView(), true);
+			var oMessage = oMManage.getMessageModel();
 			this.getView().setModel(oMessage, "message");
 			oMessagePopover.setModel(oMessage, "message");
 		},
@@ -101,6 +106,7 @@ sap.ui.define([
 		onBeforeRendering: function() {
 			this.setViewModel();
 			this.setViewProperty("pageId", "pageAccounts");
+			this.setViewProperty("msgStripId", "msgStripAccounts");
 			/*			var button = this.getView().byId("infoBar");
 						button.setStyleClass("spinningBusy");*/
 		},
@@ -209,6 +215,7 @@ sap.ui.define([
 				groupID: "Partner",
 				success: (oData, response) => {
 					sap.ui.core.BusyIndicator.hide();
+					oModel.resetChanges();
 					for (var i in oData.__batchResponses) {
 						var batchResponse = oData.__batchResponses[i];
 						if (typeof(batchResponse.response) == "undefined") continue;
@@ -221,6 +228,7 @@ sap.ui.define([
 					this.msgToast(that.getI18n('msgChangesSaved'));
 				},
 				error: (oResponse) => {
+				    oModel.resetChanges();
 					sap.ui.core.BusyIndicator.hide();
 					var response = this.parseResponse(oResponse);
 					MessageBox.show(response.message, {
@@ -665,8 +673,11 @@ sap.ui.define([
 					success: function(oData_, response) {
 						that.msgToast(that.getI18n('msgModelAdded', sModel));
 						that.setViewProperty("model", "");
+						//debugger;
+						that.getView().byId("__tablePartners").getBinding("items").refresh(true);
 					},
 					error: function(oResponse) {
+					    //if(!!!oResponse.response) return;
 						var response = JSON.parse(oResponse.response.body);
 						MessageBox.show(response.message, {
 							icon: sap.m.MessageBox.Icon.ERROR,

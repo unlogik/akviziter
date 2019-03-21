@@ -20,6 +20,7 @@
 				"type": "OData",
 				"settings": {
 					"odataVersion": "2.0",
+					 "defaultCountMode": "InlineRepeat",
 					"localUri": "localService/metadata.xml",
 					"annotations": [
 						"annotation"

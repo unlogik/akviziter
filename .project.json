@@ -1,10 +1,13 @@
 {
   "projectType": [
-    "sap.watt.uitools.ide.fiori"
+    "sap.watt.uitools.ide.fiori",
+    "sap.watt.uitools.ide.web"
   ],
   "build": {
     "targetFolder": "dist",
-    "sourceFolder": "webapp"
+    "sourceFolder": "webapp",
+    "buildRequired": false,
+    "lastBuildDateTime": "Thu, 24 Jan 2019 09:54:33 GMT"
   },
   "generation": [
     {

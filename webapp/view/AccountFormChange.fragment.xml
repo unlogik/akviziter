@@ -80,7 +80,7 @@
 							<Label text="{/#Partner/SoldTo/Stras/@sap:label}" required="true"/>
 							<Input id="__SoldTo_Stras" value="{ path:'SoldTo/Stras', type:'sap.ui.model.type.String', constraints:{maxLength:'60'}}" placeholder="{i18n>placeholderStreet}" showSuggestion="true"
 								showTableSuggestionValueHelp="false" filterSuggests="false" suggest="onStreetSuggest" suggestionRows="{/StreetSet}" maxSuggestionWidth="500px" submit="onEnter"
-								editable="{=!${SoldTo/Partnerid}}">
+								editable="{=!${SoldTo/Partnerid}}" suggestionItemSelected="onStreetSelect">
 								<suggestionColumns>
 									<Column hAlign="Begin" popinDisplay="Inline" demandPopin="true" width="250px">
 										<Label text="{i18n>labelStreet}"/>
@@ -145,11 +145,10 @@
 								<ToolbarSpacer/>
 								<Button id="_btn1_ShipToDoubles" icon="{ path: 'ShipTo/Status', formatter: '.formatter.statusIcon'}" press="onDoublesDisplay"
 									visible="{ShipTo/Doubles}"/>
-								<core:Icon src="sap-icon://activity-2" size="80%" visible="{ShipTo/FlgActive}" tooltip="{/#Partner/ShipTo/FlgActive/@sap:label}" color="red"/>
-								<core:Icon src="sap-icon://unpaid-leave" size="80%" visible="{ShipTo/FlgDebtor}" tooltip="{/#Partner/ShipTo/FlgDebtor/@sap:label}" color="red"/>
-								<core:Icon src="sap-icon://locked" size="80%" visible="{ShipTo/FlgBlocked}" tooltip="{/#Partner/ShipTo/FlgBlocked/@sap:label}" color="red"/>
-								<core:Icon src="sap-icon://official-service" size="80%" visible="{ShipTo/FlgSued}" tooltip="{/#Partner/ShipTo/FlgSued/@sap:label}"
-									color="red"/>									
+					            <core:Icon src="sap-icon://bed" size="90%" visible="{=!${ShipTo/FlgActive} &amp;&amp; ${ShipTo/Partnerid} !== ''}" tooltip="{i18n>toolTipInactive}" color="red"/>
+								<core:Icon src="sap-icon://unpaid-leave" size="90%" visible="{ShipTo/FlgDebtor}" tooltip="{/#Partner/ShipTo/FlgDebtor/@sap:label}" color="red"/>
+								<core:Icon src="sap-icon://locked" size="90%" visible="{ShipTo/FlgBlocked}" tooltip="{/#Partner/ShipTo/FlgBlocked/@sap:label}" color="red"/>
+								<core:Icon src="sap-icon://official-service" size="90%" visible="{ShipTo/FlgSued}" tooltip="{/#Partner/ShipTo/FlgSued/@sap:label}" color="red"/>									
 							</Toolbar>
 							<Label text="{/#Partner/ShipTo/Partnerid/@sap:label}"/>
 							<Input id="__ShipTo_Partnerid" value="{path:'ShipTo/Partnerid', type:'sap.ui.model.type.String', constraints:{maxLength:'10'}}" submit="onEnter"/>
@@ -205,7 +204,7 @@
 							<Label text="{/#Partner/ShipTo/Stras/@sap:label}"/>
 							<Input id="__ShipTo_Stras" value="{path:'ShipTo/Stras', type:'sap.ui.model.type.String', constraints:{maxLength:'60'}}" placeholder="{i18n>placeholderStreet}" showSuggestion="true"
 								showTableSuggestionValueHelp="false" filterSuggests="false" suggest="onStreetSuggest" suggestionRows="{/StreetSet}" maxSuggestionWidth="500px" submit="onEnter"
-								editable="{=!${ShipTo/Partnerid}}">
+								editable="{=!${ShipTo/Partnerid}}" suggestionItemSelected="onStreetSelect">
 								<suggestionColumns>
 									<Column hAlign="Begin" popinDisplay="Inline" demandPopin="true" width="250px">
 										<Label text="{i18n>labelStreet}"/>
