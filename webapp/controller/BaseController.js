@@ -125,6 +125,9 @@ sap.ui.define([
 		    }else{
 		        sMsg = oResponse;
 		    }
+		    if(sMsg.error){
+		        return sMsg.error.message.value;
+		    }
 		    return sMsg;
 		}
 

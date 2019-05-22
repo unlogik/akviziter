@@ -1,0 +1,23 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<Dialog
+		title="{parts:['i18n>title.Submit','itemCount'], formatter: 'jQuery.sap.formatMessage'}"
+		class="sapUiPopupWithPadding" >
+	    <content>
+	        <Label text="{parts:['i18n>label.ItemsSelected','set>/itemCount'], formatter: 'jQuery.sap.formatMessage'}"/>
+	        <ComboBox width="100%" placeholder="{i18n>placeholder.SubmitName}"  value="{set>/selectedItem}"
+	            	  items="{ path: 'set>/files',
+					           sorter: { path: 'fileName' }
+				}">
+				<core:Item key="{set>fileName}" text="{set>fileName}" />
+	        </ComboBox>
+	    </content>
+		<beginButton>
+			<Button text="{i18n>button.Submit}" press="onSubmitSubmit" />
+		</beginButton>
+		<endButton>
+			<Button text="{i18n>button.Cancel}" press="onSubmitCancel" />
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

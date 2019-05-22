@@ -59,12 +59,6 @@
 							</customData>
 							<Text text="{/#Report/Birthsh/@sap:label}"/>
 						</Column>
-					    <Column>
-							<customData>
-								<core:CustomData key="p13nData" value='\{"columnKey": "Partnerbp"\}'/>
-							</customData>
-							<Text text="{/#Report/Partnerbp/@sap:label}"/>
-						</Column>						
 					</columns>
 					<items>
 						<ColumnListItem>
@@ -75,7 +69,6 @@
 								<Text text="{ path: 'Bilda', type:'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.YYYY'} }"/>
 								<Text text="{ path: 'Birthbp', type:'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.YYYY'} }"/>
 								<Text text="{ path: 'Birthsh', type:'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.YYYY'} }"/>
-								<Link text="{Partnerbp}" press="onBP" />								
 							</cells>
 						</ColumnListItem>
 					</items>

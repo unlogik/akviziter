@@ -273,16 +273,16 @@ sap.ui.define([
 				Setid: oData.Setid,
 				Model: sModel
 			}, {
-				success: function(oData_, response) {
+				success: (oData_, response) => {
 					that.msgToast(that.getI18n('msgModelAdded', sModel));
 					that.setViewProperty("model", "");
 					//oModel.update("/PartnerSet('" + oData.Setid + "')", oData);
 					//oModel.update(sPath, oData);
 					//oView.byId("_tableOrders").setTableBindingPath("PartnerToOrders");
 				},
-				error: function(oResponse) {
+				error: (oResponse) =>{
 					var response = this.parseResponse(oResponse);
-					MessageBox.show(response.message, {
+					MessageBox.show(response, {
 						icon: sap.m.MessageBox.Icon.ERROR,
 						title: "{i18n>msgTileError}"
 					});

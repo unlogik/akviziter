@@ -7,7 +7,7 @@
 				<headerContent>
 					<OverflowToolbar>
 						<OverflowToolbarButton id="__button3" text="Add" tooltip="New" icon="sap-icon://add" press="onAdd"
-							visible="{/UserSet('CURRENT')/AuthCreate}"/>
+							visible="{/UserSet(CURRENT')/AuthCreate}"/>
 						<u:FileUploader id="fileUploader" name="myFileUpload" buttonOnly="true" icon="sap-icon://upload" iconOnly="true" change="onUpload"
 							visible="{/UserSet('CURRENT')/AuthCreate}" fileType="xls,xlsx"/>
 					    <Button id="refreshIndicator" icon="sap-icon://synchronize" visible="false" enabled="false" tooltip="{i18n>msgProcessing}"/>
@@ -32,26 +32,15 @@
 				</subHeader>-->
 				<content>
 					<Table noDataText="No data" id="__tablePartners" items="{ path : '/PartnerSet', sorter : { path : 'FileName', group : true } }"
-						mode="MultiSelect" growing="true" growingThreshold="50">
-						<!--<headerToolbar>-->
-						<!--	<OverflowToolbar>-->
-						<!--		<Title text="Products" level="H2"/>>-->
-						<!--		<ToolbarSpacer/>-->
-						<!--  Add the Personalization button -->
-						<!--		<Button icon="sap-icon://action-settings" press="onPersonalize">-->
-						<!--			<layoutData>-->
-						<!--				<OverflowToolbarLayoutData priority="NeverOverflow"/>-->
-						<!--			</layoutData>-->
-						<!--		</Button>-->
-						<!--	</OverflowToolbar>-->
-						<!--/headerToolbar>-->
+						mode="MultiSelect" growing="true" growingThreshold="50" itemPress="onItemPress">
 						<columns>
 							<Column id="__column0" width="50px">
 								<header>
 									<Label text="{/#Partner/Setid/@sap:label}" id="__label0"/>
 								</header>
 							</Column>
-							<Column id="__column01" width="50px" visible="{/UserSet('CURRENT')/AkvSelectable}" minScreenWidth="Tablet" mergeDuplicates="true">
+							<!--<Column id="__column01" width="50px" visible="{path:'/UserSet(\'CURRENT\')/AkvSelectable', events: {change:'.onUserChange'}}" minScreenWidth="Tablet" mergeDuplicates="true">-->
+							<Column id="__column01" width="50px" visible="{=!!${/UserSet('CURRENT')/AkvSelectable}}" minScreenWidth="Tablet" mergeDuplicates="true">
 								<header>
 									<Label text="AkvID" />
 								</header>
@@ -85,7 +74,12 @@
 								<header>
 									<Label text="{/#Partner/SoldTo/Stcd2/@sap:label}" id="__label5"/>
 								</header>
-							</Column>							
+							</Column>
+							<Column id="__column6" minScreenWidth="Desktop" width="1.5rem" demandPopin="true" popinDisplay="Inline">
+								<header>
+									<Label text="#" tooltip="{i18n>toolTipItemNo}"/>
+								</header>
+							</Column>								
 							<Column width="30px">
 							    <header>
 									<!--core:Icon src="sap-icon://validate" tooltip="{i18n>columnStatus}"/-->
@@ -96,8 +90,8 @@
 						<items>
 							<ColumnListItem type="Navigation" press="onBPDetails">
 								<cells>
-									<Text text="{Setid}" id="__text28"/>
-									<Text text="{Akvid}" visible="{/UserSet('CURRENT')/AkvSelectable}"/>
+								    <Text text="{Setid}" id="__text28"/>
+    								<Text text="{Akvid}" class="smallFont"/>
 									<ObjectIdentifier title="{SoldTo/Name1} {SoldTo/Name2}" text="{ShipTo/Name1} {ShipTo/Name2}" class="sapMTableContentMargin"/>
 									<Text
 										text="{ parts: [ {path: 'SoldTo/Stras'}, {path: 'SoldTo/Hsnm1'}, {path: 'SoldTo/Hsnm2'}, {path: 'SoldTo/Ort01'}, {path: 'ShipTo/Stras'}, {path: 'ShipTo/Hsnm1'}, {path: 'ShipTo/Hsnm2'}, {path: 'ShipTo/Ort01'}], formatter: '.formatter.multiAddr'}"
@@ -105,13 +99,10 @@
 									<Text
 										text="{ parts: [ {path: 'SoldTo/Telnr'}, {path: 'SoldTo/Mobnr'}, {path: 'ShipTo/Telnr'}, {path: 'ShipTo/Mobnr'}] , formatter: '.formatter.multiTel'}"
 										id="__text30"/>
-									<Text text="{SoldTo/Email}\n{ShipTo/Email}"></Text>
-									<sap.ui.layout:VerticalLayout width="100%" xmlns:sap.ui.layout="sap.ui.layout" id="__layout0">
-										<Text text="{ path: 'SoldTo/Birth', formatter: '.formatter.dateOut'}" id="__text31"/>
-										<Text text="{ path: 'ShipTo/Birth', formatter: '.formatter.dateOut'}" id="__text33"/>
-									</sap.ui.layout:VerticalLayout>
+									<Text text="{SoldTo/Email}\n{ShipTo/Email}"/>
+                                    <Text text="{ path: 'SoldTo/Birth', formatter: '.formatter.dateOut'}\n{ path: 'ShipTo/Birth', formatter: '.formatter.dateOut'}"/>									
 									<Text text="{SoldTo/Stcd2}\n{ShipTo/Stcd2}"></Text>
-									<!--<core:Icon src="{= ${Status} === '2' ? 'sap-icon://action' : 'sap-icon://account' }"/>-->
+									<Text text="{ItemCount}"/>
 									<core:Icon src="{ path: 'Status', formatter: '.formatter.messageIcon' }" color="{ path: 'Status', formatter: '.formatter.messageColor' }"/>
 								</cells>
 							</ColumnListItem>
@@ -125,7 +116,8 @@
 						<ProgressIndicator id="progressIndicator" class="sapUiSmallMargin"
 					       showValue="true" state="Success" width="200px" height="15px" visible="false"/>
 						<ToolbarSpacer/>
-						<Button icon="sap-icon://action" type="Accept" press="onSubmit"/>
+						<Button id="idSubmit" icon="sap-icon://action" type="Accept" press="onSubmit"/>
+						<Button id="refreshIndicator1" type="Accept" icon="sap-icon://synchronize" visible="false" enabled="false" tooltip="{i18n>msgProcessing}"/>
 					</Toolbar>
 				</footer>
 			</Page>

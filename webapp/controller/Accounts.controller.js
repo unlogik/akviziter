@@ -18,16 +18,20 @@ sap.ui.define([
 	"sap/ui/model/Filter",
 	"sap/ui/model/Sorter",
 	"sap/ui/comp/valuehelpdialog/ValueHelpDialog",
-	"sap/ui/core/ws/WebSocket"
+	"sap/ui/core/ws/WebSocket",
+	"sap/ui/model/json/JSONModel",
+	"sap/ui/core/ws/SapPcpWebSocket"
 ], function(BaseController, History, Export, ExportTypeCSV, MessageBox, MessageToast, MessagePopover, MessagePopoverItem, Dialog, Button,
-	Text, Fragment, formatter, XLSX_, JSZip, xlsx, Filter, Sorter, ValueHelpDialog, WebSocket) {
+	Text, Fragment, formatter, XLSX_, JSZip, xlsx, Filter, Sorter, ValueHelpDialog, WebSocket, JSONModel, WS) {
 	"use strict";
 
 	var oMessageTemplate = new MessagePopoverItem({
-		type: '{message>type}',
-		title: '{message>message}',
-		description: '{message>message}',
-		subtitle: '{subtitle}',
+		type: '{message>msgtype}',
+		title: 'Setid {message>setid}: {message>message}',
+		groupName: "{parts: ['i18n>label.Setid','message>setid'], fromatter:'jQuery.sap.formatMessage'}",
+		activeTitle: '{message>setid}', 
+		description: '{message>longtxt}',
+		subtitle: '{message>id}{message>number}',
 		counter: '{counter}'
 	});
 
@@ -82,9 +86,9 @@ sap.ui.define([
 		 */
 		onInit: function() {
 		    this.oView = this.getView();
-			var oModel = this.getComponentModel();
-			oModel.metadataLoaded().then(() => {
-				this.metaModel = oModel.getMetaModel();
+			this.oModel = this.getComponentModel();
+			this.oModel.metadataLoaded().then(() => {
+				this.metaModel = this.oModel.getMetaModel();
 				this.origin = this.metaModel.oMetadata.sUrl.match(/(o=)([A-Z]{3})/);
 				this.origin = this.origin[2];
 			});
@@ -139,7 +143,10 @@ sap.ui.define([
 				oRouter.navTo("overview", {}, true);
 			}
 		},
-
+        onUserChange: function(oEvent){
+          var bVisible = oEvent.getSource().getModel().getProperty("/UserSet('CURRENT')/AkvSelectable");
+          this.byId("__column01").setVisible(bVisible);
+        },
 		onBPDetails: function(oEvent) {
 			// The source is the list item that got pressed
 			var oItem = oEvent.getSource();
@@ -154,7 +161,6 @@ sap.ui.define([
 				SetId: "NEW"
 			});
 		},
-
 		onUpload: function(oEvent) {
 			var files = oEvent.getParameter("files");
 			var oFileUploader = oEvent.getSource();
@@ -173,6 +179,17 @@ sap.ui.define([
 			if (!this._validateSelected()) {
 				return;
 			}
+	        if (!this._oSubmitDialog) {
+				this._oSubmitDialog = sap.ui.xmlfragment("bp.view.Submit", this);
+				this.getView().addDependent(this._oSubmitDialog);
+				this._oSubmitDialog.setModel(this.getModel("i18n"), "i18n");
+    			this.getView().addDependent(this._oSubmitDialog);
+    			//this.oDataBeforeOpen = jQuery.extend(true, {}, this.oJSONModel.getData());
+			}
+			this._oSubmitDialog.setModel(this._prepareSubmitModel(),"set");
+    	    this._oSubmitDialog.open();
+            return;
+			this._oPopover.openBy(oEvent.getSource());			
 			//var oSelected = this.getView().byId("__tablePartners").getSelectedItems();
 			//are you 100% sure about deletion?
 			var dialog = new Dialog({
@@ -202,7 +219,40 @@ sap.ui.define([
 			dialog.setModel(this.getModel("i18n"), "i18n");
 			dialog.open();
 		},
-
+		onSubmitSubmit: function(oEvent) {
+		    this._oSubmitDialog.close();
+		    var oData = oEvent.getSource().getModel('set').getData();
+			var oSubmit = [];
+			oData.set.forEach((el)=> {
+			    oSubmit.push(
+			        { 'setid': el.Setid,
+			          'fname': oData.selectedItem }
+			    );
+			} );
+		    this._webSocketSubmit(oSubmit);
+		},
+		onSubmitCancel: function(oEvent) {
+		    this._oSubmitDialog.close();
+		},
+		_prepareSubmitModel(){
+		    var oData = {files:[],'set':[]};
+		    var aItems = this.getView().byId("__tablePartners").getSelectedItems();
+		    oData.itemCount = aItems.length;
+		    var aFiles = [];
+		    aItems.forEach((el)=>{
+		        aFiles.push(el.getBindingContext().getObject().FileName);
+		        oData.set.push({Setid:el.getBindingContext().getObject().Setid});
+		    })
+		    //get distinct values from array
+		    aFiles = aFiles.filter((v, i, a) => a.indexOf(v) === i); 
+		    aFiles.forEach((el)=>{
+		        oData.files.push({fileName:el});
+		    })
+		    if(aFiles.length==1){
+		        oData.selectedItem = aFiles[0];
+		    }
+		    return new JSONModel(oData);
+		},
 		_submit: function(e) {
 			var oModel = this.getView().getModel();
 			var oTable = this.getView().byId("__tablePartners");
@@ -283,6 +333,7 @@ sap.ui.define([
 				var trunc = this._truncateEntity(entity, i + 4);
 			}
 			// open a WebSocket connection
+			//var wsURI = this._wsURI("zakv_upload");
 			var hostLocation = window.location,
 				socket, socketHostURI, webSocketURI, wsURI;
 			if (hostLocation.protocol === "https:") {
@@ -334,6 +385,65 @@ sap.ui.define([
 					}
 				});
 			});
+		},
+		_webSocketSubmit: function(oData) {
+			var pcpFields = {
+				"origin": this.origin
+			};		    
+			var wsURI = this._wsURI("zakv_submit");
+			var ws = new WS(wsURI, WS.SUPPORTED_PROTOCOLS.v10);
+			ws.attachOpen(() => {
+				var data = JSON.stringify(oData);
+				ws.send(data, pcpFields);
+				this.setProcessing2(true);
+			});
+			ws.attachMessage((msg) => {
+				var oMsg = JSON.parse(msg.mParameters.data);
+				var oProgress = this.getView().byId("progressIndicator");
+				if (oMsg.type == "error") {
+					this.msgStrip(oMsg.text, "Error", true);
+				} else if (oProgress) {
+					var float = parseFloat(oMsg.percent);
+					oProgress.setPercentValue(float);
+					oProgress.setDisplayValue(oMsg.text);
+					oProgress.setVisible(true);
+				}
+				if (oMsg.done) {
+					ws.close();
+					setTimeout(() => {
+						oProgress.setVisible(false)
+					}, 2000);
+				}
+				if(oMsg.messages){
+				    var oModel = new JSONModel(oMsg.messages);
+				    this.getView().setModel(oModel,"message")
+				    oModel.refresh();
+				}
+			});
+			ws.attachClose(() => {
+				this.setProcessing2(false);
+				this.oModel.read("/PartnerSet", {
+					success: () => {
+						this.oModel.refresh();
+					}
+				});
+			});
+		},	
+		_wsURI: function(sAction) {
+			var hostLocation = window.location,
+				socket, socketHostURI, webSocketURI, wsURI;
+			if (hostLocation.protocol === "https:") {
+				socketHostURI = "wss:";
+			} else {
+				socketHostURI = "ws:";
+			}
+			socketHostURI += "//" + hostLocation.host;
+			if (hostLocation.host.match(/localhost/)) {
+				wsURI = "wss://sapgw.styria-it.hr:8002/sap/bc/apc/sap/"
+			} else {
+				wsURI = socketHostURI + "/sap/bc/apc/sap/";
+			}
+			return wsURI+sAction;
 		},
 		/* parse excel table format to oData format
 		 */
@@ -494,7 +604,23 @@ sap.ui.define([
 					break;
 			}
 		},
-
+		setProcessing2: function(switchOn) {
+			var style = "spinningBusy";
+			var oFile = this.getView().byId("idSubmit");
+			var oButton = this.getView().byId("refreshIndicator1");
+			switch (switchOn) {
+				case true:
+					oButton.addStyleClass(style);
+					oButton.setVisible(true);
+					oFile.setVisible(false);
+					break;
+				case false:
+					oButton.removeStyleClass(style);
+					oButton.setVisible(false);
+					oFile.setVisible(true);
+					break;
+			}
+		},		
 		_createBatchSuccess: function(data, response) {
 			//this.getModel().refresh();
 			var noCreated = data.__batchResponses[0].__changeResponses.length;
@@ -664,25 +790,29 @@ sap.ui.define([
 			var oModel = this.getView().getModel();
 			var oTable = this.getView().byId("__tablePartners");
 			var aItems = oTable.getSelectedItems();
+			if(aItems.length>0){
+			   this.getView().setBusy(true); 
+			} 
 			for (var i = 0; i < aItems.length; i++) {
 				var id = aItems[i].getCells()[0].getText();
 				oModel.create("/OrderSet", {
 					Setid: id,
 					Model: sModel
 				}, {
-					success: function(oData_, response) {
-						that.msgToast(that.getI18n('msgModelAdded', sModel));
-						that.setViewProperty("model", "");
+					success: (oData_, response) =>{
+						this.msgToast(that.getI18n('msgModelAdded', sModel));
+						this.setViewProperty("model", "");
+						this.getView().setBusy(false); 
 						//debugger;
 						that.getView().byId("__tablePartners").getBinding("items").refresh(true);
 					},
-					error: function(oResponse) {
-					    //if(!!!oResponse.response) return;
-						var response = JSON.parse(oResponse.response.body);
-						MessageBox.show(response.message, {
-							icon: sap.m.MessageBox.Icon.ERROR,
-							title: "{i18n>msgTileError}"
-						});
+					error: (oResponse) => {
+					    this.getView().setBusy(false); 
+    					var response = this.parseResponse(oResponse);
+    					MessageBox.show(response, {
+    						icon: sap.m.MessageBox.Icon.ERROR,
+    						title: "{i18n>msgTileError}"
+    					});
 					}
 				});
 			}
@@ -720,6 +850,7 @@ sap.ui.define([
 			} else {
 				oMessagePopover.openBy(oEvent.getSource());
 			}
+			oMessagePopover.setModel(this.getModel('message'),"message");
 		},
 
 		onOpenSettings: function(oEvent) {

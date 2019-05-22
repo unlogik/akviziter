@@ -44,9 +44,11 @@ sap.ui.define([
 
 		onBeforeRendering: function() {
 			this.setViewModel();
+			this.getComponentModel().setUseBatch(false);
 			this.getComponentModel().read("/UserSet('CURRENT')", {
 				success: jQuery.proxy(this.adjustViewModel, this)
 			});
+			this.getComponentModel().setUseBatch(true);
 		},
 
 		onSelect: function(oEvent) {
