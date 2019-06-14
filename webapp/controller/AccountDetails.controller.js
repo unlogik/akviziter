@@ -56,6 +56,7 @@ sap.ui.define([
             navTypeNoSave : 'nosave',
             navTypeSave : 'save'
         },
+        _address:{},
 		/**
 		 * Called when a controller is instantiated and its View controls (if available) are already created.
 		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
@@ -83,7 +84,7 @@ sap.ui.define([
 			});
 
 			// Set the initial form to be the display one
-			this._showFormFragment("Display");
+			//this._showFormFragment("Display");
 			var oModel = this.getOwnerComponent().getModel();
 			oModel.read("/PartnerTitleSet");
 			//oModel.setRefreshAfterChange(false);
@@ -113,7 +114,7 @@ sap.ui.define([
 			} catch (err) {
 
 			};
-			var aColums = oTable.getColumns();
+			//var aColums = oTable.getColumns();
 		},
 
 		/**
@@ -344,22 +345,12 @@ sap.ui.define([
 		},
 
 		onDoublesDisplay: function(oEvent) {
-			var sPath = oEvent.getSource().getId().match(/[^_]+$/);;
+			var sPath = oEvent.getSource().getId().match(/[^_]+$/);
 			if (!this._oDoublesPopover) {
 				this._oDoublesPopover = sap.ui.xmlfragment("_popoverDoubles", "bp.view.AccountDoubles", this);
-				//this._oDoublesPopover.setModel( this.getComponentModel() );
-				//var oContext = this.getView().getBindingContext();
-				//var path = oContext.getPath();
-				//this._oDoublesPopover.bindElement( oContext.getPath() );
 				//Add the popover as a view dependent, giving it access to the view model
 				this.getView().addDependent(this._oDoublesPopover);
 			}
-			/*else{
-						    var oView = this.getView();
-						    var oList = sap.ui.core.Fragment.byId("_popoverDoubles", "_doublesList");
-						    var oContext = this._oDoublesPopover.getBindingContext();
-						    var path = oContext.getPath();
-						}*/
 			var oButtonOpen = oEvent.getSource();
 			var buttonChanged = (this.doublesPopoverLastOpenBy === oButtonOpen.getId()) ? false : true;
 			this.doublesPopoverLastOpenBy = oButtonOpen.getId();
@@ -442,6 +433,59 @@ sap.ui.define([
 				groupID: "Partner"
 			});
 			this._oDoublesPopover.close();
+		},
+		
+		onAddressDisplay: function(oEvent){
+		    var oButtonOpen = oEvent.getSource();
+		    var sPath = oButtonOpen.data().bindingPath;
+		    this._address.entityPath = oButtonOpen.data().entityPath;
+		    if (!this._address.oPopover) {
+				this._address.oPopover = sap.ui.xmlfragment("_popoverAddress", "bp.view.Address", this);
+				//Add the popover as a view dependent, giving it access to the view model
+				this.getView().addDependent(this._address.oPopover);
+			}
+
+			if (this._address.oPopover.isOpen() && this._address.sPath === sPath) {
+				this._address.oPopover.close();
+			} else {
+			    this._address.sPath = sPath;
+				//this.setViewProperty("editable", this.editable);
+				sPath = this.getView().getBindingContext().getPath() + "/" + sPath
+				var oTable = Fragment.byId("_popoverAddress", "_tableAddress");
+				var oTemplate = oTable.getBindingInfo("items").template;
+				oTable.bindItems({
+					path: sPath,
+					template: oTemplate
+				});
+				if (this.getViewProperty("editable")) {
+					oTable.setMode("SingleSelect");
+				} else {
+					oTable.setMode();
+				}
+				// delay because addDependent will do a async rerendering and the actionSheet will immediately close without it.
+				jQuery.sap.delayedCall(0, this, function() {
+					this._address.oPopover.openBy(oButtonOpen);
+				});
+			}			
+		},
+		onAddressSelect: function(oEvent){
+		    var oTable = Fragment.byId("_popoverAddress", "_tableAddress");
+			var oItem = oTable.getSelectedItem();
+			var oContext = oItem.getBindingContext();
+			var partnerid = oContext.getProperty("Partnerid");
+			var addrnumber = oContext.getProperty("AddrNumber");
+			var sPath = oTable.getBindingContext().getPath();
+			sPath = sPath + "/" + this._address.entityPath;
+			var oModel = this.getView().getModel();
+			oModel.setProperty(sPath + "/Partnerid", partnerid);
+			oModel.setProperty(sPath + "/Adrnr", addrnumber);
+			this.getComponentModel().submitChanges({
+				groupID: "Partner"
+			});
+			this._address.oPopover.close();
+		},
+		onAddressClose: function(oEvent){
+		    this._address.oPopover.close();
 		},
 
 		doublesGetPath: function(oParam) {

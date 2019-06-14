@@ -73,6 +73,18 @@ sap.ui.define([], function () {
 		        return "None";
 		    }
 		},
+		addr:function( sSoldStras, sSoldHsnm1, sSoldHsnm2, sSoldOrt01){
+		    var sFirstLine;
+		    sFirstLine  = sSoldStras + " " + sSoldHsnm1 + sSoldHsnm2;
+		    if(!sFirstLine){
+		        sFirstLine = sSoldOrt01;
+		    }else if(!sSoldOrt01){
+		        //sFirstLine = sSoldTel;
+		    }else{
+		        sFirstLine = sFirstLine + ', ' + sSoldOrt01;
+		    }
+		    return sFirstLine;
+		},		
 		multiAddr:function( sSoldStras, sSoldHsnm1, sSoldHsnm2, sSoldOrt01, sShipStras, sShipHsnm1, sShipHsnm2, sShipOrt01){
 		    var sFirstLine;
 		    var sSecondLine;
@@ -94,7 +106,17 @@ sap.ui.define([], function () {
 		    }		    
 		    return sFirstLine + "\n" + sSecondLine;
 		},
-		
+		tel: function( sSoldTel, sSoldMob){
+		    var sFirstLine;
+		    if(!sSoldTel){
+		        sFirstLine = sSoldMob;
+		    }else if(!sSoldMob){
+		        sFirstLine = sSoldTel;
+		    }else{
+		        sFirstLine = sSoldTel + ', ' + sSoldMob;
+		    }
+		    return sFirstLine;
+		},		
 		multiTel: function( sSoldTel, sSoldMob, sShipTel, sShipMob ){
 		    var sFirstLine;
 		    var sSecondLine;

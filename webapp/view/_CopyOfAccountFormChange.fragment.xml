@@ -1,0 +1,337 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core"
+	xmlns:s="sap.ui.comp.smarttable" xmlns:sf="sap.ui.comp.smartfield"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<l:VerticalLayout>
+		<l:BlockLayout>
+			<l:BlockLayoutRow>
+				<l:BlockLayoutCell class="sapUiNoContentPadding">
+					<f:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="3" labelSpanS="3"
+						adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1"
+						singleContainerFullSize="false" id="__form4">
+						<f:content>
+							<Toolbar>
+								<core:Icon src="sap-icon://customer"/>
+								<Title text="{parts:['i18n>labelSoldTo', 'SoldTo/Partnerid'], formatter: 'jQuery.sap.formatMessage'}" level="H5" titleStyle="H5"/>
+								<ToolbarSpacer/>
+								<Button id="_btn1_SoldToDoubles" icon="{ path: 'SoldTo/Status', formatter: '.formatter.statusIcon'}" press="onDoublesDisplay"
+									visible="{SoldTo/Doubles}"/>
+								<core:Icon src="sap-icon://bed" size="90%" visible="{=!${SoldTo/FlgActive} &amp;&amp; ${SoldTo/Partnerid} !== ''}" tooltip="{i18n>toolTipInactive}" color="red"/>
+								<core:Icon src="sap-icon://unpaid-leave" size="90%" visible="{SoldTo/FlgDebtor}" tooltip="{/#Partner/SoldTo/FlgDebtor/@sap:label}" color="red"/>
+								<core:Icon src="sap-icon://locked" size="90%" visible="{SoldTo/FlgBlocked}" tooltip="{/#Partner/SoldTo/FlgBlocked/@sap:label}" color="red"/>
+								<core:Icon src="sap-icon://official-service" size="90%" visible="{SoldTo/FlgSued}" tooltip="{/#Partner/SoldTo/FlgSued/@sap:label}" color="red"/>
+							</Toolbar>
+							<Label text="{/#Partner/SoldTo/Partnerid/@sap:label}"/>
+							<Input id="__SoldTo_Partnerid" 
+							       value="{ path:'SoldTo/Partnerid',
+							                type: 'sap.ui.model.type.String',
+							                constraints: { maxLength: 10 }
+							                }" 
+						            submit="onEnter"/>
+							<Label text="{/#Partner/SoldTo/Title/@sap:label}" required="true"/>
+							<Select id="__SoldTo_Title" showSecondaryValues="true" selectedKey="{SoldTo/Title}"
+								items="{ path: '/PartnerTitleSet', sorter: { path: 'Title' } }" forceSelection="false" enabled="{=!${SoldTo/Partnerid}}">
+								<core:ListItem key="{Title}" text="{TitleMedi}" additionalText="{Title}"/>
+							</Select>
+							<Label text="{/#Partner/SoldTo/Name1/@sap:label}" required="true"/>
+							<Input id="__SoldTo_Name1" value="{ path:'SoldTo/Name1', type:'sap.ui.model.type.String', constraints:{maxLength:'40'}}" liveChange="onSoldToName1Change" placeholder="{i18n>placeholderName1}" submit="onEnter"
+								editable="{=!${SoldTo/Partnerid}}"/>
+							<Input id="__SoldTo_Name2" value="{ path:'SoldTo/Name2', type:'sap.ui.model.type.String', constraints:{maxLength:'40'}}" submit="onEnter" placeholder="{i18n>placeholderName2}" editable="{=!${SoldTo/Partnerid}}"/>
+							<Label text="{i18n>labelCompany}"/>
+                            <Input id="__SoldTo_Name3" value="{ path:'SoldTo/Name3', type:'sap.ui.model.type.String', constraints:{maxLength:'40'}}" submit="onEnter" placeholder="{i18n>placeholderName3}" editable="{=!${SoldTo/Partnerid}}"/>
+                            <Input id="__SoldTo_Name4" value="{ path:'SoldTo/Name4', type:'sap.ui.model.type.String', constraints:{maxLength:'40'}}" submit="onEnter" placeholder="{i18n>placeholderName4}" editable="{=!${SoldTo/Partnerid}}"/>
+							<Label text="{/#Partner/SoldTo/Ort01/@sap:label}" required="true"/>
+							<Input id="__SoldTo_Ort01" value="{ path:'SoldTo/Ort01', type:'sap.ui.model.type.String', constraints:{maxLength:'40'}}" placeholder="{i18n>placeholderCity}" showSuggestion="true"
+								showTableSuggestionValueHelp="false" suggestionRows="{/CitySet}" suggest="onCitySuggest" suggestionItemSelected="onCitySelect"
+								maxSuggestionWidth="500px" liveChange="onSoldToCityChange" submit="onEnter" editable="{=!${SoldTo/Partnerid}}">
+								<suggestionColumns>
+									<Column hAlign="Begin" popinDisplay="Inline" demandPopin="true">
+										<Label text="{i18n>labelCity}"/>
+									</Column>
+									<Column hAlign="Center" popinDisplay="Inline" demandPopin="true" minScreenWidth="Tablet">
+										<Label text="{i18n>labelPostCode}"/>
+									</Column>
+									<!--Column hAlign="Center" popinDisplay="Inline" demandPopin="false" minScreenWidth="Tablet">
+										<Label text="City Srch"/>
+									</Column-->
+								</suggestionColumns>
+								<suggestionRows>
+									<ColumnListItem>
+										<cells>
+											<Label text="{CityName}"/>
+											<Label text="{CitySh10}"/>
+										</cells>
+									</ColumnListItem>
+								</suggestionRows>
+							</Input>
+							<Input id="__SoldTo_Pstlz" value="{SoldTo/Pstlz}" submit="onEnter" editable="false">
+								<layoutData>
+									<l:GridData span="XL2 L2 M2 S3"/>
+								</layoutData>
+							</Input>
+							<Input id="__SoldTo_Land1" value="{SoldTo/Land1}" placeholder="Land..." showSuggestion="true" suggest="handleSuggest"
+								suggestionItems="{/CountrySet}" maxSuggestionWidth="200px" submit="onEnter" editable="false">
+								<suggestionItems>
+									<core:ListItem text="{Land1}" additionalText="{Landx}"/>
+								</suggestionItems>
+								<layoutData>
+									<l:GridData span="XL1 L1 M1 S2"/>
+								</layoutData>
+							</Input>
+							<Label text="{/#Partner/SoldTo/Stras/@sap:label}" required="true"/>
+							<Input id="__SoldTo_Stras" value="{ path:'SoldTo/Stras', type:'sap.ui.model.type.String', constraints:{maxLength:'60'}}" placeholder="{i18n>placeholderStreet}" showSuggestion="true"
+								showTableSuggestionValueHelp="false" filterSuggests="false" suggest="onStreetSuggest" suggestionRows="{/StreetSet}" maxSuggestionWidth="500px" submit="onEnter"
+								editable="{=!${SoldTo/Partnerid}}" suggestionItemSelected="onStreetSelect">
+								<suggestionColumns>
+									<Column hAlign="Begin" popinDisplay="Inline" demandPopin="true" width="250px">
+										<Label text="{i18n>labelStreet}"/>
+									</Column>
+									<Column hAlign="Center" popinDisplay="Inline" demandPopin="true" minScreenWidth="Tablet" width="65px">
+										<Label text="{i18n>labelPostCode}"/>
+									</Column>
+									<Column hAlign="Center" popinDisplay="Inline" demandPopin="false" minScreenWidth="Tablet">
+										<Label text="{i18n>labelCity}"/>
+									</Column>
+								</suggestionColumns>
+								<suggestionRows>
+									<ColumnListItem>
+										<cells>
+											<Label text="{Street}"/>
+											<Label text="{StreetS15}"/>
+											<Label text="{StreetShr}"/>
+										</cells>
+									</ColumnListItem>
+								</suggestionRows>
+							</Input>
+							<Input id="__SoldTo_Hsnm1" value="{ path:'SoldTo/Hsnm1', type:'sap.ui.model.type.String', constraints:{maxLength:'10'}}" submit="onEnter" type="Number" placeholder="{i18n>placeholderHouseNo}"
+								editable="{=!${SoldTo/Partnerid}}">
+								<layoutData>
+									<l:GridData span="XL1 L1 M2 S3"/>
+								</layoutData>
+							</Input>
+							<Input id="__SoldTo_Hsnm2" value="{path:'SoldTo/Hsnm2', type:'sap.ui.model.type.String', constraints:{maxLength:'10'}}" submit="onEnter" placeholder="{i18n>placeholderHouseNoAfix}"
+								editable="{=!${SoldTo/Partnerid}}">
+								<layoutData>
+									<l:GridData span="XL1 L1 M1 S2"/>
+								</layoutData>
+							</Input>
+							<Label text="{/#Partner/SoldTo/Telnr/@sap:label}"/>
+							<Input id="__SoldTo_Telnr" value="{path:'SoldTo/Telnr', type:'sap.ui.model.type.String', constraints:{maxLength:'30'}}" type="Tel" submit="onEnter" placeholder="{i18n>placeholderTel}"
+								editable="{=!${SoldTo/Partnerid}}"/>
+							<Input id="__SoldTo_Mobnr" value="{path:'SoldTo/Mobnr', type:'sap.ui.model.type.String', constraints:{maxLength:'30'}}" type="Tel" submit="onEnter" placeholder="{i18n>placeholderMob}"
+								editable="{=!${SoldTo/Partnerid}}"/>
+							<Label text="{/#Partner/SoldTo/Email/@sap:label}"/>
+							<Input id="__SoldTo_Email" value="{path:'SoldTo/Email', type:'sap.ui.model.type.String', constraints:{maxLength:'241'}}" type="Email" submit="onEnter" editable="{=!${SoldTo/Partnerid}}"/>
+							<Label text="{/#Partner/SoldTo/Birth/@sap:label}"/>
+							<!--<DatePicker id="__SoldTo_Birth" dateValue="{SoldTo/Birth}" displayFormat="dd.MM.yyyy" editable="{=!${SoldTo/Partnerid}}" change="onDateChange"/>-->
+							<!--<Input id="__SoldTo_Birth" value="{SoldTo/Birth}"/>-->
+							<Label text="{/#Partner/SoldTo/Dlnot/@sap:label}"/>
+							<Input id="__SoldTo_Dlnot" value="{path:'SoldTo/Dlnot', type:'sap.ui.model.type.String', constraints:{maxLength:'40'}}" submit="onEnter" editable="{=!${SoldTo/Partnerid}}"/>
+							<Label text="{/#Partner/SoldTo/Intad/@sap:label}"/>
+							<Input id="__SoldTo_Intad" value="{path:'SoldTo/Intad', type:'sap.ui.model.type.String', constraints:{maxLength:'130'}}" submit="onEnter" editable="{=!${SoldTo/Partnerid}}"/>
+							<Label text="{/#Partner/SoldTo/Stcd2/@sap:label}" required="true"/>
+							<Input id="__SoldTo_Stcd2" value="{path:'SoldTo/Stcd2', type:'sap.ui.model.type.String', constraints:{maxLength:'11'}}" liveChange="onSoldToOIBChange" submit="onEnter" maxLength="11"
+								editable="{SoldTo/FlgEditStceg}"/>
+						</f:content>
+					</f:SimpleForm>
+				</l:BlockLayoutCell>
+				<l:BlockLayoutCell class="sapUiNoContentPadding">
+					<f:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="3" labelSpanS="3"
+						adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1"
+						singleContainerFullSize="false" id="__form5">
+						<f:content>
+							<Toolbar>
+								<core:Icon src="sap-icon://shipping-status"/>
+								<Title text="{parts:['i18n>labelShipTo', 'ShipTo/Partnerid'], formatter: 'jQuery.sap.formatMessage'}" level="H5" titleStyle="H5"/>
+								<ToolbarSpacer/>
+								<Button id="_btn1_ShipToDoubles" icon="{ path: 'ShipTo/Status', formatter: '.formatter.statusIcon'}" press="onDoublesDisplay"
+									visible="{ShipTo/Doubles}"/>
+					            <core:Icon src="sap-icon://bed" size="90%" visible="{=!${ShipTo/FlgActive} &amp;&amp; ${ShipTo/Partnerid} !== ''}" tooltip="{i18n>toolTipInactive}" color="red"/>
+								<core:Icon src="sap-icon://unpaid-leave" size="90%" visible="{ShipTo/FlgDebtor}" tooltip="{/#Partner/ShipTo/FlgDebtor/@sap:label}" color="red"/>
+								<core:Icon src="sap-icon://locked" size="90%" visible="{ShipTo/FlgBlocked}" tooltip="{/#Partner/ShipTo/FlgBlocked/@sap:label}" color="red"/>
+								<core:Icon src="sap-icon://official-service" size="90%" visible="{ShipTo/FlgSued}" tooltip="{/#Partner/ShipTo/FlgSued/@sap:label}" color="red"/>									
+							</Toolbar>
+							<Label text="{/#Partner/ShipTo/Partnerid/@sap:label}"/>
+							<Input id="__ShipTo_Partnerid" value="{path:'ShipTo/Partnerid', type:'sap.ui.model.type.String', constraints:{maxLength:'10'}}" submit="onEnter"/>
+							<Label text="{/#Partner/ShipTo/Title/@sap:label}"/>
+							<Select id="__ShipTo_Title" showSecondaryValues="true" selectedKey="{ShipTo/Title}"
+								items="{ path: '/PartnerTitleSet', sorter: { path: 'Title' } }" forceSelection="false" enabled="{=!${ShipTo/Partnerid}}">
+								<core:ListItem key="{Title}" text="{TitleMedi}" additionalText="{Title}"/>
+							</Select>
+							<Label text="{/#Partner/ShipTo/Name1/@sap:label}"/>
+							<Input id="__ShipTo_Name1" value="{path:'ShipTo/Name1', type:'sap.ui.model.type.String', constraints:{maxLength:'40'}}" submit="onEnter" placeholder="{i18n>placeholderName1}" editable="{=!${ShipTo/Partnerid}}"/>
+							<Input id="__ShipTo_Name2" value="{path:'ShipTo/Name2', type:'sap.ui.model.type.String', constraints:{maxLength:'40'}}" submit="onEnter" placeholder="{i18n>placeholderName2}" editable="{=!${ShipTo/Partnerid}}"/>
+							<Label text="{i18n>labelCompany}"/>
+                            <Input id="__ShipTo_Name3" value="{ path:'ShipTo/Name3', type:'sap.ui.model.type.String', constraints:{maxLength:'40'}}" submit="onEnter" placeholder="{i18n>placeholderName3}" editable="{=!${ShipTo/Partnerid}}"/>
+                            <Input id="__ShipTo_Name4" value="{ path:'ShipTo/Name4', type:'sap.ui.model.type.String', constraints:{maxLength:'40'}}" submit="onEnter" placeholder="{i18n>placeholderName4}" editable="{=!${ShipTo/Partnerid}}"/>							
+							<Label text="{/#Partner/SoldTo/Ort01/@sap:label}"/>
+							<Input id="__ShipTo_Ort01" value="{path:'ShipTo/Ort01', type:'sap.ui.model.type.String', constraints:{maxLength:'40'}}" placeholder="{i18n>placeholderCity}" showSuggestion="true"
+								showTableSuggestionValueHelp="false" suggestionRows="{/CitySet}" suggest="onCitySuggest" suggestionItemSelected="onCitySelect"
+								maxSuggestionWidth="500px" submit="onEnter" editable="{=!${ShipTo/Partnerid}}">
+								<suggestionColumns>
+									<Column hAlign="Begin" popinDisplay="Inline" demandPopin="true">
+										<Label text="{i18n>labelCity}"/>
+									</Column>
+									<Column hAlign="Center" popinDisplay="Inline" demandPopin="true" minScreenWidth="Tablet">
+										<Label text="{i18n>labelPostCode}"/>
+									</Column>
+									<!--Column hAlign="Center" popinDisplay="Inline" demandPopin="false" minScreenWidth="Tablet">
+										<Label text="City Srch"/>
+									</Column-->
+								</suggestionColumns>
+								<suggestionRows>
+									<ColumnListItem>
+										<cells>
+											<Label text="{CityName}"/>
+											<Label text="{CitySh10}"/>
+										</cells>
+									</ColumnListItem>
+								</suggestionRows>
+							</Input>
+							<Input id="__ShipTo_Pstlz" value="{ShipTo/Pstlz}" submit="onEnter" editable="false">
+								<layoutData>
+									<l:GridData span="XL1 L1 M2 S3"/>
+								</layoutData>
+							</Input>
+							<Input id="__ShipTo_Land1" value="{ShipTo/Land1}" placeholder="Land..." showSuggestion="true" suggest="handleSuggest"
+								suggestionItems="{/CountrySet}" maxSuggestionWidth="200px" submit="onEnter" editable="false">
+								<suggestionItems>
+									<core:ListItem text="{Land1}" additionalText="{Landx}"/>
+								</suggestionItems>
+								<layoutData>
+									<l:GridData span="XL1 L1 M1 S2"/>
+								</layoutData>
+							</Input>
+							<Label text="{/#Partner/ShipTo/Stras/@sap:label}"/>
+							<Input id="__ShipTo_Stras" value="{path:'ShipTo/Stras', type:'sap.ui.model.type.String', constraints:{maxLength:'60'}}" placeholder="{i18n>placeholderStreet}" showSuggestion="true"
+								showTableSuggestionValueHelp="false" filterSuggests="false" suggest="onStreetSuggest" suggestionRows="{/StreetSet}" maxSuggestionWidth="500px" submit="onEnter"
+								editable="{=!${ShipTo/Partnerid}}" suggestionItemSelected="onStreetSelect">
+								<suggestionColumns>
+									<Column hAlign="Begin" popinDisplay="Inline" demandPopin="true" width="250px">
+										<Label text="{i18n>labelStreet}"/>
+									</Column>
+									<Column hAlign="Center" popinDisplay="Inline" demandPopin="true" minScreenWidth="Tablet" width="65px">
+										<Label text="{i18n>labelPostCode}"/>
+									</Column>
+									<Column hAlign="Center" popinDisplay="Inline" demandPopin="false" minScreenWidth="Tablet">
+										<Label text="{i18n>labelCity}"/>
+									</Column>
+								</suggestionColumns>
+								<suggestionRows>
+									<ColumnListItem>
+										<cells>
+											<Label text="{Street}"/>
+											<Label text="{StreetS15}"/>
+											<Label text="{StreetShr}"/>
+										</cells>
+									</ColumnListItem>
+								</suggestionRows>
+							</Input>
+							<Input id="__ShipTo_Hsnm1" value="{path:'ShipTo/Hsnm1', type:'sap.ui.model.type.String', constraints:{maxLength:'10'}}" submit="onEnter" type="Number" placeholder="{i18n>placeholderHouseNo}"
+								editable="{=!${ShipTo/Partnerid}}">
+								<layoutData>
+									<l:GridData span="XL1 L1 M2 S3"/>
+								</layoutData>
+							</Input>
+							<Input id="__ShipTo_Hsnm2" value="{path:'ShipTo/Hsnm2', type:'sap.ui.model.type.String', constraints:{maxLength:'10'}}" submit="onEnter" placeholder="{i18n>placeholderHouseNoAfix}"
+								editable="{=!${ShipTo/Partnerid}}">
+								<layoutData>
+									<l:GridData span="XL1 L1 M1 S2"/>
+								</layoutData>
+							</Input>
+							<Label text="{/#Partner/ShipTo/Telnr/@sap:label}"/>
+							<Input id="__ShipTo_Telnr" value="{path:'ShipTo/Telnr', type:'sap.ui.model.type.String', constraints:{maxLength:'30'}}" type="Tel" submit="onEnter" placeholder="{i18n>placeholderTel}"
+								editable="{=!${ShipTo/Partnerid}}"/>
+							<Input id="__ShipTo_Mobnr" value="{path:'ShipTo/Mobnr', type:'sap.ui.model.type.String', constraints:{maxLength:'30'}}" type="Tel" submit="onEnter" placeholder="{i18n>placeholderMob}"
+								editable="{=!${ShipTo/Partnerid}}"/>
+							<Label text="{/#Partner/ShipTo/Email/@sap:label}"/>
+							<Input id="__ShipTo_Email" value="{path:'ShipTo/Email', type:'sap.ui.model.type.String', constraints:{maxLength:'241'}}" type="Email" submit="onEnter" editable="{=!${ShipTo/Partnerid}}"/>
+							<Label text="{/#Partner/ShipTo/Birth/@sap:label}"/>
+							<DatePicker id="__ShipTo_Birth" dateValue="{ShipTo/Birth}" displayFormat="dd.MM.yyyy" editable="{=!${ShipTo/Partnerid}}" change="onDateChange"/>
+							<Label text="{/#Partner/ShipTo/Dlnot/@sap:label}"/>
+							<Input id="__ShipTo_Dlnot" value="{path:'ShipTo/Dlnot', type:'sap.ui.model.type.String', constraints:{maxLength:'40'}}" submit="onEnter" editable="{=!${ShipTo/Partnerid}}"/>
+							<Label text="{/#Partner/ShipTo/Intad/@sap:label}"/>
+							<Input id="__ShipTo_Intad" value="{path:'ShipTo/Intad', type:'sap.ui.model.type.String', constraints:{maxLength:'130'}}" submit="onEnter" editable="{=!${ShipTo/Partnerid}}"/>
+							<Label text="{/#Partner/ShipTo/Stcd2/@sap:label}"/>
+							<Input id="__ShipTo_Stcd2" value="{path:'ShipTo/Stcd2', type:'sap.ui.model.type.String', constraints:{maxLength:'11'}}" submit="onEnter" maxLength="11" editable="{ShipTo/FlgEditStceg}"/>
+						</f:content>
+					</f:SimpleForm>
+				</l:BlockLayoutCell>
+			</l:BlockLayoutRow>
+			<l:BlockLayoutRow>
+				<l:BlockLayoutCell class="sapUiNoContentPadding">
+					<s:SmartTable id="_tableOrders" entitySet="OrderSet" tableType="ResponsiveTable" useVariantManagement="true"
+						persistencyKey="SmartTable_Orders" useTablePersonalisation="true" header="Orders" showRowCount="true" enableAutoBinding="true"
+						app:useSmartField="true" editable="true" class="sapUiTinyMarginBeginEnd sapUiNoMarginTop" noData="No orders"
+						tableBindingPath="PartnerToOrders">
+						<!-- layout data used to make the table growing but the filter bar fixed -->
+						<s:customToolbar>
+							<Toolbar>
+								<ToolbarSpacer/>
+								<Label visible="{=${Agent} !== ''}" text="Agent: {Agent}" tooltip="Agent"/>
+								<ToolbarSeparator/>
+								<!--<sf:SmartField value="{ModelSet('NEW')/Model}"/>-->
+								<Input maxLength="8" width="140px" showValueHelp="true" valueHelpRequest="onModelValueHelp" placeholder="Model" showSuggestion="true"
+									suggestionItems="{/ModelSet}" maxSuggestionWidth="300px" id="_inputModel" value="{view>/AccountDetails/model}" submit="onAddOrder">
+									<suggestionItems>
+										<core:ListItem text="{ModelId}" additionalText="{Ltext}"/>
+									</suggestionItems>
+								</Input>
+								<Button icon="sap-icon://add" press="onAddOrder"/>
+								<ToolbarSeparator/>
+								<Button icon="sap-icon://delete" press="onDeleteOrder"/>
+								<ToolbarSeparator/>
+							</Toolbar>
+						</s:customToolbar>
+						<Table>
+							<columns>
+								<Column width="110px">
+									<customData>
+										<core:CustomData key="p13nData" value='\{"columnKey": "Stdat", "maxLength": "5","columnIndex":"4", "leadingProperty": "Stdat"}'/>
+									</customData>
+									<Text text="{/#Order/Stdat/@sap:label}"/>
+								</Column>
+								<Column width="100px">
+									<customData>
+										<core:CustomData key="p13nData" value='\{"columnKey": "Cldat", "maxLength": "5","columnIndex":"5", "leadingProperty": "Cldat"}'/>
+									</customData>
+									<Text text="{/#Order/Cldat/@sap:label}"/>
+								</Column>
+								<Column>
+									<customData>
+										<core:CustomData key="p13nData" value='\{"columnKey": "Agent", "columnIndex":"6", "leadingProperty": "Agent"}'/>
+									</customData>
+									<Text text="{/#Order/Agent/@sap:label}"/>
+								</Column>
+								<Column>
+									<customData>
+										<core:CustomData key="p13nData" value='\{"columnKey": "Note", "columnIndex":"7", "leadingProperty": "Note"}'/>
+									</customData>
+									<Text text="{/#Order/Note/@sap:label}"/>
+								</Column>
+								<Column width="60px">
+									<customData>
+										<core:CustomData key="p13nData" value='\{"columnKey": "Quant", "maxLength": "5","columnIndex":"9", "leadingProperty": "Quant"}'/>
+									</customData>
+									<Text text="{/#Order/Quant/@sap:label}"/>
+								</Column>
+							</columns>
+							<items>
+								<ColumnListItem>
+									<cells>
+										<DatePicker dateValue="{Stdat}" displayFormat="dd.MM.YYYY" minDate="{ path: 'MinStdat', formatter: '.formatter.dateJS'}" change="onDateChange"/>
+										<!--Text text="{ path: 'Cldat', type:'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.YYYY'} }"/-->
+										<Text text="{ path: 'Cldat', formatter: '.formatter.dateOut'}"/>
+										<Input value="{Agent}" submit="onEnter"/>
+										<Input value="{Note}" submit="onEnter"/>
+										<Input value="{ path: 'Quant', type:'sap.ui.model.type.Integer' }" type="Number" submit="onEnter"
+											valueState="{ path: 'Quant', formatter: '.formatter.inputQuantity' }" valueStateText="{i18n>msgQuantityHigh}" maxLength="2"/>
+									</cells>
+								</ColumnListItem>
+							</items>
+						</Table>
+					</s:SmartTable>
+				</l:BlockLayoutCell>
+			</l:BlockLayoutRow>
+		</l:BlockLayout>
+	</l:VerticalLayout>
+</core:FragmentDefinition>

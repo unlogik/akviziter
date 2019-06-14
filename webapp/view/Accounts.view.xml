@@ -32,7 +32,7 @@
 				</subHeader>-->
 				<content>
 					<Table noDataText="No data" id="__tablePartners" items="{ path : '/PartnerSet', sorter : { path : 'FileName', group : true } }"
-						mode="MultiSelect" growing="true" growingThreshold="50" itemPress="onItemPress">
+						mode="MultiSelect" growing="true" growingThreshold="50" itemPress="onItemPress" sticky="ColumnHeaders,HeaderToolbar">
 						<columns>
 							<Column id="__column0" width="50px">
 								<header>
@@ -93,15 +93,32 @@
 								    <Text text="{Setid}" id="__text28"/>
     								<Text text="{Akvid}" class="smallFont"/>
 									<ObjectIdentifier title="{SoldTo/Name1} {SoldTo/Name2}" text="{ShipTo/Name1} {ShipTo/Name2}" class="sapMTableContentMargin"/>
-									<Text
-										text="{ parts: [ {path: 'SoldTo/Stras'}, {path: 'SoldTo/Hsnm1'}, {path: 'SoldTo/Hsnm2'}, {path: 'SoldTo/Ort01'}, {path: 'ShipTo/Stras'}, {path: 'ShipTo/Hsnm1'}, {path: 'ShipTo/Hsnm2'}, {path: 'ShipTo/Ort01'}], formatter: '.formatter.multiAddr'}"
-										id="__text29"/>
-									<Text
-										text="{ parts: [ {path: 'SoldTo/Telnr'}, {path: 'SoldTo/Mobnr'}, {path: 'ShipTo/Telnr'}, {path: 'ShipTo/Mobnr'}] , formatter: '.formatter.multiTel'}"
-										id="__text30"/>
-									<Text text="{SoldTo/Email}\n{ShipTo/Email}"/>
-                                    <Text text="{ path: 'SoldTo/Birth', formatter: '.formatter.dateOut'}\n{ path: 'ShipTo/Birth', formatter: '.formatter.dateOut'}"/>									
-									<Text text="{SoldTo/Stcd2}\n{ShipTo/Stcd2}"></Text>
+									<!--<Text-->
+									<!--	text="{ parts: [ {path: 'SoldTo/Stras'}, {path: 'SoldTo/Hsnm1'}, {path: 'SoldTo/Hsnm2'}, {path: 'SoldTo/Ort01'}, {path: 'ShipTo/Stras'}, {path: 'ShipTo/Hsnm1'}, {path: 'ShipTo/Hsnm2'}, {path: 'ShipTo/Ort01'}], formatter: '.formatter.multiAddr'}"-->
+									<!--	id="__text29"/>-->
+								    <VBox>
+								        <Text text="{parts:[{path:'SoldTo/Stras'},{path:'SoldTo/Hsnm1'},{path:'SoldTo/Hsnm2'},{path:'SoldTo/Ort01'}], formatter:'.formatter.addr'}" id="__text29a"/>
+								        <Text text="{parts:[{path:'ShipTo/Stras'},{path:'ShipTo/Hsnm1'},{path:'ShipTo/Hsnm2'},{path:'ShipTo/Ort01'}], formatter:'.formatter.addr'}" id="__text29b"/>
+								    </VBox>
+									<!--<Text-->
+									<!--	text="{ parts: [ {path: 'SoldTo/Telnr'}, {path: 'SoldTo/Mobnr'}, {path: 'ShipTo/Telnr'}, {path: 'ShipTo/Mobnr'}] , formatter: '.formatter.multiTel'}"-->
+									<!--	id="__text30"/>-->
+								    <VBox>
+    									<Text text="{parts:[{path:'SoldTo/Telnr'},{path:'SoldTo/Mobnr'}],formatter:'.formatter.tel'}" id="__text30a"/>
+    									<Text text="{parts:[{path:'ShipTo/Telnr'},{path:'ShipTo/Mobnr'}],formatter:'.formatter.tel'}" id="__text30b"/>
+								    </VBox>
+									<VBox>
+									    <Text text="{SoldTo/Email}"/>
+									    <Text text="{ShipTo/Email}"/>
+									</VBox>
+									<VBox>
+                                        <Text text="{ path: 'SoldTo/Birth', formatter: '.formatter.dateOut'}"/>									
+									    <Text text="{ path: 'ShipTo/Birth', formatter: '.formatter.dateOut'}"/>									
+									</VBox>
+									<VBox>
+    									<Text text="{SoldTo/Stcd2}"></Text>
+    		                            <Text text="{ShipTo/Stcd2}"></Text>
+									</VBox>
 									<Text text="{ItemCount}"/>
 									<core:Icon src="{ path: 'Status', formatter: '.formatter.messageIcon' }" color="{ path: 'Status', formatter: '.formatter.messageColor' }"/>
 								</cells>

@@ -64,6 +64,6 @@
   },
   "deploy": {
     "destination": "StyriaABAP",
-    "name": "ZAKV_CPR"
+    "name": "ZAKV_CQS"
   }
 }

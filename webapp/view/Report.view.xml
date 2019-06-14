@@ -20,7 +20,7 @@
 				header="Status Report" showRowCount="false" enableAutoBinding="true" editable="false" class="sapUiTinyMargin"
 				persistencyKey="SmartTable_Report" smartFilterId="sf_Report" noData="{i18n>msgNoData}" demandPopin="true"
 				initialise="onTableInitialise">
-				<Table>
+				<Table sticky="ColumnHeaders,HeaderToolbar">
 					<columns>
 						<Column width="100px">
 							<customData>
