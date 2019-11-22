@@ -21,15 +21,15 @@ sap.ui.define([
 	"sap/ui/core/ws/WebSocket",
 	"sap/ui/model/json/JSONModel",
 	"sap/ui/core/ws/SapPcpWebSocket"
-], function(BaseController, History, Export, ExportTypeCSV, MessageBox, MessageToast, MessagePopover, MessagePopoverItem, Dialog, Button,
-	Text, Fragment, formatter, XLSX_, JSZip, xlsx, Filter, Sorter, ValueHelpDialog, WebSocket, JSONModel, WS) {
+], function (BaseController, History, Export, ExportTypeCSV, MessageBox, MessageToast, MessagePopover, MessagePopoverItem, Dialog, Button,
+	Text, Fragment, formatter, XLSX_, JSZip, XLSX, Filter, Sorter, ValueHelpDialog, WebSocket, JSONModel, WS) {
 	"use strict";
 
 	var oMessageTemplate = new MessagePopoverItem({
 		type: '{message>msgtype}',
 		title: 'Setid {message>setid}: {message>message}',
 		groupName: "{parts: ['i18n>label.Setid','message>setid'], fromatter:'jQuery.sap.formatMessage'}",
-		activeTitle: '{message>setid}', 
+		activeTitle: '{message>setid}',
 		description: '{message>longtxt}',
 		subtitle: '{message>id}{message>number}',
 		counter: '{counter}'
@@ -84,8 +84,8 @@ sap.ui.define([
 		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
 		 * @memberOf bp.view.Accounts
 		 */
-		onInit: function() {
-		    this.oView = this.getView();
+		onInit: function () {
+			this.oView = this.getView();
 			this.oModel = this.getComponentModel();
 			this.oModel.metadataLoaded().then(() => {
 				this.metaModel = this.oModel.getMetaModel();
@@ -93,8 +93,8 @@ sap.ui.define([
 				this.origin = this.origin[2];
 			});
 
-/*
-			sap.ui.getCore().getMessageManager().registerMessageProcessor(oModel);*/
+			/*
+						sap.ui.getCore().getMessageManager().registerMessageProcessor(oModel);*/
 			var oMManage = sap.ui.getCore().getMessageManager();
 			oMManage.registerObject(this.getView(), true);
 			var oMessage = oMManage.getMessageModel();
@@ -107,7 +107,7 @@ sap.ui.define([
 		 * (NOT before the first rendering! onInit() is used for that one!).
 		 * @memberOf bp.view.Accounts
 		 */
-		onBeforeRendering: function() {
+		onBeforeRendering: function () {
 			this.setViewModel();
 			this.setViewProperty("pageId", "pageAccounts");
 			this.setViewProperty("msgStripId", "msgStripAccounts");
@@ -120,7 +120,7 @@ sap.ui.define([
 		 * This hook is the same one that SAPUI5 controls get after being rendered.
 		 * @memberOf bp.view.Accounts
 		 */
-		onAfterRendering: function() {
+		onAfterRendering: function () {
 			//this.getView().byId("__tablePartners").setPopinLayout("GridSmall");
 
 		},
@@ -132,7 +132,7 @@ sap.ui.define([
 		//	onExit: function() {
 		//
 		//	}		,
-		onNavBack: function() {
+		onNavBack: function () {
 			var oHistory = History.getInstance();
 			var sPreviousHash = oHistory.getPreviousHash();
 
@@ -143,11 +143,11 @@ sap.ui.define([
 				oRouter.navTo("overview", {}, true);
 			}
 		},
-        onUserChange: function(oEvent){
-          var bVisible = oEvent.getSource().getModel().getProperty("/UserSet('CURRENT')/AkvSelectable");
-          this.byId("__column01").setVisible(bVisible);
-        },
-		onBPDetails: function(oEvent) {
+		onUserChange: function (oEvent) {
+			var bVisible = oEvent.getSource().getModel().getProperty("/UserSet('CURRENT')/AkvSelectable");
+			this.byId("__column01").setVisible(bVisible);
+		},
+		onBPDetails: function (oEvent) {
 			// The source is the list item that got pressed
 			var oItem = oEvent.getSource();
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
@@ -155,13 +155,13 @@ sap.ui.define([
 				SetId: oItem.getBindingContext().getProperty("Setid")
 			});
 		},
-		onAdd: function() {
+		onAdd: function () {
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			oRouter.navTo("AccountDetails", {
 				SetId: "NEW"
 			});
 		},
-		onUpload: function(oEvent) {
+		onUpload: function (oEvent) {
 			var files = oEvent.getParameter("files");
 			var oFileUploader = oEvent.getSource();
 			readFile(files[0]).then(result => {
@@ -174,86 +174,60 @@ sap.ui.define([
 			}).catch(err => console.error(this.getI18n("msgFileError", err)));
 		},
 
-		onSubmit: function(oEvent) {
+		onSubmit: function (oEvent) {
 			//is there something selected?
 			if (!this._validateSelected()) {
 				return;
 			}
-	        if (!this._oSubmitDialog) {
+			if (!this._oSubmitDialog) {
 				this._oSubmitDialog = sap.ui.xmlfragment("bp.view.Submit", this);
 				this.getView().addDependent(this._oSubmitDialog);
 				this._oSubmitDialog.setModel(this.getModel("i18n"), "i18n");
-    			this.getView().addDependent(this._oSubmitDialog);
-    			//this.oDataBeforeOpen = jQuery.extend(true, {}, this.oJSONModel.getData());
+				this.getView().addDependent(this._oSubmitDialog);
+				//this.oDataBeforeOpen = jQuery.extend(true, {}, this.oJSONModel.getData());
 			}
-			this._oSubmitDialog.setModel(this._prepareSubmitModel(),"set");
-    	    this._oSubmitDialog.open();
-            return;
-			this._oPopover.openBy(oEvent.getSource());			
-			//var oSelected = this.getView().byId("__tablePartners").getSelectedItems();
-			//are you 100% sure about deletion?
-			var dialog = new Dialog({
-				title: 'Confirm',
-				type: 'Message',
-				content: new Text({
-					text: this.getI18n("msgSubmitPopup")
-				}),
-				beginButton: new Button({
-					text: "{i18n>submitButton}",
-					press: function() {
-						this._submit();
-						dialog.close();
-					}.bind(this)
-				}),
-				endButton: new Button({
-					text: 'Cancel',
-					press: function() {
-						dialog.close();
-					}
-				}),
-				afterClose: function() {
-					dialog.destroy();
-				}
-			});
-			//bind model to access translations
-			dialog.setModel(this.getModel("i18n"), "i18n");
-			dialog.open();
+			this._oSubmitDialog.setModel(this._prepareSubmitModel(), "set");
+			this._oSubmitDialog.open();
+			return;
 		},
-		onSubmitSubmit: function(oEvent) {
-		    this._oSubmitDialog.close();
-		    var oData = oEvent.getSource().getModel('set').getData();
+		onSubmitSubmit: function (oEvent) {
+			this._oSubmitDialog.close();
+			var oData = oEvent.getSource().getModel('set').getData();
 			var oSubmit = [];
-			oData.set.forEach((el)=> {
-			    oSubmit.push(
-			        { 'setid': el.Setid,
-			          'fname': oData.selectedItem }
-			    );
-			} );
-		    this._webSocketSubmit(oSubmit);
+			oData.set.forEach((el) => {
+				oSubmit.push(
+					{
+						'setid': el.Setid,
+						'fname': oData.selectedItem
+					}
+				);
+			});
+			this._webSocketSubmit(oSubmit);
 		},
-		onSubmitCancel: function(oEvent) {
-		    this._oSubmitDialog.close();
+		onSubmitCancel: function (oEvent) {
+			this._oSubmitDialog.close();
 		},
-		_prepareSubmitModel(){
-		    var oData = {files:[],'set':[]};
-		    var aItems = this.getView().byId("__tablePartners").getSelectedItems();
-		    oData.itemCount = aItems.length;
-		    var aFiles = [];
-		    aItems.forEach((el)=>{
-		        aFiles.push(el.getBindingContext().getObject().FileName);
-		        oData.set.push({Setid:el.getBindingContext().getObject().Setid});
-		    })
-		    //get distinct values from array
-		    aFiles = aFiles.filter((v, i, a) => a.indexOf(v) === i); 
-		    aFiles.forEach((el)=>{
-		        oData.files.push({fileName:el});
-		    })
-		    if(aFiles.length==1){
-		        oData.selectedItem = aFiles[0];
-		    }
-		    return new JSONModel(oData);
+		_prepareSubmitModel() {
+			var oData = { files: [], 'set': [] };
+			var aItems = this.getView().byId("__tablePartners").getSelectedItems();
+			oData.itemCount = aItems.length;
+			var aFiles = [];
+			aItems.forEach((el) => {
+				aFiles.push(el.getBindingContext().getObject().FileName);
+				oData.set.push({ Setid: el.getBindingContext().getObject().Setid });
+			})
+			//get distinct values from array
+			aFiles = aFiles.filter((v, i, a) => a.indexOf(v) === i);
+			aFiles.forEach((el) => {
+				oData.files.push({ fileName: el });
+			})
+			if (aFiles.length == 1) {
+				oData.selectedItem = aFiles[0];
+			}
+			return new JSONModel(oData);
 		},
-		_submit: function(e) {
+		_submit: function (e) {
+			var that = this;
 			var oModel = this.getView().getModel();
 			var oTable = this.getView().byId("__tablePartners");
 			var aItems = oTable.getSelectedItems();
@@ -268,7 +242,7 @@ sap.ui.define([
 					oModel.resetChanges();
 					for (var i in oData.__batchResponses) {
 						var batchResponse = oData.__batchResponses[i];
-						if (typeof(batchResponse.response) == "undefined") continue;
+						if (typeof (batchResponse.response) == "undefined") continue;
 						if (batchResponse.response.statusCode != "undefined" && batchResponse.response.statusCode != "200") {
 							var response = JSON.parse(batchResponse.response.body);
 							this.msgStrip(response.error.message.value, "Error", true);
@@ -278,7 +252,7 @@ sap.ui.define([
 					this.msgToast(that.getI18n('msgChangesSaved'));
 				},
 				error: (oResponse) => {
-				    oModel.resetChanges();
+					oModel.resetChanges();
 					sap.ui.core.BusyIndicator.hide();
 					var response = this.parseResponse(oResponse);
 					MessageBox.show(response.message, {
@@ -289,7 +263,7 @@ sap.ui.define([
 			});
 		},
 
-		_createFromXLSX: function(file) {
+		_createFromXLSX: function (file) {
 			var wb = XLSX.read(file.data, {
 				type: 'binary'
 			});
@@ -315,7 +289,7 @@ sap.ui.define([
 			oModel.submitChanges(mParameters);
 		},
 
-		_webSocketUpload: function(file) {
+		_webSocketUpload: function (file) {
 			var oModel = this.getModel();
 			var wb = XLSX.read(file.data, {
 				type: 'binary'
@@ -334,8 +308,7 @@ sap.ui.define([
 			}
 			// open a WebSocket connection
 			//var wsURI = this._wsURI("zakv_upload");
-			var hostLocation = window.location,
-				socket, socketHostURI, webSocketURI, wsURI;
+			var hostLocation = window.location, socketHostURI, wsURI;
 			if (hostLocation.protocol === "https:") {
 				socketHostURI = "wss:";
 			} else {
@@ -386,10 +359,10 @@ sap.ui.define([
 				});
 			});
 		},
-		_webSocketSubmit: function(oData) {
+		_webSocketSubmit: function (oData) {
 			var pcpFields = {
 				"origin": this.origin
-			};		    
+			};
 			var wsURI = this._wsURI("zakv_submit");
 			var ws = new WS(wsURI, WS.SUPPORTED_PROTOCOLS.v10);
 			ws.attachOpen(() => {
@@ -414,10 +387,10 @@ sap.ui.define([
 						oProgress.setVisible(false)
 					}, 2000);
 				}
-				if(oMsg.messages){
-				    var oModel = new JSONModel(oMsg.messages);
-				    this.getView().setModel(oModel,"message")
-				    oModel.refresh();
+				if (oMsg.messages) {
+					var oModel = new JSONModel(oMsg.messages);
+					this.getView().setModel(oModel, "message")
+					oModel.refresh();
 				}
 			});
 			ws.attachClose(() => {
@@ -428,10 +401,9 @@ sap.ui.define([
 					}
 				});
 			});
-		},	
-		_wsURI: function(sAction) {
-			var hostLocation = window.location,
-				socket, socketHostURI, webSocketURI, wsURI;
+		},
+		_wsURI: function (sAction) {
+			var hostLocation = window.location,	socketHostURI, wsURI;
 			if (hostLocation.protocol === "https:") {
 				socketHostURI = "wss:";
 			} else {
@@ -443,11 +415,11 @@ sap.ui.define([
 			} else {
 				wsURI = socketHostURI + "/sap/bc/apc/sap/";
 			}
-			return wsURI+sAction;
+			return wsURI + sAction;
 		},
 		/* parse excel table format to oData format
 		 */
-		_parseEntity: function(json) {
+		_parseEntity: function (json) {
 			var oModel = this.getModel();
 			var bptype = null;
 			var field = null;
@@ -477,7 +449,7 @@ sap.ui.define([
 							entity[bptype][field] = entity[bptype][field][0];
 						} else {
 							entity[bptype][field] = "";
-						};
+						}
 						break;
 					case "Birth":
 						/*			            var date = new Date( json[key] );
@@ -491,17 +463,17 @@ sap.ui.define([
 			return entity;
 		},
 
-		_truncateEntity: function(entity, index) {
+		_truncateEntity: function (entity, index) {
 			var trunc;
 			for (var type in entity) {
-				if (typeof(entity[type]) != "object") continue;
+				if (typeof (entity[type]) != "object") continue;
 				for (var field in entity[type]) {
 					var metaData = this.getMetaData(field);
-					if (typeof(metaData) == "undefined" || typeof(metaData.maxLength) == "undefined" || metaData.maxLength == 0) continue;
+					if (typeof (metaData) == "undefined" || typeof (metaData.maxLength) == "undefined" || metaData.maxLength == 0) continue;
 					if (entity[type][field].length <= metaData.maxLength) continue;
 					trunc = entity;
 					trunc[type][field] = trunc[type][field].slice(0, parseInt(metaData.maxLength))
-						//var fld = type
+					//var fld = type
 					var fldName = metaData['sap:label'];
 					var msg = this.getI18n('msgDataTruncated', index, type + '~' + fldName);
 					this.msgStrip(msg, "Warning", true);
@@ -509,17 +481,17 @@ sap.ui.define([
 			}
 			return trunc;
 		},
-		_truncateTable: function(table, index) {
+		_truncateTable: function (table, index) {
 			var trunc;
 			for (var rowNo in table) {
-				if (typeof(entity[type]) != "object") continue;
+				if (typeof (entity[type]) != "object") continue;
 				for (var field in entity[type]) {
 					var metaData = this.getMetaData(field);
 					if (metaData == "undefined" && metaData.maxLength == 0) continue;
 					if (entity[type][field].length <= metaData.maxLength) continue;
 					trunc = entity;
 					trunc[type][field] = trunc[type][field].slice(0, parseInt(metaData.maxLength))
-						//var fld = type
+					//var fld = type
 					var fldName = metaData['sap:label'];
 					var msg = this.getI18n('msgDataTruncated', index, type + '~' + fldName);
 					this.msgStrip(msg, "Warning", true);
@@ -527,67 +499,67 @@ sap.ui.define([
 			}
 			return trunc;
 		},
-		
-		validateTemplate: function(wb) {
-		    var msg;
-			if (typeof(wb.Sheets["Partner"]) === 'undefined') {
+
+		validateTemplate: function (wb) {
+			var msg;
+			if (typeof (wb.Sheets["Partner"]) === 'undefined') {
 				msg = this.getI18n('msgTemplateSheeet');
 				this.msgStrip(msg, "Error", true);
 				return false;
 			}
 			var json = XLSX.utils.sheet_to_row_object_array(wb.Sheets["Partner"]);
 			var checkRow = json[1];
-			if( typeof(checkRow.Header_Agent) === 'undefined' ||
-                typeof(checkRow.SoldTo_Partnerid) === 'undefined' ||
-                typeof(checkRow.SoldTo_Title) === 'undefined' ||
-                typeof(checkRow.SoldTo_Name2) === 'undefined' ||
-                typeof(checkRow.SoldTo_Name1) === 'undefined' ||
-                typeof(checkRow.SoldTo_Name3) === 'undefined' ||
-                typeof(checkRow.SoldTo_Name4) === 'undefined' ||
-                typeof(checkRow.SoldTo_Stras) === 'undefined' ||
-                typeof(checkRow.SoldTo_Hsnm1) === 'undefined' ||
-                typeof(checkRow.SoldTo_Hsnm2) === 'undefined' ||
-                typeof(checkRow.SoldTo_Pstlz) === 'undefined' ||
-                typeof(checkRow.SoldTo_Ort01) === 'undefined' ||
-                typeof(checkRow.SoldTo_Dlnot) === 'undefined' ||
-                typeof(checkRow.SoldTo_Telnr) === 'undefined' ||
-                typeof(checkRow.SoldTo_Mobnr) === 'undefined' ||
-                typeof(checkRow.SoldTo_Email) === 'undefined' ||
-                typeof(checkRow.SoldTo_Birth) === 'undefined' ||
-                typeof(checkRow.SoldTo_Stcd2) === 'undefined' ||
-                typeof(checkRow.SoldTo_Intad) === 'undefined' ||
-                typeof(checkRow.ShipTo_Partnerid) === 'undefined' ||
-                typeof(checkRow.ShipTo_Title) === 'undefined' ||
-                typeof(checkRow.ShipTo_Name2) === 'undefined' ||
-                typeof(checkRow.ShipTo_Name1) === 'undefined' ||
-                typeof(checkRow.ShipTo_Name3) === 'undefined' ||
-                typeof(checkRow.ShipTo_Name4) === 'undefined' ||
-                typeof(checkRow.ShipTo_Stras) === 'undefined' ||
-                typeof(checkRow.ShipTo_Hsnm1) === 'undefined' ||
-                typeof(checkRow.ShipTo_Hsnm2) === 'undefined' ||
-                typeof(checkRow.ShipTo_Pstlz) === 'undefined' ||
-                typeof(checkRow.ShipTo_Ort01) === 'undefined' ||
-                typeof(checkRow.ShipTo_Dlnot) === 'undefined' ||
-                typeof(checkRow.ShipTo_Telnr) === 'undefined' ||
-                typeof(checkRow.ShipTo_Mobnr) === 'undefined' ||
-                typeof(checkRow.ShipTo_Email) === 'undefined' ||
-                typeof(checkRow.ShipTo_Birth) === 'undefined' ||
-                typeof(checkRow.ShipTo_Stcd2) === 'undefined' ||
-                typeof(checkRow.ShipTo_Intad) === 'undefined' ){
+			if (typeof (checkRow.Header_Agent) === 'undefined' ||
+				typeof (checkRow.SoldTo_Partnerid) === 'undefined' ||
+				typeof (checkRow.SoldTo_Title) === 'undefined' ||
+				typeof (checkRow.SoldTo_Name2) === 'undefined' ||
+				typeof (checkRow.SoldTo_Name1) === 'undefined' ||
+				typeof (checkRow.SoldTo_Name3) === 'undefined' ||
+				typeof (checkRow.SoldTo_Name4) === 'undefined' ||
+				typeof (checkRow.SoldTo_Stras) === 'undefined' ||
+				typeof (checkRow.SoldTo_Hsnm1) === 'undefined' ||
+				typeof (checkRow.SoldTo_Hsnm2) === 'undefined' ||
+				typeof (checkRow.SoldTo_Pstlz) === 'undefined' ||
+				typeof (checkRow.SoldTo_Ort01) === 'undefined' ||
+				typeof (checkRow.SoldTo_Dlnot) === 'undefined' ||
+				typeof (checkRow.SoldTo_Telnr) === 'undefined' ||
+				typeof (checkRow.SoldTo_Mobnr) === 'undefined' ||
+				typeof (checkRow.SoldTo_Email) === 'undefined' ||
+				typeof (checkRow.SoldTo_Birth) === 'undefined' ||
+				typeof (checkRow.SoldTo_Stcd2) === 'undefined' ||
+				typeof (checkRow.SoldTo_Intad) === 'undefined' ||
+				typeof (checkRow.ShipTo_Partnerid) === 'undefined' ||
+				typeof (checkRow.ShipTo_Title) === 'undefined' ||
+				typeof (checkRow.ShipTo_Name2) === 'undefined' ||
+				typeof (checkRow.ShipTo_Name1) === 'undefined' ||
+				typeof (checkRow.ShipTo_Name3) === 'undefined' ||
+				typeof (checkRow.ShipTo_Name4) === 'undefined' ||
+				typeof (checkRow.ShipTo_Stras) === 'undefined' ||
+				typeof (checkRow.ShipTo_Hsnm1) === 'undefined' ||
+				typeof (checkRow.ShipTo_Hsnm2) === 'undefined' ||
+				typeof (checkRow.ShipTo_Pstlz) === 'undefined' ||
+				typeof (checkRow.ShipTo_Ort01) === 'undefined' ||
+				typeof (checkRow.ShipTo_Dlnot) === 'undefined' ||
+				typeof (checkRow.ShipTo_Telnr) === 'undefined' ||
+				typeof (checkRow.ShipTo_Mobnr) === 'undefined' ||
+				typeof (checkRow.ShipTo_Email) === 'undefined' ||
+				typeof (checkRow.ShipTo_Birth) === 'undefined' ||
+				typeof (checkRow.ShipTo_Stcd2) === 'undefined' ||
+				typeof (checkRow.ShipTo_Intad) === 'undefined') {
 				msg = this.getI18n('msgTemplateTech');
-				this.msgStrip(msg, "Error", true);                
-                return false;
-            }
-            json.splice(0,2);
-            if( json.length == 0){
+				this.msgStrip(msg, "Error", true);
+				return false;
+			}
+			json.splice(0, 2);
+			if (json.length == 0) {
 				msg = this.getI18n('msgNoData');
-				this.msgStrip(msg, "Warning", true);                
-                return false;                
-            }
-            return json;
+				this.msgStrip(msg, "Warning", true);
+				return false;
+			}
+			return json;
 		},
 
-		setProcessing: function(switchOn) {
+		setProcessing: function (switchOn) {
 			var style = "spinningBusy";
 			var oFile = this.getView().byId("fileUploader");
 			var oButton = this.getView().byId("refreshIndicator");
@@ -604,7 +576,7 @@ sap.ui.define([
 					break;
 			}
 		},
-		setProcessing2: function(switchOn) {
+		setProcessing2: function (switchOn) {
 			var style = "spinningBusy";
 			var oFile = this.getView().byId("idSubmit");
 			var oButton = this.getView().byId("refreshIndicator1");
@@ -620,33 +592,33 @@ sap.ui.define([
 					oFile.setVisible(true);
 					break;
 			}
-		},		
-		_createBatchSuccess: function(data, response) {
+		},
+		_createBatchSuccess: function (data, response) {
 			//this.getModel().refresh();
 			var noCreated = data.__batchResponses[0].__changeResponses.length;
 			MessageBox.show(this.getI18n('msgBatchCreated', noCreated), MessageBox.Icon.SUCCESS, "Batch Save", MessageBox.Action.OK);
 		},
 
-		_createBatchError: function(oError) {
+		_createBatchError: function (oError) {
 			var err = JSON.parse(oError.responseText);
 			MessageBox.show(err.error.message.value, MessageBox.Icon.ERROR, "Batch Save", MessageBox.Action.OK);
 		},
 
-		parseDate: function(sDate) {
+		parseDate: function (sDate) {
 			if (sDate.match(/^[\d]+\//)) { //if contains / as separator, it is date
 				var date = new Date(sDate);
 				if (date != "Invalid Date") {
 					return date.toLocaleDateString('de-DE');
 				}
 			} else {
-				var ssDate = sDate.match(/[\d]{1,2}\.[\d]{1,2}\.[\d]{4}/);;
+				var ssDate = sDate.match(/[\d]{1,2}\.[\d]{1,2}\.[\d]{4}/);
 				if (ssDate) {
 					return ssDate[0];
 				}
 			}
 		},
 
-		getMetaData: function(field) {
+		getMetaData: function (field) {
 			var BP = this.metaModel.getODataComplexType('ZAKV_SRV.BP');
 			for (var i in BP.property) {
 				var property = BP.property[i];
@@ -656,7 +628,7 @@ sap.ui.define([
 			}
 		},
 
-		onDataExport: sap.m.Table.prototype.exportData || function(oEvent) {
+		onDataExport: sap.m.Table.prototype.exportData || function (oEvent) {
 
 			var oExport = new Export({
 				// Type that will be used to generate the content. Own ExportType's can be created to support other formats
@@ -692,7 +664,7 @@ sap.ui.define([
 					template: {
 						content: {
 							parts: ["Width", "Depth", "Height", "DimUnit"],
-							formatter: function(width, depth, height, dimUnit) {
+							formatter: function (width, depth, height, dimUnit) {
 								return width + " x " + depth + " x " + height + " " + dimUnit;
 							},
 							state: "Warning"
@@ -713,14 +685,14 @@ sap.ui.define([
 			});
 
 			// download exported file
-			oExport.saveFile().catch(function(oError) {
+			oExport.saveFile().catch(function (oError) {
 				MessageBox.error("Error when downloading data. Browser might not be supported!\n\n" + oError);
-			}).then(function() {
+			}).then(function () {
 				oExport.destroy();
 			});
 		},
 
-		onDelete: function() {
+		onDelete: function () {
 			//is there something selected?
 			if (!this._validateSelected()) {
 				return;
@@ -734,18 +706,18 @@ sap.ui.define([
 				}),
 				beginButton: new Button({
 					text: "{i18n>delButton}",
-					press: function() {
+					press: function () {
 						this._delete();
 						dialog.close();
 					}.bind(this)
 				}),
 				endButton: new Button({
 					text: 'Cancel',
-					press: function() {
+					press: function () {
 						dialog.close();
 					}
 				}),
-				afterClose: function() {
+				afterClose: function () {
 					dialog.destroy();
 				}
 			});
@@ -754,7 +726,7 @@ sap.ui.define([
 			dialog.open();
 		},
 
-		_delete: function() {
+		_delete: function () {
 			var that = this;
 			var oModel = this.getView().getModel();
 			var oTable = this.getView().byId("__tablePartners");
@@ -762,10 +734,10 @@ sap.ui.define([
 			for (var i = 0; i < aItems.length; i++) {
 				var id = aItems[i].getCells()[0].getText();
 				oModel.remove("/PartnerSet('" + id + "')", {
-					success: function(oData) {
+					success: function (oData) {
 						that.msgToast(that.getI18n("msgDataDeleted"));
 					},
-					error: function(oResponse) {
+					error: function (oResponse) {
 						var response = JSON.parse(oResponse.response.body);
 						MessageBox.show(response.message, {
 							icon: sap.m.MessageBox.Icon.ERROR,
@@ -776,7 +748,7 @@ sap.ui.define([
 			}
 		},
 
-		onAddOrder: function(oEvent) {
+		onAddOrder: function (oEvent) {
 			//is there something selected?
 			if (!this._validateSelected()) {
 				return;
@@ -790,35 +762,35 @@ sap.ui.define([
 			var oModel = this.getView().getModel();
 			var oTable = this.getView().byId("__tablePartners");
 			var aItems = oTable.getSelectedItems();
-			if(aItems.length>0){
-			   this.getView().setBusy(true); 
-			} 
+			if (aItems.length > 0) {
+				this.getView().setBusy(true);
+			}
 			for (var i = 0; i < aItems.length; i++) {
 				var id = aItems[i].getCells()[0].getText();
 				oModel.create("/OrderSet", {
 					Setid: id,
 					Model: sModel
 				}, {
-					success: (oData_, response) =>{
+					success: (oData_, response) => {
 						this.msgToast(that.getI18n('msgModelAdded', sModel));
 						this.setViewProperty("model", "");
-						this.getView().setBusy(false); 
+						this.getView().setBusy(false);
 						//debugger;
 						that.getView().byId("__tablePartners").getBinding("items").refresh(true);
 					},
 					error: (oResponse) => {
-					    this.getView().setBusy(false); 
-    					var response = this.parseResponse(oResponse);
-    					MessageBox.show(response, {
-    						icon: sap.m.MessageBox.Icon.ERROR,
-    						title: "{i18n>msgTileError}"
-    					});
+						this.getView().setBusy(false);
+						var response = this.parseResponse(oResponse);
+						MessageBox.show(response, {
+							icon: sap.m.MessageBox.Icon.ERROR,
+							title: "{i18n>msgTileError}"
+						});
 					}
 				});
 			}
 		},
 
-		_validateSelected: function() {
+		_validateSelected: function () {
 			if (this.getView().byId("__tablePartners").getSelectedItems().length === 0) {
 				//this.msgToast( this.getModel("i18n").getResourceBundle().getText("msgSelectItem") );
 				this.msgToast(this.getI18n("msgSelectItem"));
@@ -827,7 +799,7 @@ sap.ui.define([
 			return true;
 		},
 
-		onInfo: function(oEvent) {
+		onInfo: function (oEvent) {
 			if (!this._oPopover) {
 				this._oPopover = sap.ui.xmlfragment("bp.view.AccountsInfo", this);
 				this.getView().addDependent(this._oPopover);
@@ -835,25 +807,25 @@ sap.ui.define([
 			this._oPopover.openBy(oEvent.getSource());
 		},
 
-		onDownloadTemplate: function(oEvent) {
+		onDownloadTemplate: function (oEvent) {
 			//sap.m.URLHelper.redirect("src/PartnerTemplate.xlsx", true);
 			sap.m.URLHelper.redirect("/sap/bc/bsp/sap/zakv_cdv/src/PartnerTemplate.xlsx", true);
 		},
 
-		onInfoClose: function(oEvent) {
+		onInfoClose: function (oEvent) {
 			this._oPopover.close();
 		},
 
-		onMessages: function(oEvent) {
+		onMessages: function (oEvent) {
 			if (oMessagePopover.isOpen()) {
 				oMessagePopover.close();
 			} else {
 				oMessagePopover.openBy(oEvent.getSource());
 			}
-			oMessagePopover.setModel(this.getModel('message'),"message");
+			oMessagePopover.setModel(this.getModel('message'), "message");
 		},
 
-		onOpenSettings: function(oEvent) {
+		onOpenSettings: function (oEvent) {
 			if (!this._oVSDialog) {
 				this._oVSDialog = sap.ui.xmlfragment("bp.view.AccountsSettings", this);
 				this.getView().addDependent(this._oVSDialog);
@@ -863,7 +835,7 @@ sap.ui.define([
 			this._oVSDialog.open();
 		},
 
-		onConfirmSettings: function(oEvent) {
+		onConfirmSettings: function (oEvent) {
 			var oView = this.getView();
 			var oTable = oView.byId("__tablePartners");
 
@@ -894,7 +866,7 @@ sap.ui.define([
 
 			// apply filters to binding
 			var aFilters = [];
-			jQuery.each(mParams.filterItems, function(i, oItem) {
+			jQuery.each(mParams.filterItems, function (i, oItem) {
 				var aSplit = oItem.getKey().split("__");
 				var sPath = aSplit[0];
 				var sOperator = aSplit[1];
@@ -910,8 +882,7 @@ sap.ui.define([
 			//oView.byId("vsdFilterLabel").setText(mParams.filterString);
 		},
 
-		onModelValueHelp: function() {
-			var that = this;
+		onModelValueHelp: function () {
 			var oInput = this.getView().byId("_inputModel");
 			var oValueHelpDialog = new ValueHelpDialog({
 				//basicSearchText: "Odaberi Model", //this.theTokenInput.getValue(), 
@@ -923,11 +894,7 @@ sap.ui.define([
 				descriptionKey: "Ltext", //this.aKeys[1],
 				stretch: sap.ui.Device.system.phone,
 
-				ok: function(oEvent) {
-					//that.aTokens = oControlEvent.getParameter("tokens");
-					//that.theTokenInput.setTokens(that.aTokens);
-					/*eslint no-debugger: "error"*/
-					debugger;
+				ok: function (oEvent) {
 					var aTokens = oEvent.getParameter("tokens");
 					if (aTokens.length > 0) {
 						oInput.setValue(aTokens[0].getKey());
@@ -935,11 +902,10 @@ sap.ui.define([
 					}
 					oValueHelpDialog.close();
 				},
-				cancel: function(oControlEvent) {
-					//sap.m.MessageToast.show("Cancel pressed!");
+				cancel: function (oControlEvent) {
 					oValueHelpDialog.close();
 				},
-				afterClose: function() {
+				afterClose: function () {
 					oValueHelpDialog.destroy();
 				}
 			});
@@ -961,41 +927,26 @@ sap.ui.define([
 			if (oValueHelpDialog.getTable().bindRows) {
 				oValueHelpDialog.getTable().bindRows("/ModelSet");
 			}
-			// 		if (oValueHelpDialog.getTable().bindItems) { 
-			// 			var oTable = oValueHelpDialog.getTable();
-			// 			oTable.bindAggregation("items", "/ModelSet", function(sId, oContext) { 
-			// 				var aCols = oTable.getModel("columns").getData().cols;
-			// 				return new sap.m.ColumnListItem({
-			// 					cells: aCols.map(function (column) {
-			// 						var colname = column.template;
-			// 						return new sap.m.Label({ text: "{" + colname + "}" });
-			// 					})
-			// 				});
-			// 			});
-			// 		}	
-
-			//oValueHelpDialog.setTokens(this.theTokenInput.getTokens());
-
 			var oFilterBar = new sap.ui.comp.filterbar.FilterBar({
 				advancedMode: true,
 				filterBarExpanded: false,
 				showGoOnFB: !sap.ui.Device.system.phone,
 				filterGroupItems: [new sap.ui.comp.filterbar.FilterGroupItem({
-						groupTitle: "foo",
-						groupName: "gn1",
-						name: "n1",
-						label: "Model",
-						control: new sap.m.Input()
-					}),
-					new sap.ui.comp.filterbar.FilterGroupItem({
-						groupTitle: "foo",
-						groupName: "gn1",
-						name: "n2",
-						label: "Opis",
-						control: new sap.m.Input()
-					})
+					groupTitle: "foo",
+					groupName: "gn1",
+					name: "n1",
+					label: "Model",
+					control: new sap.m.Input()
+				}),
+				new sap.ui.comp.filterbar.FilterGroupItem({
+					groupTitle: "foo",
+					groupName: "gn1",
+					name: "n2",
+					label: "Opis",
+					control: new sap.m.Input()
+				})
 				],
-				search: function() {
+				search: function () {
 					sap.m.MessageToast.show("Search pressed");
 				}
 			});
@@ -1004,7 +955,7 @@ sap.ui.define([
 				oFilterBar.setBasicSearch(new sap.m.SearchField({
 					showSearchButton: sap.ui.Device.system.phone,
 					placeholder: "Search",
-					search: function(event) {
+					search: function (event) {
 						oValueHelpDialog.getFilterBar().search();
 					}
 				}));
@@ -1016,7 +967,5 @@ sap.ui.define([
 			oValueHelpDialog.open();
 			oValueHelpDialog.update();
 		},
-
 	});
-
 });

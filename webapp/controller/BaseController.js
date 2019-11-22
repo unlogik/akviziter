@@ -3,7 +3,7 @@ sap.ui.define([
 	'sap/ui/model/json/JSONModel',
 	'sap/m/MessageStrip',
 	"sap/m/MessageToast"
-], function(Controller, JSONModel, MessageStrip, MessageToast) {
+], function (Controller, JSONModel, MessageStrip, MessageToast) {
 	"use strict";
 
 	return Controller.extend("bp.controller.BaseController", {
@@ -12,7 +12,7 @@ sap.ui.define([
 		 * @public
 		 * @returns {sap.ui.core.routing.Router} the router for this component
 		 */
-		getRouter: function() {
+		getRouter: function () {
 			return sap.ui.core.UIComponent.getRouterFor(this);
 		},
 
@@ -22,7 +22,7 @@ sap.ui.define([
 		 * @param {string} [sName] the model name
 		 * @returns {sap.ui.model.Model} the model instance
 		 */
-		getModel: function(sName) {
+		getModel: function (sName) {
 			return this.getView().getModel(sName);
 		},
 
@@ -33,11 +33,11 @@ sap.ui.define([
 		 * @param {string} sName the model name
 		 * @returns {sap.ui.mvc.View} the view instance
 		 */
-		setModel: function(oModel, sName) {
+		setModel: function (oModel, sName) {
 			return this.getView().setModel(oModel, sName);
 		},
 
-		getComponentModel: function(sName) {
+		getComponentModel: function (sName) {
 			return this.getOwnerComponent().getModel(sName);
 		},
 
@@ -46,13 +46,13 @@ sap.ui.define([
 		 * @public
 		 * @returns {sap.ui.model.resource.ResourceModel} the resourceModel of the component
 		 */
-		getResourceBundle: function() {
+		getResourceBundle: function () {
 			return this.getOwnerComponent().getModel("i18n").getResourceBundle();
 		},
 
-		setViewModel: function(sName) {
+		setViewModel: function () {
 			var sViewName = this.getView().getViewName(); //getViewName returns "" empty string in onInit()
-			var sName = sViewName.match(/[^/.]+$/);                         
+			var sName = sViewName.match(/[^/.]+$/);
 			this.getView().setViewName(sName); //why not set viewName(!?)
 			var oViewModel = this.getModel("view");
 			if (oViewModel === undefined) {
@@ -65,14 +65,11 @@ sap.ui.define([
 			oViewModel.setData(oData, true);
 		},
 
-		setViewProperty: function(sProperty, sValue) {
-		    //var sViewName = this.getView().getViewName();
+		setViewProperty: function (sProperty, sValue) {
 			this.getModel("view").setProperty("/" + this.getView().getViewName() + "/" + sProperty, sValue);
 		},
-		getViewProperty: function(sProperty) {
-		    //var sViewName = this.getView().getViewName();
-			var value = this.getModel("view").getProperty("/" + this.getView().getViewName() + "/" + sProperty);
-			return value;
+		getViewProperty: function (sProperty) {
+			return this.getModel("view").getProperty("/" + this.getView().getViewName() + "/" + sProperty);
 		},
 
 		/**
@@ -80,15 +77,15 @@ sap.ui.define([
 		 * @public
 		 *  @param {string} sName the model name
 		 */
-		msgToast: function(sText, pos='center center') {
-			MessageToast.show( sText, { at: pos });
+		msgToast: function (sText, pos = 'center center') {
+			MessageToast.show(sText, { at: pos });
 		},
         /**
 		 * Display Message Toast
 		 * @public
 		 * @param {string} sName the model name
-		 */		
-		msgStrip: function (sText, sType, sIcon, closeButton=true) {
+		 */
+		msgStrip: function (sText, sType, sIcon, closeButton = true) {
 			var oMs = sap.ui.getCore().byId("_msgStrip");
 			if (oMs) {
 				oMs.destroy();
@@ -101,36 +98,34 @@ sap.ui.define([
 			});
 			var pageId = this.getViewProperty("pageId");
 			//var pageId = this.getViewProperty("msgStripId");
-            var oPage = this.getView().byId(pageId);
-			oPage.insertContent(oMsgStrip);			
+			var oPage = this.getView().byId(pageId);
+			oPage.insertContent(oMsgStrip);
 			//oPage.addContent(oMsgStrip);			
 			//this.getView().addContent();
 		},
 
 		getI18n: function (sProperty, v1, v2, v3, v4) {
-		    var aVar = [];
-		    if( typeof v1 !== "undefined"){  aVar.push(v1) };
-		    if( typeof v2 !== "undefined"){  aVar.push(v2) };
-		    if( typeof v3 !== "undefined"){  aVar.push(v3) };
-		    if( typeof v4 !== "undefined"){  aVar.push(v4) };
+			var aVar = [];
+			if (typeof v1 !== "undefined") { aVar.push(v1) }
+			if (typeof v2 !== "undefined") { aVar.push(v2) }
+			if (typeof v3 !== "undefined") { aVar.push(v3) }
+			if (typeof v4 !== "undefined") { aVar.push(v4) }
 			return this.getModel("i18n").getResourceBundle().getText(sProperty, aVar);
 		},
-		
-		parseResponse: function( oResponse){
-		    var sMsg;
-		    if(typeof(oResponse.respone) !== 'undefined' ){
-		      sMsg = JSON.parse( oResponse.response.body );
-		    }else if( typeof(oResponse.responseText) !== 'undefined'){
-		      sMsg = JSON.parse(oResponse.responseText);  
-		    }else{
-		        sMsg = oResponse;
-		    }
-		    if(sMsg.error){
-		        return sMsg.error.message.value;
-		    }
-		    return sMsg;
+
+		parseResponse: function (oResponse) {
+			var sMsg;
+			if (typeof (oResponse.respone) !== 'undefined') {
+				sMsg = JSON.parse(oResponse.response.body);
+			} else if (typeof (oResponse.responseText) !== 'undefined') {
+				sMsg = JSON.parse(oResponse.responseText);
+			} else {
+				sMsg = oResponse;
+			}
+			if (sMsg.error) {
+				return sMsg.error.message.value;
+			}
+			return sMsg;
 		}
-
 	});
-
 });

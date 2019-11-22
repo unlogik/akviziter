@@ -1,17 +1,17 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form">
-	<ResponsivePopover showHeader="false" contentWidth="500px" contentHeight="260px" placement="Bottom">
+	<ResponsivePopover showHeader="false" contentWidth="35rem" contentHeight="17rem" placement="Bottom">
 		<content>
 			<NavContainer id="navCon">
 				<Page id="master" title="{i18n>accountDoubles}">
 					<Table id="_tableDoubles" items="{SoldToDoubles}" inset="false" mode="SingleSelect">
 						<columns>
-							<Column minScreenWidth="Tablet" demandPopin="true">
-								<Text text="Name"/>
-							</Column>
-							<Column minScreenWidth="Tablet" demandPopin="true">
-								<Text text="Address"/>
-							</Column>
-							<Column minScreenWidth="Tablet" demandPopin="true">
+        					<Column minScreenWidth="Tablet" demandPopin="true">
+        						<Text text="{i18n>columnName}"/>
+        					</Column>
+        					<Column minScreenWidth="Tablet" demandPopin="true">
+        						<Text text="{i18n>columnAddress}"/>
+        					</Column>
+							<Column minScreenWidth="Tablet" demandPopin="true" width="5.5rem">
 								<Text text="OIB"/>
 							</Column>
 						</columns>
@@ -65,10 +65,10 @@
 			</NavContainer>
 		</content>
 		<beginButton>
-		    <Button id="_btnDoublesUnselect" icon="sap-icon://delete" visible="{view>/AccountDetails/editable}"/>
+		    <Button id="_btnDoublesUnselect" icon="sap-icon://delete" visible="{view>/AccountDetails/editable}" tooltip="{i18n>toolTipCancel}"/>
 		</beginButton>
 		<endButton>
-			<Button id="_btnDoublesAccept" icon="sap-icon://accept" visible="{view>/AccountDetails/editable}"/>
+			<Button id="_btnDoublesAccept" icon="sap-icon://accept" visible="{view>/AccountDetails/editable}" tooltip="{i18n>toolTipSelect}"/>
 		</endButton>
 	</ResponsivePopover>
 </core:FragmentDefinition>

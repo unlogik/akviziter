@@ -25,6 +25,16 @@ sap.ui.define([], function () {
                 case 'A': return "sap-icon://error";
             }		    
 		},
+	    addressIcon: function(sType) {
+            switch(sType){
+                case 'XXDEFAULT': 
+                    return "sap-icon://home";
+                case 'BILL_TO': 
+                    return "sap-icon://receipt";
+                case 'SHIP_TO': 
+                    return "sap-icon://shipping-status";
+            }		    
+		},
 		
 		messageColor: function(sStatus) {
 		    //Message type: S Success, E Error, W Warning, I Info, A Abort

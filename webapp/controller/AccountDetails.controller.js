@@ -39,7 +39,7 @@ sap.ui.define([
 		subtitle: '{subtitle}',
 		counter: '{counter}'
 	});
-
+	
 	var oMessagePopover = new MessagePopover({
 		items: {
 			path: "PartnerToMessages/",
@@ -82,39 +82,12 @@ sap.ui.define([
 				// Restore original busy indicator delay for the object view
 				oViewModel.setProperty("/delay", iOriginalBusyDelay);
 			});
-
-			// Set the initial form to be the display one
-			//this._showFormFragment("Display");
-			var oModel = this.getOwnerComponent().getModel();
+			var oModel = this.getOwnerComponent().getModel() ;
 			oModel.read("/PartnerTitleSet");
-			//oModel.setRefreshAfterChange(false);
-			//*var oSelect = this.getView().byId("__ShipTo_Title");*/
-			/*.setModel(oModel);*/
 
-			//	    var oModel = this.getComponentModel();
-			//var oProcessor = new sap.ui.core.message.MessageProcessor();
-			//sap.ui.getCore().getMessageManager().registerMessageProcessor(oModel);
-
-			//???? see what to do
-			//oModel.attachMessageChange(this.onMessageChange, this);
-
-			//oProcessor.attachMessageChange(this.onMessageChange, this);
-			//sap.ui.getCore().getMessageManager().registerMessageProcessor( oModel );
-			// oProcessor.attachMessageChange( this._messageChange, this );
 			var oMessage = sap.ui.getCore().getMessageManager().getMessageModel();
-			//this.getView().setModel(oMessage, "message");
 			oMessagePopover.setModel(oMessage, "message");
 			sap.ui.getCore().getMessageManager().registerObject(this.getView(), true);
-
-			// var oMessageProcessor = new sap.ui.core.message.ControlMessageProcessor();
-			// var oMessageManager  = sap.ui.getCore().getMessageManager();
-			// oMessageManager.registerMessageProcessor(oMessageProcessor);	
-			try {
-				var oTable = this.getView().byId("_table").getTable();
-			} catch (err) {
-
-			};
-			//var aColums = oTable.getColumns();
 		},
 
 		/**
@@ -155,16 +128,14 @@ sap.ui.define([
 			}			
 		},
 		
-		onDateChange: function( oEvent ){
-		    var date = oEvent.getSource().getDateValue();
-		    if(date){
-		        date.setHours(3);
-		    }
+		onDateChange: function (oEvent) {
+			var date = oEvent.getSource().getDateValue();
+			if (date) {
+				date.setHours(3);
+			}
 		},
 		
 		adjustViewModel: function() {
-			var oView = this.getModel();
-			var oModel = this.getComponentModel();
 			var oViewModel = this.getModel("view");
 			if (oViewModel === undefined) {
 				oViewModel = new JSONModel({
@@ -174,9 +145,7 @@ sap.ui.define([
 			}
 		},
 
-		onNavBack: function() {
-		    var that = this;
-			var oModel = this.getModel();
+		onNavBack: function () {
 			//check pending changes
 			if (this.hasPendingChanges()) {
 				var dialog = new Dialog({
@@ -187,27 +156,27 @@ sap.ui.define([
 					}),
 					beginButton: new Button({
 						text: "{i18n>changesButtonSave}",
-						press: function() {
+						press: function () {
 							this.doNavBack(this.cons.navTypeSave);
 							dialog.close();
 						}.bind(this)
 					}),
 					endButton: new Button({
 						text: '{i18n>changesButtonContinue}',
-						press: function() {
+						press: function () {
 							dialog.close();
 							this.doNavBack(this.cons.navTypeNoSave);
 						}.bind(this)
 					}),
-					afterClose: function() {
+					afterClose: function () {
 						dialog.destroy();
 					}
 				});
 				//bind model to access translations
 				dialog.setModel(this.getModel("i18n"), "i18n");
 				dialog.open();
-			}else{
-			    this.doNavBack(this.cons.navTypeNoSave)
+			} else {
+				this.doNavBack(this.cons.navTypeNoSave)
 			}
 		},
         
@@ -231,20 +200,20 @@ sap.ui.define([
 			this._toggleButtonsAndView(false);
         },
         
-        hasPendingChanges: function(){
-          	var path = this.getView().getBindingContext().getPath();
+		hasPendingChanges: function () {
+			var path = this.getView().getBindingContext().getPath();
 			path = path.replace(/^[/]/, '');
 			var changes = this.getModel().getPendingChanges();
-			for( var element in changes){
-			   if(element.match(/OrderSet*/)){
-			       return true;
-			   }
+			for (var element in changes) {
+				if (element.match(/OrderSet*/)) {
+					return true;
+				}
 			}
-			if (typeof(changes[path]) !== 'undefined') {  
-			    return true;
+			if (typeof (changes[path]) !== 'undefined') {
+				return true;
 			}
 			return false;
-        },
+		},
 		/**
 		 * Event handler for press event on object identifier.
 		 * opens detail popover from component to show product dimensions.
@@ -274,7 +243,7 @@ sap.ui.define([
 				Setid: oData.Setid,
 				Model: sModel
 			}, {
-				success: (oData_, response) => {
+				success: () => {
 					that.msgToast(that.getI18n('msgModelAdded', sModel));
 					that.setViewProperty("model", "");
 					//oModel.update("/PartnerSet('" + oData.Setid + "')", oData);
@@ -331,7 +300,7 @@ sap.ui.define([
 			var oView = this.getView();
 			var oData = oView.getBindingContext().getObject();
 			oModel.remove("/OrderSet(Setid='" + oData.Setid + "',Oppit='0001')", {
-				success: function(oData) {
+				success: function() {
 					MessageToast.show(that.getI18n("msgDataDeleted"));
 				},
 				error: function(oResponse) {
@@ -366,7 +335,7 @@ sap.ui.define([
 				oButton.attachPress({
 					source: sPath
 				}, this.onDoublesSelect, this);
-				var oButton = Fragment.byId("_popoverDoubles", "_btnDoublesUnselect");
+				oButton = Fragment.byId("_popoverDoubles", "_btnDoublesUnselect");
 				oButton.detachPress(this.onDoublesUnselect, this);
 				oButton.attachPress({
 					source: sPath
@@ -399,7 +368,7 @@ sap.ui.define([
 			oDetailPage.bindElement(oCtx.getPath());
 		},
 
-		onDoublesBack: function(oEvent) {
+		onDoublesBack: function() {
 			var oNavCon = Fragment.byId("_popoverDoubles", "navCon");
 			oNavCon.back();
 		},
@@ -418,7 +387,6 @@ sap.ui.define([
 			this.getComponentModel().submitChanges({
 				groupID: "Partner"
 			});
-			var oInfo = oTable.getBindingInfo();
 			this._oDoublesPopover.close();
 		},
 
@@ -435,11 +403,11 @@ sap.ui.define([
 			this._oDoublesPopover.close();
 		},
 		
-		onAddressDisplay: function(oEvent){
-		    var oButtonOpen = oEvent.getSource();
-		    var sPath = oButtonOpen.data().bindingPath;
-		    this._address.entityPath = oButtonOpen.data().entityPath;
-		    if (!this._address.oPopover) {
+		onAddressDisplay: function (oEvent) {
+			var oButtonOpen = oEvent.getSource();
+			var sPath = oButtonOpen.data().bindingPath;
+			this._address.entityPath = oButtonOpen.data().entityPath;
+			if (!this._address.oPopover) {
 				this._address.oPopover = sap.ui.xmlfragment("_popoverAddress", "bp.view.Address", this);
 				//Add the popover as a view dependent, giving it access to the view model
 				this.getView().addDependent(this._address.oPopover);
@@ -448,7 +416,7 @@ sap.ui.define([
 			if (this._address.oPopover.isOpen() && this._address.sPath === sPath) {
 				this._address.oPopover.close();
 			} else {
-			    this._address.sPath = sPath;
+				this._address.sPath = sPath;
 				//this.setViewProperty("editable", this.editable);
 				sPath = this.getView().getBindingContext().getPath() + "/" + sPath
 				var oTable = Fragment.byId("_popoverAddress", "_tableAddress");
@@ -463,13 +431,13 @@ sap.ui.define([
 					oTable.setMode();
 				}
 				// delay because addDependent will do a async rerendering and the actionSheet will immediately close without it.
-				jQuery.sap.delayedCall(0, this, function() {
+				jQuery.sap.delayedCall(0, this, function () {
 					this._address.oPopover.openBy(oButtonOpen);
 				});
-			}			
+			}
 		},
-		onAddressSelect: function(oEvent){
-		    var oTable = Fragment.byId("_popoverAddress", "_tableAddress");
+		onAddressSelect: function () {
+			var oTable = Fragment.byId("_popoverAddress", "_tableAddress");
 			var oItem = oTable.getSelectedItem();
 			var oContext = oItem.getBindingContext();
 			var partnerid = oContext.getProperty("Partnerid");
@@ -484,8 +452,8 @@ sap.ui.define([
 			});
 			this._address.oPopover.close();
 		},
-		onAddressClose: function(oEvent){
-		    this._address.oPopover.close();
+		onAddressClose: function () {
+			this._address.oPopover.close();
 		},
 
 		doublesGetPath: function(oParam) {
@@ -499,7 +467,6 @@ sap.ui.define([
 		},
 
 		onModelValueHelp: function() {
-			var that = this;
 			var oInput = this.getView().byId("_inputModel");
 			var oValueHelpDialog = new ValueHelpDialog({
 				//basicSearchText: "Odaberi Model", //this.theTokenInput.getValue(), 
@@ -522,7 +489,7 @@ sap.ui.define([
 					}
 					oValueHelpDialog.close();
 				},
-				cancel: function(oControlEvent) {
+				cancel: function() {
 					//sap.m.MessageToast.show("Cancel pressed!");
 					oValueHelpDialog.close();
 				},
@@ -591,7 +558,7 @@ sap.ui.define([
 				oFilterBar.setBasicSearch(new sap.m.SearchField({
 					showSearchButton: sap.ui.Device.system.phone,
 					placeholder: "Search",
-					search: function(event) {
+					search: function() {
 						oValueHelpDialog.getFilterBar().search();
 					}
 				}));
@@ -614,7 +581,6 @@ sap.ui.define([
 		},
 
 		onCitySelect: function(oEvent) {
-			var row = oEvent.getParameters().selectedRow;
 			//this.sCityCode = row.getBindingContext().getObject().CityName;
 		},
 
@@ -767,51 +733,50 @@ sap.ui.define([
 			});
 		},
 		
-		countMessages: function(sObjectPath){
-		    var msgNo = 0;
-		    var messages = this.getMessages(sObjectPath);
-		    if ( messages){
-		        msgNo = messages.length;
-		    }
+		countMessages: function (sObjectPath) {
+			var msgNo = 0;
+			var messages = this.getMessages(sObjectPath);
+			if (messages) {
+				msgNo = messages.length;
+			}
 			var messageButtonType;
-			if( msgNo == 0){ 
-			    msgNo = null; 
-			    messageButtonType = "Default";
-			}else{
-			    messageButtonType = "Emphasized";
+			if (msgNo == 0) {
+				msgNo = null;
+				messageButtonType = "Default";
+			} else {
+				messageButtonType = "Emphasized";
 			}
 			this.setViewProperty("messageCount", msgNo);
 			this.setViewProperty("messageButtonType", messageButtonType);
-			this.setViewProperty("messageShow", (msgNo > 0) ? true : false);  
-			var oMsgManager = sap.ui.getCore().getMessageManager();
+			this.setViewProperty("messageShow", (msgNo > 0) ? true : false);
 			/*oMsgManager.removeAllMessages();
 			if (messages){
 			 oMsgManager.addMessages(messages);
 			}*/
 		},
 		
-		getMessages: function(sObjectPath){
-		    var oModel = this.getModel();
-		    var paths = oModel.getProperty(sObjectPath+'/PartnerToMessages');
-		    var messages = [];
-		    for( var i in paths){
-		        var serverMsg = oModel.getProperty("/"+paths[i]);
-		        var message = new sap.ui.core.message.Message({
-		            //id : serverMsg.Id,
-		            message : serverMsg.Msg,
-		            description : serverMsg.Messagev4,
-		            type : serverMsg.MsgType,
-		            code : serverMsg.Number,
-		            target : sObjectPath +"/" + serverMsg.Target,
-		            processor: oModel
-		        } );
-		        messages.push( message );
-		    }
-		    if (messages.length > 0){
-		      return messages;
-		    }else{
-		      return null;
-		    }
+		getMessages: function (sObjectPath) {
+			var oModel = this.getModel();
+			var paths = oModel.getProperty(sObjectPath + '/PartnerToMessages');
+			var messages = [];
+			for (var i in paths) {
+				var serverMsg = oModel.getProperty("/" + paths[i]);
+				var message = new sap.ui.core.message.Message({
+					//id : serverMsg.Id,
+					message: serverMsg.Msg,
+					description: serverMsg.Messagev4,
+					type: serverMsg.MsgType,
+					code: serverMsg.Number,
+					target: sObjectPath + "/" + serverMsg.Target,
+					processor: oModel
+				});
+				messages.push(message);
+			}
+			if (messages.length > 0) {
+				return messages;
+			} else {
+				return null;
+			}
 		},
 
 		_onBindingChange: function() {
@@ -846,19 +811,19 @@ sap.ui.define([
 			}
 		},
 		
-		onEnter: function(oEvent) {
+		onEnter: function() {
 			this.save(this.cons.saveTypeSoft);
 		}, 
 		
-		onSave: function(oEvent) {
-		    this.save(this.cons.saveTypeHard);
+		onSave: function () {
+			this.save(this.cons.saveTypeHard);
 		},
-		
-		save: function(saveType){
+
+		save: function (saveType) {
 			var oModel = this.getModel();
 			//pending changes?
-			if(!this.hasPendingChanges() && saveType == 'soft'){
-			   return; 
+			if (!this.hasPendingChanges() && saveType == 'soft') {
+				return;
 			}
 			var that = this;
 			var oView = this.getView();
@@ -866,12 +831,11 @@ sap.ui.define([
 			var oData = this.getPartnerSet(oView);
 			oData.SaveType = saveType;
 			
-			var sPath = oView.getBindingContext().sPath;
 			var sPath = oView.getBindingContext().getPath();
 			if (oData.Setid === 'NEW') {
 				oModel.resetChanges();
 				oModel.create("/PartnerSet", oData, {
-					success: (oData, response) => {
+					success: (oData) => {
 						sap.ui.core.BusyIndicator.hide();
 						this.msgToast(that.getI18n('msgChangesCreated', oData.Setid));      
 						var oRouter = sap.ui.core.UIComponent.getRouterFor(that);
@@ -893,14 +857,14 @@ sap.ui.define([
 					groupID: "Partner,Order",
 					success: (oData, response) => {
 						sap.ui.core.BusyIndicator.hide();
-						for( var i in oData.__batchResponses) { 
-						    var batchResponse = oData.__batchResponses[i];
-						    if (typeof(batchResponse.response) == "undefined") continue;
-						    if ( batchResponse.response.statusCode != "undefined" && batchResponse.response.statusCode != "200" ){
-					            var response = JSON.parse(batchResponse.response.body);
-					            this.msgStrip(response.error.message.value, "Error", true); 
-					            return;
-				            }
+						for (var i in oData.__batchResponses) {
+							var batchResponse = oData.__batchResponses[i];
+							if (typeof (batchResponse.response) == "undefined") continue;
+							if (batchResponse.response.statusCode != "undefined" && batchResponse.response.statusCode != "200") {
+								var response = JSON.parse(batchResponse.response.body);
+								this.msgStrip(response.error.message.value, "Error", true);
+								return;
+							}
 						}
 						this.msgToast(that.getI18n('msgChangesSaved'));
 					},
@@ -967,11 +931,7 @@ sap.ui.define([
 			oPage.insertContent(this._getFormFragment(sFragmentName));
 		},
 
-		_messageChange: function(oData, fnFunction, oListener) {
-			var lDAta = oData;
-		},
-
-		onMessageChange: function(oEvent) {
+		onMessageChange: function() {
 			//var count = oEvent.getParameter("newMessages").length;
 			var oMessage = sap.ui.getCore().getMessageManager().getMessageModel();
 			var messageButtonType;

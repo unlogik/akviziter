@@ -43,7 +43,7 @@
 				                constraints: { maxLength: 10 }
 				                }" 
 			            submit="onEnter"/>
-			    <Button icon="sap-icon://letter" tooltip="Address list" app:bindingPath="SoldToAddress" app:entityPath="SoldTo" press="onAddressDisplay">
+			    <Button icon="sap-icon://letter" tooltip="Address list" app:bindingPath="SoldToAddress" app:entityPath="SoldTo" press="onAddressDisplay" enabled="{=!!${SoldTo/Partnerid}}">
 			        <layoutData>
 						<l:GridData span="XL1 L1 M1 S1"/>
 					</layoutData>
@@ -188,7 +188,7 @@
 				</Toolbar>
 				<Label text="{/#Partner/ShipTo/Partnerid/@sap:label}"/>
 				<Input id="__ShipTo_Partnerid" value="{path:'ShipTo/Partnerid', type:'sap.ui.model.type.String', constraints:{maxLength:'10'}}" submit="onEnter"/>
-				<Button icon="sap-icon://letter" tooltip="Address list" app:bindingPath="ShipToAddress" app:entityPath="ShipTo" press="onAddressDisplay">
+				<Button icon="sap-icon://letter" tooltip="Address list" app:bindingPath="ShipToAddress" app:entityPath="ShipTo" press="onAddressDisplay" enabled="{=!!${ShipTo/Partnerid}}">
 			        <layoutData>
 						<l:GridData span="XL1 L1 M1 S1"/>
 					</layoutData>

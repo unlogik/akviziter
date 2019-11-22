@@ -14,3 +14,4 @@ visual_ext_index.html
 *xls
 *xlsx
 /dist/
+node_modules
