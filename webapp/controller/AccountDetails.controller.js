@@ -17,21 +17,6 @@ sap.ui.define([
 	Text, Fragment,	formatter, ValueHelpDialog) {
 	"use strict";
 
-	/*	var oMessageTemplate1 = new MessagePopoverItem({
-			type: '{message>type}',
-			title: '{message>message}',
-			description: '{message>message}',
-			subtitle: '{subtitle}',
-			counter: '{counter}'
-		});
-
-		var oMessagePopover1 = new MessagePopover({
-			items: {
-				path: "message>/",
-				template: oMessageTemplate1
-			}
-		});*/
-
 	var oMessageTemplate = new MessagePopoverItem({
 		type: '{MsgType}',
 		title: '{Msg}',
@@ -102,16 +87,6 @@ sap.ui.define([
 			this.setViewProperty("messageShow", true);
 			this.setViewProperty("pageId", "page");
 		},
-
-		/**
-		 * Called when the View has been rendered (so its HTML is part of the document). Post-rendering manipulations of the HTML could be done here.
-		 * This hook is the same one that SAPUI5 controls get after being rendered.
-		 * @memberOf bp.view.view.AccountDetails
-		 */
-		//	onAfterRendering: function() {
-		//
-		//	},
-
 		/**
 		 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.
 		 * @memberOf bp.view.view.AccountDetails
@@ -120,11 +95,7 @@ sap.ui.define([
 			this._toggleButtonsAndView(false);
 			this.setViewProperty("editable", false);
 			for (var sPropertyName in this._formFragments) {
-				if (!this._formFragments.hasOwnProperty(sPropertyName) || this._formFragments[sPropertyName] == null) {
-					return;
-				}
-				this._formFragments[sPropertyName].destroy();
-				this._formFragments[sPropertyName] = null;
+				this._formFragments[sPropertyName].destroy(true);
 			}			
 		},
 		
@@ -861,8 +832,8 @@ sap.ui.define([
 							var batchResponse = oData.__batchResponses[i];
 							if (typeof (batchResponse.response) == "undefined") continue;
 							if (batchResponse.response.statusCode != "undefined" && batchResponse.response.statusCode != "200") {
-								var response = JSON.parse(batchResponse.response.body);
-								this.msgStrip(response.error.message.value, "Error", true);
+								var oResponse = JSON.parse(batchResponse.response.body);
+								this.msgStrip(oResponse.error.message.value, "Error", true);
 								return;
 							}
 						}

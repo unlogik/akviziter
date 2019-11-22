@@ -244,8 +244,8 @@ sap.ui.define([
 						var batchResponse = oData.__batchResponses[i];
 						if (typeof (batchResponse.response) == "undefined") continue;
 						if (batchResponse.response.statusCode != "undefined" && batchResponse.response.statusCode != "200") {
-							var response = JSON.parse(batchResponse.response.body);
-							this.msgStrip(response.error.message.value, "Error", true);
+							var oResponse = JSON.parse(batchResponse.response.body);
+							this.msgStrip(oResponse.error.message.value, "Error", true);
 							return;
 						}
 					}
@@ -304,7 +304,7 @@ sap.ui.define([
 			//perform length check and return message if any field has been shortened
 			for (var i = 0; i < json.length; i++) {
 				var entity = this._parseEntity(json[i]);
-				var trunc = this._truncateEntity(entity, i + 4);
+				this._truncateEntity(entity, i + 4);
 			}
 			// open a WebSocket connection
 			//var wsURI = this._wsURI("zakv_upload");
@@ -481,24 +481,24 @@ sap.ui.define([
 			}
 			return trunc;
 		},
-		_truncateTable: function (table, index) {
-			var trunc;
-			for (var rowNo in table) {
-				if (typeof (entity[type]) != "object") continue;
-				for (var field in entity[type]) {
-					var metaData = this.getMetaData(field);
-					if (metaData == "undefined" && metaData.maxLength == 0) continue;
-					if (entity[type][field].length <= metaData.maxLength) continue;
-					trunc = entity;
-					trunc[type][field] = trunc[type][field].slice(0, parseInt(metaData.maxLength))
-					//var fld = type
-					var fldName = metaData['sap:label'];
-					var msg = this.getI18n('msgDataTruncated', index, type + '~' + fldName);
-					this.msgStrip(msg, "Warning", true);
-				}
-			}
-			return trunc;
-		},
+		// _truncateTable: function (table, index) {
+		// 	var trunc;
+		// 	for (var rowNo in table) {
+		// 		if (typeof (entity[type]) != "object") continue;
+		// 		for (var field in entity[type]) {
+		// 			var metaData = this.getMetaData(field);
+		// 			if (metaData == "undefined" && metaData.maxLength == 0) continue;
+		// 			if (entity[type][field].length <= metaData.maxLength) continue;
+		// 			trunc = entity;
+		// 			trunc[type][field] = trunc[type][field].slice(0, parseInt(metaData.maxLength))
+		// 			//var fld = type
+		// 			var fldName = metaData['sap:label'];
+		// 			var msg = this.getI18n('msgDataTruncated', index, type + '~' + fldName);
+		// 			this.msgStrip(msg, "Warning", true);
+		// 		}
+		// 	}
+		// 	return trunc;
+		// },
 
 		validateTemplate: function (wb) {
 			var msg;
