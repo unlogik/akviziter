@@ -1,5 +1,5 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:html="http://www.w3.org/1999/xhtml"
-	controllerName="bp.controller.Dummy">
+	controllerName="vl.ism.akv.cdv.controller.Dummy">
 	<App>
 		<pages>
 			<Page title="{i18n>appTitle}">

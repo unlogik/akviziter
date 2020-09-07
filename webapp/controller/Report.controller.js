@@ -4,7 +4,7 @@ sap.ui.define([
 ], function (Controller, History) {
 	"use strict";
 
-	return Controller.extend("bp.controller.Report", {
+	return Controller.extend("vl.ism.akv.cdv.controller.Report", {
 		onInit: function() {
 		},
 		onBeforeRendering: function() {

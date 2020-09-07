@@ -1,6 +1,6 @@
 sap.ui.define([
 	'jquery.sap.global',
-	"bp/controller/BaseController",
+	"../controller/BaseController",
 	'sap/ui/model/json/JSONModel',
 	"sap/ui/core/Component",
 	'sap/m/Popover',
@@ -8,7 +8,7 @@ sap.ui.define([
 ], function(jQuery, BaseController, JSONModel, Component, Popover, Button) {
 	"use strict";
 
-	return BaseController.extend("bp.controller.Main", {
+	return BaseController.extend("vl.ism.akv.cdv.controller.Main", {
 		_oViewSettings: {
 			compactOn: false,
 			themeActive: "sap_belize",
@@ -17,7 +17,7 @@ sap.ui.define([
 		/**
 		 * Called when a controller is instantiated and its View controls (if available) are already created.
 		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
-		 * @memberOf bp.view.App
+		 * @memberOf vl.ism.akv.cdv.view.App
 		 */
 		onInit: function() {
 			this.getView().addStyleClass(this.getOwnerComponent().getContentDensityClass());
@@ -37,7 +37,9 @@ sap.ui.define([
 					groupId: "User"
 				}
 			});
-			oModel.setDeferredGroups(["PartnerDouble", "Double", "Partner", "User"]);
+			var aDeferredGroups = oModel.getDeferredGroups();
+			aDeferredGroups = aDeferredGroups.concat(["PartnerDouble", "Double", "Partner", "User"]);
+			oModel.setDeferredGroups(aDeferredGroups);
 			//this.getView().setModel(oModel);
 			//oModel.read("/UserSet('CURRENT')", { success: this.adjustViewModel() });
 		},
@@ -70,7 +72,7 @@ sap.ui.define([
 		},
 		onOpenAppSettings: function(oEvent) {
 			if (!this._oSettingsDialog) {
-				this._oSettingsDialog = new sap.ui.xmlfragment("bp.view.AppSettings", this);
+				this._oSettingsDialog = new sap.ui.xmlfragment("vl.ism.akv.cdv.view.AppSettings", this);
 				this.getView().addDependent(this._oSettingsDialog);
 			}
 			jQuery.sap.delayedCall(0, this, function() {
@@ -150,7 +152,7 @@ sap.ui.define([
 
 		onUser: function(oEvent) {
 			if (!this._oUserPopover) {
-				this._oUserPopover = sap.ui.xmlfragment("bp.view.User", this);
+				this._oUserPopover = sap.ui.xmlfragment("vl.ism.akv.cdv.view.User", this);
 				this._oUserPopover.bindElement("/UserSet('CURRENT')");
 				this.getView().addDependent(this._oUserPopover);
 			}

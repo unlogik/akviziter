@@ -1,0 +1,53 @@
+specVersion: '2.2'
+metadata:
+  name: vl.ism.akv
+type: application
+server:
+  customMiddleware:
+    - name: fiori-tools-proxy
+      afterMiddleware: compression
+      configuration:
+        ignoreCertError: true # If set to true, certificate errors will be ignored. E.g. self-signed certificates will be accepted
+        backend:
+          - path: /sap/opu/odata
+            url: https://sapgw.styria-it.hr:8002/sap/opu/odata/SAP/ZAKV_SRV;o=CDV
+        ui5:
+          path:
+            - /resources
+            - /test-resources
+          url: https://sapui5.sap.com
+          version: 1.60.6 # The UI5 version, for instance, 1.78.1. Empty means latest version
+    - name: fiori-tools-appreload
+      afterMiddleware: compression
+      configuration:
+        port: 35729
+        path: webapp
+builder:
+  resources:
+    excludes:
+      - "localService/**"
+      - "/test/**"
+      - "Gruntfile"
+      - "LICENSE"
+      - "README.md"
+      - "*.yaml"  
+      - ".vscode"
+      - "build.readme"
+  # customTasks:
+  # - name: ui5-task-nwabap-deployer
+  #   afterTask: generateVersionInfo
+  #   configuration: 
+  #     resources:
+  #       pattern: "**/*.*"
+  #     connection:
+  #       server: https://sapgw.styria-it.hr:8002/ 
+  #     authentication:
+  #       user: driger
+  #       password: marmont1
+  #     ui5:
+  #       language: EN
+  #       package: ZAKV
+  #       bspContainer: ZAKV_DEMO
+  #       bspContainerText: Acquisiter demo upload
+  #       transportNo: AKVK900029
+  #       calculateApplicationIndex: true    

@@ -1,0 +1,18 @@
+# 1. for buidling, minifing and generating comp preload
+# definition in ui5.yaml
+ui5 build
+#build for dev without preload and minifying
+ui5 build dev --clean-dest
+
+# 2. replace comp id, service origin
+# definition in Gruntfile.js
+grunt replace --compid=cdv
+#new approach with grunt_copy with 2 steps, one for copying binary files(png,xlsx) and other to copy and replace
+grunt prepare --compid=cqs
+
+# 3. deploy to sap server
+# definition in Gruntfile.js
+grunt deploy --user=driger --pwd=xxx --compid=cdv
+
+#4. clean destination dir if needed
+grunt clean --compid=cqs

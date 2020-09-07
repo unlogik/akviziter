@@ -1,5 +1,5 @@
 sap.ui.define([
-	"bp/controller/BaseController",
+	"../controller/BaseController",
 	"sap/ui/core/routing/History",
 	"sap/ui/core/util/Export",
 	"sap/ui/core/util/ExportTypeCSV",
@@ -11,10 +11,10 @@ sap.ui.define([
 	"sap/m/Button",
 	"sap/m/Text",
 	"sap/ui/core/Fragment",
-	"bp/model/formatter",
-	"bp/lib/JsXlsx",
-	"bp/lib/jszip.min",
-	"bp/lib/xlsx.min",
+	"../model/formatter",
+	"../lib/JsXlsx",
+	"../lib/jszip.min",
+	"../lib/xlsx.min",
 	"sap/ui/model/Filter",
 	"sap/ui/model/Sorter",
 	"sap/ui/comp/valuehelpdialog/ValueHelpDialog",
@@ -22,7 +22,7 @@ sap.ui.define([
 	"sap/ui/model/json/JSONModel",
 	"sap/ui/core/ws/SapPcpWebSocket"
 ], function (BaseController, History, Export, ExportTypeCSV, MessageBox, MessageToast, MessagePopover, MessagePopoverItem, Dialog, Button,
-	Text, Fragment, formatter, XLSX_, JSZip, XLSX, Filter, Sorter, ValueHelpDialog, WebSocket, JSONModel, WS) {
+	Text, Fragment, formatter, XLSX_, JSZip, SheetJS, Filter, Sorter, ValueHelpDialog, WebSocket, JSONModel, WS) {
 	"use strict";
 
 	var oMessageTemplate = new MessagePopoverItem({
@@ -66,7 +66,7 @@ sap.ui.define([
 		})
 	};
 
-	return BaseController.extend("bp.controller.Accounts", {
+	return BaseController.extend("vl.ism.akv.cdv.controller.Accounts", {
 		_oVSDialog: null, // set on demand
 		formatter: formatter,
 		_oViewSettings: {
@@ -82,7 +82,7 @@ sap.ui.define([
 		/**
 		 * Called when a controller is instantiated and its View controls (if available) are already created.
 		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
-		 * @memberOf bp.view.Accounts
+		 * @memberOf vl.ism.akv.cdv.view.Accounts
 		 */
 		onInit: function () {
 			this.oView = this.getView();
@@ -105,7 +105,7 @@ sap.ui.define([
 		/**
 		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
 		 * (NOT before the first rendering! onInit() is used for that one!).
-		 * @memberOf bp.view.Accounts
+		 * @memberOf vl.ism.akv.cdv.view.Accounts
 		 */
 		onBeforeRendering: function () {
 			this.setViewModel();
@@ -118,7 +118,7 @@ sap.ui.define([
 		/**
 		 * Called when the View has been rendered (so its HTML is part of the document). Post-rendering manipulations of the HTML could be done here.
 		 * This hook is the same one that SAPUI5 controls get after being rendered.
-		 * @memberOf bp.view.Accounts
+		 * @memberOf vl.ism.akv.cdv.view.Accounts
 		 */
 		onAfterRendering: function () {
 			//this.getView().byId("__tablePartners").setPopinLayout("GridSmall");
@@ -127,7 +127,7 @@ sap.ui.define([
 
 		/**
 		 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.
-		 * @memberOf bp.view.Accounts
+		 * @memberOf vl.ism.akv.cdv.view.Accounts
 		 */
 		//	onExit: function() {
 		//
@@ -171,7 +171,9 @@ sap.ui.define([
 					this._createFromXLSX(result);
 				}
 				oFileUploader.setValue("");
-			}).catch(err => console.error(this.getI18n("msgFileError", err)));
+			}).catch(err => {
+				console.error(this.getI18n("msgFileError", err))
+			});
 		},
 
 		onSubmit: function (oEvent) {
@@ -180,7 +182,7 @@ sap.ui.define([
 				return;
 			}
 			if (!this._oSubmitDialog) {
-				this._oSubmitDialog = sap.ui.xmlfragment("bp.view.Submit", this);
+				this._oSubmitDialog = sap.ui.xmlfragment("vl.ism.akv.cdv.view.Submit", this);
 				this.getView().addDependent(this._oSubmitDialog);
 				this._oSubmitDialog.setModel(this.getModel("i18n"), "i18n");
 				this.getView().addDependent(this._oSubmitDialog);
@@ -755,6 +757,7 @@ sap.ui.define([
 			}
 			var that = this;
 			var sModel = this.getViewProperty("model");
+			sModel = oModel.getProperty("/UserSet('CURRENT')/Model");
 			if (!sModel) {
 				this.msgToast(this.getI18n("msgNoModel"));
 				return;
@@ -774,6 +777,7 @@ sap.ui.define([
 					success: (oData_, response) => {
 						this.msgToast(that.getI18n('msgModelAdded', sModel));
 						this.setViewProperty("model", "");
+						oModel.setProperty("/UserSet('CURRENT')/Model", "")
 						this.getView().setBusy(false);
 						//debugger;
 						that.getView().byId("__tablePartners").getBinding("items").refresh(true);
@@ -801,15 +805,15 @@ sap.ui.define([
 
 		onInfo: function (oEvent) {
 			if (!this._oPopover) {
-				this._oPopover = sap.ui.xmlfragment("bp.view.AccountsInfo", this);
+				this._oPopover = sap.ui.xmlfragment("vl.ism.akv.cdv.view.AccountsInfo", this);
 				this.getView().addDependent(this._oPopover);
 			}
 			this._oPopover.openBy(oEvent.getSource());
 		},
 
-		onDownloadTemplate: function (oEvent) {
+		onDownloadTemplate: function (sExtension, oEvent) {
 			//sap.m.URLHelper.redirect("src/PartnerTemplate.xlsx", true);
-			sap.m.URLHelper.redirect("/sap/bc/bsp/sap/zakv_cdv/src/PartnerTemplate.xlsx", true);
+			sap.m.URLHelper.redirect("src/PartnerTemplate." + sExtension, true);
 		},
 
 		onInfoClose: function (oEvent) {
@@ -827,7 +831,7 @@ sap.ui.define([
 
 		onOpenSettings: function (oEvent) {
 			if (!this._oVSDialog) {
-				this._oVSDialog = sap.ui.xmlfragment("bp.view.AccountsSettings", this);
+				this._oVSDialog = sap.ui.xmlfragment("vl.ism.akv.cdv.view.AccountsSettings", this);
 				this.getView().addDependent(this._oVSDialog);
 			}
 			// toggle compact style

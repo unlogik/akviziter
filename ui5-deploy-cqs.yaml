@@ -1,0 +1,30 @@
+specVersion: "1.0"
+metadata:
+  name: "vl.crm.zakv"
+type: application
+ui5Theme: sap_fiori_3
+builder:
+  customTasks:
+    - name: ui5-task-stringreplacer
+      afterTask: generateVersionInfo
+      configuration:
+        target: ['**/*.js']
+        replacements:
+          - pattern: /vl\.ism\.akv\.cdv/g
+            replacement: 'vl.ism.akv.cqs'
+          - pattern: /vl\/ism\/akv\/cdv/g
+            replacement: 'vl/ism/akv/cqs' 
+    - name: deploy-to-abap
+      afterTask: ui5-task-stringreplacer
+      configuration:
+        target:
+          url: https://sapgw.styria-it.hr:8002/ 
+          client: 100
+          auth: basic
+        credentials:
+          username: env:UI5_USERNAME
+          password: env:UI5_PASSWORD
+        app:
+          name: zakv_demo
+          package: ZAKV
+          transport: AKVK900029

@@ -2,13 +2,15 @@
 	<ResponsivePopover title="{Name}" class="sapUiPopupWithPadding" placement="Bottom" showHeader="false"
 	                    contentWidth="300px">
 		<beginButton>
-			<Button icon="sap-icon://excel-attachment" text="{i18n>infoAccountsDownload}" press="onDownloadTemplate"/>
+			<!-- <Button icon="sap-icon://excel-attachment" text="{i18n>infoAccountsDownload}" press="onDownloadTemplate"/> -->
 		</beginButton>
 		<endButton>
 			<Button icon="sap-icon://decline" press="onInfoClose"/>
 		</endButton>
 		<content>
 			<Text text="{i18n>infoAccounts}"/>
+			<Button text=".xlsx" width="5rem" press="onDownloadTemplate('xlsx')"/>
+			<Button text=".xls"  width="5rem" press="onDownloadTemplate('xls')"/>			
 		</content>
 	</ResponsivePopover>
 </core:FragmentDefinition>

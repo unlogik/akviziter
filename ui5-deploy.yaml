@@ -1,0 +1,21 @@
+specVersion: "1.0"
+metadata:
+  name: "vl.crm.zakv"
+type: application
+ui5Theme: sap_fiori_3
+builder:
+  customTasks:
+    - name: deploy-to-abap
+      afterTask: generateVersionInfo
+      configuration:
+        target:
+          url: https://sapgw.styria-it.hr:8002/ 
+          client: 100
+          auth: basic
+        credentials:
+          username: env:UI5_USERNAME
+          password: env:UI5_PASSWORD
+        app:
+          name: zakv_demo
+          package: ZAKV
+          transport: AKVK900029

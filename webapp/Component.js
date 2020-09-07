@@ -1,12 +1,12 @@
 sap.ui.define([
 	"sap/ui/core/UIComponent",
 	"sap/ui/Device",
-	"bp/model/models"
+	"vl/ism/akv/cdv/model/models"
 //	"sap/ui/core/util/MockServer"
 ], function(UIComponent, Device, models) {
 	"use strict";
 
-	return UIComponent.extend("bp.Component", {
+	return UIComponent.extend("vl.ism.akv.cdv.Component", {
 
 		metadata: {
 			"manifest": "json"

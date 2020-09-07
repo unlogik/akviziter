@@ -6,7 +6,7 @@ sap.ui.define([
 ], function (Controller, JSONModel, MessageStrip, MessageToast) {
 	"use strict";
 
-	return Controller.extend("bp.controller.BaseController", {
+	return Controller.extend("vl.ism.akv.cdv.controller.BaseController", {
 		/**
 		 * Convenience method for accessing the router.
 		 * @public

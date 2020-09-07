@@ -14,7 +14,7 @@
 					</Column>
 				</columns>
 				<items>
-					<ColumnListItem  press="onAddressSelect">
+					<ColumnListItem press="onAddressSelect" selected="{Selected}">
 						<cells>
 						    <core:Icon src="{path:'Adrty', formatter:'.formatter.addressIcon'}" tooltip="{Adrty}"/>
 							<ObjectIdentifier title="{Name1} {Name2}" text="{Partnerid}"/>
@@ -25,10 +25,10 @@
 			</Table>
 		</content>
 		<beginButton>
-		    <Button icon="sap-icon://decline" visible="{view>/AccountDetails/editable}" press="onAddressClose" tooltip="i18n>toolTipCancel"/>
+		    <Button icon="sap-icon://decline" visible="{view>/AccountDetails/editable}" press="onAddressClose" tooltip="{i18n>toolTipCancel}"/>
 		</beginButton>		
 		<endButton>
-			<Button icon="sap-icon://accept" visible="{view>/AccountDetails/editable}" press="onAddressSelect"  tooltip="i18n>toolTipSelect"/>
+			<Button icon="sap-icon://accept" visible="{view>/AccountDetails/editable}" press="onAddressSelect"  tooltip="{i18n>toolTipSelect}"/>
 		</endButton>
 	</ResponsivePopover>
 </core:FragmentDefinition>

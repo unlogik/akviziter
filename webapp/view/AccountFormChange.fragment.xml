@@ -4,7 +4,8 @@
 	xmlns:f="sap.ui.layout.form"
 	xmlns:core="sap.ui.core"
 	xmlns:s="sap.ui.comp.smarttable"
-	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	xmlns:smartField="sap.ui.comp.smartfield"
+	xmlns:data="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
 	<l:BlockLayout>
 		<l:BlockLayoutRow>
 			<l:BlockLayoutCell class="sapUiNoContentPadding">
@@ -30,7 +31,7 @@
 					<Title text="{parts:['i18n>labelSoldTo', 'SoldTo/Partnerid'], formatter: 'jQuery.sap.formatMessage'}" level="H5" titleStyle="H5"/>
 					<ToolbarSpacer/>
 					<Button id="_btn1_SoldToDoubles" icon="{ path: 'SoldTo/Status', formatter: '.formatter.statusIcon'}" press="onDoublesDisplay"
-						visible="{SoldTo/Doubles}" app:bindPath="SoldToDoubles"/>
+						visible="{SoldTo/Doubles}" data:bindPath="SoldToDoubles"/>
 					<core:Icon src="sap-icon://bed" size="90%" visible="{=!${SoldTo/FlgActive} &amp;&amp; ${SoldTo/Partnerid} !== ''}" tooltip="{i18n>toolTipInactive}" color="red"/>
 					<core:Icon src="sap-icon://unpaid-leave" size="90%" visible="{SoldTo/FlgDebtor}" tooltip="{/#Partner/SoldTo/FlgDebtor/@sap:label}" color="red"/>
 					<core:Icon src="sap-icon://locked" size="90%" visible="{SoldTo/FlgBlocked}" tooltip="{/#Partner/SoldTo/FlgBlocked/@sap:label}" color="red"/>
@@ -43,7 +44,7 @@
 				                constraints: { maxLength: 10 }
 				                }" 
 			            submit="onEnter"/>
-			    <Button icon="sap-icon://letter" tooltip="Address list" app:bindingPath="SoldToAddress" app:entityPath="SoldTo" press="onAddressDisplay" enabled="{=!!${SoldTo/Partnerid}}">
+			    <Button icon="sap-icon://letter" tooltip="Address list" data:bindingPath="SoldToAddress" data:entityPath="SoldTo" press="onAddressDisplay" enabled="{=!!${SoldTo/Partnerid}}">
 			        <layoutData>
 						<l:GridData span="XL1 L1 M1 S1"/>
 					</layoutData>
@@ -151,7 +152,7 @@
 				<Input id="__SoldTo_Intad" value="{path:'SoldTo/Intad', type:'sap.ui.model.type.String', constraints:{maxLength:'130'}}" submit="onEnter" editable="{=!${SoldTo/Partnerid}}"/>
 				<Label text="{/#Partner/SoldTo/Stcd2/@sap:label}" required="true"/>
 				<Input id="__SoldTo_Stcd2" value="{path:'SoldTo/Stcd2', type:'sap.ui.model.type.String', constraints:{maxLength:'11'}}" liveChange="onSoldToOIBChange" submit="onEnter" maxLength="11"
-					editable="{SoldTo/FlgEditStceg}"/>			    
+					editable="{SoldTo/FlgEditStceg}"/>		
 			</f:content>
 		</f:SimpleForm>
 		
@@ -180,7 +181,7 @@
 					<Title text="{parts:['i18n>labelShipTo', 'ShipTo/Partnerid'], formatter: 'jQuery.sap.formatMessage'}" level="H5" titleStyle="H5"/>
 					<ToolbarSpacer/>
 					<Button id="_btn1_ShipToDoubles" icon="{ path: 'ShipTo/Status', formatter: '.formatter.statusIcon'}" press="onDoublesDisplay"
-						visible="{ShipTo/Doubles}" app:bindPath="ShipToDoubles"/>
+						visible="{ShipTo/Doubles}" data:bindPath="ShipToDoubles"/>
 		            <core:Icon src="sap-icon://bed" size="90%" visible="{=!${ShipTo/FlgActive} &amp;&amp; ${ShipTo/Partnerid} !== ''}" tooltip="{i18n>toolTipInactive}" color="red"/>
 					<core:Icon src="sap-icon://unpaid-leave" size="90%" visible="{ShipTo/FlgDebtor}" tooltip="{/#Partner/ShipTo/FlgDebtor/@sap:label}" color="red"/>
 					<core:Icon src="sap-icon://locked" size="90%" visible="{ShipTo/FlgBlocked}" tooltip="{/#Partner/ShipTo/FlgBlocked/@sap:label}" color="red"/>
@@ -188,7 +189,7 @@
 				</Toolbar>
 				<Label text="{/#Partner/ShipTo/Partnerid/@sap:label}"/>
 				<Input id="__ShipTo_Partnerid" value="{path:'ShipTo/Partnerid', type:'sap.ui.model.type.String', constraints:{maxLength:'10'}}" submit="onEnter"/>
-				<Button icon="sap-icon://letter" tooltip="Address list" app:bindingPath="ShipToAddress" app:entityPath="ShipTo" press="onAddressDisplay" enabled="{=!!${ShipTo/Partnerid}}">
+				<Button icon="sap-icon://letter" tooltip="Address list" data:bindingPath="ShipToAddress" data:entityPath="ShipTo" press="onAddressDisplay" enabled="{=!!${ShipTo/Partnerid}}">
 			        <layoutData>
 						<l:GridData span="XL1 L1 M1 S1"/>
 					</layoutData>
@@ -303,18 +304,20 @@
 					<s:SmartTable id="_tableOrders" entitySet="OrderSet" tableType="ResponsiveTable" useVariantManagement="true"
 						persistencyKey="SmartTable_Orders" useTablePersonalisation="true" header="Orders" showRowCount="true" enableAutoBinding="true"
 					    editable="true" class="sapUiTinyMarginBeginEnd sapUiNoMarginTop" noData="No orders"
-						tableBindingPath="PartnerToOrders" app:useSmartField="true">
+						tableBindingPath="PartnerToOrders" data:useSmartField="true">
 						<s:customToolbar>
 							<Toolbar>
 								<ToolbarSpacer/>
 								<Label visible="{=${Agent} !== ''}" text="Agent: {Agent}" tooltip="Agent"/>
 								<ToolbarSeparator/>
-								<Input maxLength="8" width="140px" showValueHelp="true" valueHelpRequest="onModelValueHelp" placeholder="Model" showSuggestion="true"
+								<!-- <Input maxLength="8" width="140px" showValueHelp="true" valueHelpRequest="onModelValueHelp" placeholder="Model" showSuggestion="true"
 									suggestionItems="{/ModelSet}" maxSuggestionWidth="300px" id="_inputModel" value="{view>/AccountDetails/model}" submit="onAddOrder">
 									<suggestionItems>
 										<core:ListItem text="{ModelId}" additionalText="{Ltext}"/>
 									</suggestionItems>
-								</Input>
+								</Input> -->
+								<smartField:SmartField id="idSFModel" width="140px" binding="{/UserSet('CURRENT')}" value="{Model}" contextEditable="true" 
+									data:dateFormatSettings='\{"pattern":"dd.MM.YYYY"\}' placeholder="Model"/>
 								<Button icon="sap-icon://add" press="onAddOrder"/>
 								<ToolbarSeparator/>
 								<Button icon="sap-icon://delete" press="onDeleteOrder"/>
@@ -359,8 +362,8 @@
 									<cells>
 										<DatePicker dateValue="{Stdat}" displayFormat="dd.MM.YYYY" minDate="{ path: 'MinStdat', formatter: '.formatter.dateJS'}" change="onDateChange"/>
 										<Text text="{ path: 'Cldat', formatter: '.formatter.dateOut'}"/>
-                                        <Input value="{Agent}" submit="onEnter"/>
-										<Input value="{Note}" submit="onEnter"/>										
+                                        <Input value="{Agent}" tooltip="{Agent}" submit="onEnter"/>
+										<Input value="{Note}" tooltip="{Note}" submit="onEnter"/>										
 										<Input value="{ path: 'Quant', type:'sap.ui.model.type.Integer' }" type="Number" submit="onEnter"
 											valueState="{ path: 'Quant', formatter: '.formatter.inputQuantity' }" valueStateText="{i18n>msgQuantityHigh}" maxLength="2"/>
 									</cells>

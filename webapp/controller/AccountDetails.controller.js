@@ -1,5 +1,5 @@
 sap.ui.define([
-	"bp/controller/BaseController",
+	"../controller/BaseController",
 	"sap/ui/model/json/JSONModel",
 	"sap/ui/core/routing/History",
 	"sap/m/MessageToast",
@@ -11,7 +11,7 @@ sap.ui.define([
 	"sap/m/Button",
 	"sap/m/Text",
 	'sap/ui/core/Fragment',
-	"bp/model/formatter",
+	"../model/formatter",
 	"sap/ui/comp/valuehelpdialog/ValueHelpDialog"
 ], function(BaseController, JSONModel, History, MessageToast, Filter, MessagePopover, MessagePopoverItem, MessageBox, Dialog, Button,
 	Text, Fragment,	formatter, ValueHelpDialog) {
@@ -32,7 +32,7 @@ sap.ui.define([
 		}
 	});
 
-	return BaseController.extend("bp.controller.AccountDetails", {
+	return BaseController.extend("vl.ism.akv.cdv.controller.AccountDetails", {
 		formatter: formatter,
 		editable: false,
 		cons : {
@@ -45,7 +45,7 @@ sap.ui.define([
 		/**
 		 * Called when a controller is instantiated and its View controls (if available) are already created.
 		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
-		 * @memberOf bp.view.view.AccountDetails
+		 * @memberOf vl.ism.akv.cdv.view.view.AccountDetails
 		 */
 
 		onInit: function() {
@@ -78,7 +78,7 @@ sap.ui.define([
 		/**
 		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
 		 * (NOT before the first rendering! onInit() is used for that one!).
-		 * @memberOf bp.view.view.AccountDetails
+		 * @memberOf vl.ism.akv.cdv.view.view.AccountDetails
 		 */
 		onBeforeRendering: function() {
 			this.setViewModel();
@@ -89,7 +89,7 @@ sap.ui.define([
 		},
 		/**
 		 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.
-		 * @memberOf bp.view.view.AccountDetails
+		 * @memberOf vl.ism.akv.cdv.view.view.AccountDetails
 		 */
 		onExit: function() {
 			this._toggleButtonsAndView(false);
@@ -206,6 +206,7 @@ sap.ui.define([
 			var oData = oView.getBindingContext().getObject();
 			var oModel = this.getModel();
 			var sModel = this.getViewProperty("model");
+			sModel = oModel.getProperty("/UserSet('CURRENT')/Model")
 			if (!sModel) {
 				this.msgToast(this.getI18n("msgNoModel"));
 				return;
@@ -217,6 +218,7 @@ sap.ui.define([
 				success: () => {
 					that.msgToast(that.getI18n('msgModelAdded', sModel));
 					that.setViewProperty("model", "");
+					oModel.setProperty("/UserSet('CURRENT')/Model", "");
 					//oModel.update("/PartnerSet('" + oData.Setid + "')", oData);
 					//oModel.update(sPath, oData);
 					//oView.byId("_tableOrders").setTableBindingPath("PartnerToOrders");
@@ -287,7 +289,7 @@ sap.ui.define([
 		onDoublesDisplay: function(oEvent) {
 			var sPath = oEvent.getSource().getId().match(/[^_]+$/);
 			if (!this._oDoublesPopover) {
-				this._oDoublesPopover = sap.ui.xmlfragment("_popoverDoubles", "bp.view.AccountDoubles", this);
+				this._oDoublesPopover = sap.ui.xmlfragment("_popoverDoubles", "vl.ism.akv.cdv.view.AccountDoubles", this);
 				//Add the popover as a view dependent, giving it access to the view model
 				this.getView().addDependent(this._oDoublesPopover);
 			}
@@ -344,7 +346,7 @@ sap.ui.define([
 			oNavCon.back();
 		},
 
-		onDoublesSelect: function(oEvent, oParam) {
+		onDoublesSelect: function (oEvent, oParam) {
 			var oTable = Fragment.byId("_popoverDoubles", "_tableDoubles");
 			var oItem = oTable.getSelectedItem();
 			var oContext = oItem.getBindingContext();
@@ -355,6 +357,9 @@ sap.ui.define([
 			var oModel = this.getView().getModel();
 			oModel.setProperty(sPath + "/Partnerid", partnerid);
 			oModel.setProperty(sPath + "/Adrnr", addrnumber);
+			//reset model changes made with select
+			oModel.resetChanges([oContext.getPath()], true);
+			//save selected BP
 			this.getComponentModel().submitChanges({
 				groupID: "Partner"
 			});
@@ -379,7 +384,7 @@ sap.ui.define([
 			var sPath = oButtonOpen.data().bindingPath;
 			this._address.entityPath = oButtonOpen.data().entityPath;
 			if (!this._address.oPopover) {
-				this._address.oPopover = sap.ui.xmlfragment("_popoverAddress", "bp.view.Address", this);
+				this._address.oPopover = sap.ui.xmlfragment("_popoverAddress", "vl.ism.akv.cdv.view.Address", this);
 				//Add the popover as a view dependent, giving it access to the view model
 				this.getView().addDependent(this._address.oPopover);
 			}
@@ -521,7 +526,7 @@ sap.ui.define([
 					})
 				],
 				search: function() {
-					sap.m.MessageToast.show("Search pressed");
+					sap.m.MessageToast.show("Search pressed xx");
 				}
 			});
 
@@ -888,7 +893,7 @@ sap.ui.define([
 		_getFormFragment: function(sFragmentName) {
 			var oFormFragment = this._formFragments[sFragmentName];
 			if (!oFormFragment) {
-				oFormFragment = this._formFragments[sFragmentName] = sap.ui.xmlfragment(this.getView().getId(), "bp.view.AccountForm" +
+				oFormFragment = this._formFragments[sFragmentName] = sap.ui.xmlfragment(this.getView().getId(), "vl.ism.akv.cdv.view.AccountForm" +
 					sFragmentName, this);
 			}
 			return oFormFragment;

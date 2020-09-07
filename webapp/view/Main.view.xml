@@ -1,5 +1,7 @@
-<mvc:View xmlns:html="http://www.w3.org/1999/xhtml" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:tnt="sap.tnt"
-	controllerName="bp.controller.Main" class="side-navigation-demo" displayBlock="true">
+<mvc:View xmlns:html="http://www.w3.org/1999/xhtml" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" 
+	xmlns="sap.m" xmlns:tnt="sap.tnt"
+	xmlns:smartField="sap.ui.comp.smartfield"
+	controllerName="vl.ism.akv.cdv.controller.Main" class="side-navigation-demo" displayBlock="true">
 	<tnt:ToolPage id="toolPage" sideExpanded="true">
 		<tnt:header>
 			<tnt:ToolHeader>
