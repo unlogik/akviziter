@@ -1,17 +1,24 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:html="http://www.w3.org/1999/xhtml"
-	xmlns:s="sap.ui.comp.smarttable" xmlns:sf="sap.ui.comp.smartfilterbar" controllerName="vl.ism.akv.cdv.controller.Report">
+	xmlns:s="sap.ui.comp.smarttable" xmlns:sf="sap.ui.comp.smartfilterbar" 
+	xmlns:data="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	controllerName="vl.ism.akv.cdv.controller.Report">
 	<Page title="{i18n>titleAnalysis}" showNavButton="true" navButtonPress="onNavBack">
 		<content>
-			<sf:SmartFilterBar id="sf_Report" entityType="Report" persistencyKey="SmartFilter_Report">
+			<sf:SmartFilterBar id="sf_Report" entityType="Report" persistencyKey="SmartFilter_Report"
+				data:dateFormatSettings='\{"pattern":"dd.MM.YYYY"\}' initialized="onSFBInit">
 				<sf:controlConfiguration>
 					<sf:ControlConfiguration key="Partnerbp" preventInitialDataFetchInValueHelpDialog="false"/>
 					<sf:ControlConfiguration key="Drerz" visibleInAdvancedArea="true"/>
 					<sf:ControlConfiguration key="Crdat" visibleInAdvancedArea="true">
-						<sf:customControl>
+						<!-- <sf:defaultFilterValues>
+							<sf:SelectOption low="{/UserSet('CURRENT')/DateFrom}" high="{/UserSet('CURRENT')/DateTo}">
+							</sf:SelectOption>
+						</sf:defaultFilterValues> -->
+						<!-- <sf:customControl>
 							<DateRangeSelection id="dateCreated" displayFormat="dd.MM.yyyy" dateValue="{/UserSet('CURRENT')/DateFrom}"
 								secondDateValue="{/UserSet('CURRENT')/DateTo}" change="onDateChange"/>
-						</sf:customControl>
-					</sf:ControlConfiguration>
+						</sf:customControl>-->
+					</sf:ControlConfiguration> 
 					<!--sf:ControlConfiguration key="Status" filterType="multiple" visibleInAdvancedArea="true"/>
 					<sf:ControlConfiguration key="Reason" filterType="multiple" visibleInAdvancedArea="true"/-->
 				</sf:controlConfiguration>

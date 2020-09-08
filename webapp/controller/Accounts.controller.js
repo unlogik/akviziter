@@ -756,13 +756,12 @@ sap.ui.define([
 				return;
 			}
 			var that = this;
-			var sModel = this.getViewProperty("model");
-			sModel = oModel.getProperty("/UserSet('CURRENT')/Model");
+			var oModel = this.getModel();
+			var sModel = oModel.getProperty("/UserSet('CURRENT')/Model");
 			if (!sModel) {
 				this.msgToast(this.getI18n("msgNoModel"));
 				return;
 			}
-			var oModel = this.getView().getModel();
 			var oTable = this.getView().byId("__tablePartners");
 			var aItems = oTable.getSelectedItems();
 			if (aItems.length > 0) {

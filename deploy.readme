@@ -1,10 +1,11 @@
 # 1. for buidling, minifing and generating comp preload
 # definition in ui5.yaml
+# --dest	Path of build destination [string] [default: "./dist"]
 ui5 build
 #build for dev without preload and minifying
 ui5 build dev --clean-dest
 
-# 2. replace comp id, service origin
+# 2. replace comp id, service origin and copies files from ./dist to ./bild/<compid> folder
 # definition in Gruntfile.js
 grunt replace --compid=cdv
 #new approach with grunt_copy with 2 steps, one for copying binary files(png,xlsx) and other to copy and replace
